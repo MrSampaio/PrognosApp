@@ -8,5 +8,6 @@
 import Foundation
 
 struct investimento{
+    let teste: String
     
 }
