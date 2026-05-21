@@ -17,7 +17,7 @@ struct CardInvestimento: View {
            VStack(spacing: 6) {
                
                Text(title)
-                   .font(.system(size: 22, weight: .bold))
+                   .font(.system(size: 20, weight: .bold))
                    .foregroundColor(Color("Fonte"))
                
                Text(subtitle)

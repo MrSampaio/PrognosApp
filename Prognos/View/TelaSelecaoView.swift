@@ -9,6 +9,13 @@ import SwiftUI
 
 
 struct TelaSelecaoView: View {
+    init() {
+        
+        UIPageControl.appearance().currentPageIndicatorTintColor =
+        UIColor(Color("CorPrimaria"))
+        
+        UIPageControl.appearance().pageIndicatorTintColor = UIColor.lightGray.withAlphaComponent(0.4)
+    }
     
     @State private var selectedCards: [String] = []
     let maxSelection = 2
@@ -20,9 +27,9 @@ struct TelaSelecaoView: View {
                 Text("Selecione os investimentos")
                     .font(.custom("BaiJamjuree-SemiBold", size: 24))
                     .foregroundColor(Color("CorFonteTitulo"))
-                            .navigationTitle("")
-                            .navigationBarTitleDisplayMode(.inline)
-                            .padding(.vertical, 5)
+                    .navigationTitle("")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .padding(.vertical, 5)
                 Text("Escolha dois tipos de investimento que você gostaria de comparar")
                     .font(.custom("BaiJamjuree-Medium", size: 16))
                     .foregroundColor(Color("CorFonte"))
@@ -35,104 +42,46 @@ struct TelaSelecaoView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 36, height: 36)
-                       // .foregroundStyle(Color("CorCaixa2"))
-                        
+                    // .foregroundStyle(Color("CorCaixa2"))
+                    
                 }
-
-                Spacer()
                 VStack{
-                    ScrollView {
+                    TabView {
                         
-                        LazyVGrid(
-                            columns: [
-                             GridItem(.adaptive(minimum: 104))
-                            ],
-                            spacing: 10
-                        ) {
+                        
+                        pageGrid(cards: [
+                            ("Tesouro", "Prefixado", "Card1"),
+                            ("Tesouro", "Selic", "Card2"),
+                            ("Tesouro", "Híbrido", "Card3"),
+                            ("CDB / LC", "Prefixado", "Card4"),
+                            ("CDB / LC", "Pós-fixado", "Card5"),
+                            ("CDB / LC", "Híbrido", "Card6"),
+                            ("LCI / LCA", "Prefixado", "Card7"),
+                            ("LCI / LCA", "Pós-fixado", "Card8"),
+                            ("LCI / LCA", "Híbrido", "Card9")
+                        ])
+                        
+                        
+                        
+                        pageGrid(cards: [
+                            ("Debênture", "Prefixado", "Card10"),
+                            ("Debênture", "Pós-fixado", "Card11"),
+                            ("Debênture", "Híbrido", "Card12"),
+                            ("CRI / CRA", "Prefixado", "Card13"),
+                            ("CRI / CRA", "Pós-fixado", "Card14"),
+                            ("CRI / CRA", "Híbrido", "Card15"),
+                            ("Fundo", "Renda fixa", "Card16"),
                             
-                            CardInvestimento(
-                                title: "Tesouro",
-                                subtitle: "Prefixado",
-                                isSelected: selectedCards.contains("Card1")
-                            )
-                            .onTapGesture {
-                                toggleSelection("Card1")
-                            }
-                            
-                            
-                            CardInvestimento(
-                                title: "Tesouro",
-                                subtitle: "Selic",
-                                isSelected: selectedCards.contains("Card2")
-                            )
-                            .onTapGesture {
-                                toggleSelection("Card2")
-                            }
-                            
-                            CardInvestimento(
-                                title: "Tesouro",
-                                subtitle: "Híbrido",
-                                isSelected: selectedCards.contains("Card3")
-                            )
-                            .onTapGesture {
-                                toggleSelection("Card3")
-                            }
-                            CardInvestimento(
-                                title: "CDB / LC",
-                                subtitle: "Prefixado",
-                                isSelected: selectedCards.contains("Card4")
-                            )
-                            .onTapGesture {
-                                toggleSelection("Card4")
-                            }
-                            CardInvestimento(
-                                title: "CDB / LC",
-                                subtitle: "Pós-fixado",
-                                isSelected: selectedCards.contains("Card5")
-                            )
-                            .onTapGesture {
-                                toggleSelection("Card5")
-                            }
-                            CardInvestimento(
-                                title: "CDB / LC",
-                                subtitle: "Híbrido",
-                                isSelected: selectedCards.contains("Card6")
-                            )
-                            .onTapGesture {
-                                toggleSelection("Card6")
-                            }
-                            
-                            CardInvestimento(
-                                title: "LCI / LCA",
-                                subtitle: "Prefixado",
-                                isSelected: selectedCards.contains("Card7")
-                            )
-                            .onTapGesture {
-                                toggleSelection("Card7")
-                            }
-                            CardInvestimento(
-                                title: "LCI / LCA",
-                                subtitle: "Pós-fixado",
-                                isSelected: selectedCards.contains("Card8")
-                            )
-                            .onTapGesture {
-                                toggleSelection("Card8")
-                            }
-                            CardInvestimento(
-                                title: "LCI / LCA",
-                                subtitle: "Híbrido",
-                                isSelected: selectedCards.contains("Card9")
-                            )
-                            .onTapGesture {
-                                toggleSelection("Card9")
-                            }
-
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal, 20)
-                        .padding(.top, 30)
+                        ])
                     }
+                    
+                    .indexViewStyle(.page(backgroundDisplayMode: .always))
+                    .tabViewStyle(.page(indexDisplayMode: .always))
+                    .frame(height: 430)
                 }
+                
+                Spacer()
+                    .frame(height: 40)
                 
                 NavigationLink {
                     
@@ -140,23 +89,21 @@ struct TelaSelecaoView: View {
                     
                 } label: {
                     
-                    Text("Continuar")
-                        .font(.custom("BaiJamJuree-SemiBold", size: 20))
-                        .foregroundColor(Color("Fonte"))
-                        .frame(width: 215, height: 48)
-                        .background(Color("CorSelecionado"))
-                        .cornerRadius(30)
+                    BotaoView(
+                        texto: "Continuar"
+                    )
                 }
                 
-                
             }
-            .padding()
             
         }
+        .padding()
         
-        
-      
-            }
+    }
+    
+    
+    
+    
     
     func toggleSelection(_ card: String) {
         
@@ -174,8 +121,33 @@ struct TelaSelecaoView: View {
             }
         }
     }
-       
+    
+    func pageGrid(cards: [(String, String, String)]) -> some View {
+        
+        LazyVGrid(
+            columns: [
+                GridItem(.adaptive(minimum: 104))
+            ],
+            spacing: 10
+        ) {
+            
+            ForEach(cards, id: \.2) { card in
+                
+                CardInvestimento(
+                    title: card.0,
+                    subtitle: card.1,
+                    isSelected: selectedCards.contains(card.2)
+                )
+                .onTapGesture {
+                    toggleSelection(card.2)
+                }
+            }
+        }
+        .padding(.horizontal, 20)
+          .padding(.bottom, 40)
     }
+}
+    
 
 
 #Preview {
