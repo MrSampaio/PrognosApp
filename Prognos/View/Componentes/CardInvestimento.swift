@@ -18,7 +18,7 @@ struct CardInvestimento: View {
                
                Text(title)
                    .font(.system(size: 22, weight: .bold))
-                   .foregroundColor(Color("CorFonte"))
+                   .foregroundColor(Color("Fonte"))
                
                Text(subtitle)
                    .font(.system(size: 14, weight: .medium))

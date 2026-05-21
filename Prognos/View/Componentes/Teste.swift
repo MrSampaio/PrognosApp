@@ -25,8 +25,8 @@ struct Teste: View {
                ) {
                    
                    CardInvestimento(
-                       title: "CDB",
-                       subtitle: "IPCA+",
+                       title: "Tesouro",
+                       subtitle: "Prefixado",
                        isSelected: selectedCards.contains("CDB")
                    )
                    .onTapGesture {
