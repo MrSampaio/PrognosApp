@@ -11,7 +11,7 @@ struct Teste: View {
     
     @State private var selectedCards: [String] = []
         
-        let maxSelection = 2
+    let maxSelection = 2
         
     var body: some View {
            

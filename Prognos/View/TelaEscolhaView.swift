@@ -12,6 +12,8 @@ struct BotaoInvestimento: View {
     let estaSelecionado: Bool
     let acao: () -> Void
     
+   
+    
     var body: some View {
         Button(action: acao) {
             Text(titulo)
@@ -28,6 +30,10 @@ struct BotaoInvestimento: View {
 
 struct TelaEscolha: View {
     
+    @State private var selectedCards: [String] = []
+        
+    let maxSelection = 2
+    
     let colunas = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -42,12 +48,35 @@ struct TelaEscolha: View {
                             title: tipo.tituloPrincipal,
                             subtitle: tipo.subtitulo,
                             isSelected: false
-                        )
+                        ) .onTapGesture {
+                            toggleSelection("CDB")
+                        }
                 
             }
         }
         .padding()
+        
+        
     }
+    
+    func toggleSelection(_ card: String) {
+        
+        if selectedCards.contains(card) {
+            
+            selectedCards.removeAll {
+                $0 == card
+            }
+            
+        } else {
+            
+            if selectedCards.count < maxSelection {
+                
+                selectedCards.append(card)
+            }
+        }
+    }
+    
+    
 }
 
 #Preview {
