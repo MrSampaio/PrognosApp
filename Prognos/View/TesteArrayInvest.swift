@@ -14,10 +14,9 @@ struct TelaInformacoesView: View {
         Text("chegaram esses aqui ó:")
         ForEach(investimentos) { tipo in
             
-            Text("\(tipo.tituloPrincipal) \(tipo.subtitulo)")
+            Text("\(tipo.mediaHistorica) \(tipo.subtitulo)")
                 .foregroundColor(.blue)
         }
-        
     }
 }
 

@@ -93,7 +93,6 @@ struct TelaSelecaoView: View {
                     
                     BotaoView(
                         texto: "Continuar",
-                        
                         habilitado: selecionados.count == maximoDeSelecao
                     )
                 }
@@ -106,8 +105,6 @@ struct TelaSelecaoView: View {
         .padding()
         
     }
-    
-    
     
     func pageGrid(tiposDaPagina: [TipoDeInvestimento]) -> some View {
         
