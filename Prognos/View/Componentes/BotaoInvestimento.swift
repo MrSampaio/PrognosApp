@@ -26,5 +26,5 @@ struct BotaoInvestimento: View {
     }
 }
 #Preview {
-    BotaoInvestimento(titulo: "Ação", estaSelecionado: true, acao: {})
+    BotaoInvestimento(titulo: "Investimento", estaSelecionado: true, acao: {})
 }

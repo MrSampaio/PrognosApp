@@ -4,8 +4,6 @@ struct CaixaTextoView: View {
     
     @Binding var caixa: CaixaTextoModel
     
-   
-    
     var body: some View {
         TextField("", text: $caixa.texto, prompt: Text(caixa.placeholder)
             .font(.custom("BaiJamjuree-Medium", size: 20, relativeTo: .title))
