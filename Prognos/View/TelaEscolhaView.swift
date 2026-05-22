@@ -7,26 +7,6 @@
 
 import SwiftUI
 
-struct BotaoInvestimento: View {
-    let titulo: String
-    let estaSelecionado: Bool
-    let acao: () -> Void
-    
-    
-    
-    var body: some View {
-        Button(action: acao) {
-            Text(titulo)
-                .font(.system(size: 14, weight: .bold))
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity, minHeight: 80)
-                .background(estaSelecionado ? Color.green : Color.green.opacity(0.2))
-                .foregroundColor(estaSelecionado ? .white : .black)
-                .cornerRadius(16)
-                
-        }
-    }
-}
 
 
 struct TelaEscolha: View {
@@ -47,13 +27,18 @@ struct TelaEscolha: View {
     var body: some View {
         LazyVGrid(columns: colunas, spacing: 16) {
             ForEach(TipoDeInvestimento.allCases) { tipo in
-                       
+
                 let selecionado = selecionados.contains(tipo)
+                
+                let atingiuLimite = selecionados.count == maximoDeSelecao
+                
+                let deveDesabilitar = atingiuLimite && !selecionado
                 
                 CardInvestimento(
                             title: tipo.tituloPrincipal,
                             subtitle: tipo.subtitulo,
-                            isSelected: selecionado
+                            isSelected: selecionado,
+                            isDisabled: deveDesabilitar
                         ) .onTapGesture {
                             toggleSelection(tipo)
                             texto = tipo.tituloPrincipal
@@ -73,19 +58,12 @@ struct TelaEscolha: View {
         
         if let index = selecionados.firstIndex(of: tipo) {
             selecionados.remove(at: index)
-            desabilitarBotoes = false
+            
             
         } else if (selecionados.count < maximoDeSelecao){
             selecionados.append(tipo)
         }
-        
-        if selecionados.count == maximoDeSelecao{
-            desabilitarBotoes = true
-        }
-       
     }
-    
-    
 }
 
 #Preview {

@@ -9,6 +9,31 @@ import SwiftUI
 
 
 struct TelaSelecaoView: View {
+    
+    @State private var selecionados: [TipoDeInvestimento] = []
+    @State private var desabilitarBotoes: Bool = false
+    
+    let maximoDeSelecao: Int = 2
+    
+    var paginasDeInvestimento: [[TipoDeInvestimento]] {
+            let todos = TipoDeInvestimento.allCases
+            let tamanhoDaPagina = 9
+            var paginas: [[TipoDeInvestimento]] = []
+            
+            for i in stride(from: 0, to: todos.count, by: tamanhoDaPagina) {
+                let fim = min(i + tamanhoDaPagina, todos.count)
+                let pedaco = Array(todos[i..<fim])
+                paginas.append(pedaco)
+            }
+            return paginas
+        }
+    
+    let colunas = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
     init() {
         
         UIPageControl.appearance().currentPageIndicatorTintColor =
@@ -17,8 +42,6 @@ struct TelaSelecaoView: View {
         UIPageControl.appearance().pageIndicatorTintColor = UIColor.lightGray.withAlphaComponent(0.4)
     }
     
-    @State private var selectedCards: [String] = []
-    let maxSelection = 2
     
     var body: some View {
         
@@ -47,33 +70,13 @@ struct TelaSelecaoView: View {
                 }
                 VStack{
                     TabView {
-                        
-                        
-                        pageGrid(cards: [
-                            ("Tesouro", "Prefixado", "Card1"),
-                            ("Tesouro", "Selic", "Card2"),
-                            ("Tesouro", "Híbrido", "Card3"),
-                            ("CDB / LC", "Prefixado", "Card4"),
-                            ("CDB / LC", "Pós-fixado", "Card5"),
-                            ("CDB / LC", "Híbrido", "Card6"),
-                            ("LCI / LCA", "Prefixado", "Card7"),
-                            ("LCI / LCA", "Pós-fixado", "Card8"),
-                            ("LCI / LCA", "Híbrido", "Card9")
-                        ])
-                        
-                        
-                        
-                        pageGrid(cards: [
-                            ("Debênture", "Prefixado", "Card10"),
-                            ("Debênture", "Pós-fixado", "Card11"),
-                            ("Debênture", "Híbrido", "Card12"),
-                            ("CRI / CRA", "Prefixado", "Card13"),
-                            ("CRI / CRA", "Pós-fixado", "Card14"),
-                            ("CRI / CRA", "Híbrido", "Card15"),
-                            ("Fundo", "Renda fixa", "Card16"),
-                            
-                        ])
+                        ForEach(0..<paginasDeInvestimento.count, id: \.self) { index in
+                            pageGrid(tiposDaPagina: paginasDeInvestimento[index])
+                        }
                     }
+                    .indexViewStyle(.page(backgroundDisplayMode: .always))
+                    .tabViewStyle(.page(indexDisplayMode: .always))
+                    .frame(height: 450)
                     
                     .indexViewStyle(.page(backgroundDisplayMode: .always))
                     .tabViewStyle(.page(indexDisplayMode: .always))
@@ -103,48 +106,49 @@ struct TelaSelecaoView: View {
     
     
     
-    
-    
-    func toggleSelection(_ card: String) {
+    func pageGrid(tiposDaPagina: [TipoDeInvestimento]) -> some View {
         
-        if selectedCards.contains(card) {
+        let colunas = [
+            GridItem(.flexible()),
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ]
+        
+        return LazyVGrid(columns: colunas, spacing: 10) {
             
-            selectedCards.removeAll {
-                $0 == card
-            }
-            
-        } else {
-            
-            if selectedCards.count < maxSelection {
+            ForEach(tiposDaPagina) { tipo in
+
+                let selecionado = selecionados.contains(tipo)
                 
-                selectedCards.append(card)
-            }
-        }
-    }
-    
-    func pageGrid(cards: [(String, String, String)]) -> some View {
-        
-        LazyVGrid(
-            columns: [
-                GridItem(.adaptive(minimum: 104))
-            ],
-            spacing: 10
-        ) {
-            
-            ForEach(cards, id: \.2) { card in
+                let atingiuLimite = selecionados.count == maximoDeSelecao
+                
+                let deveDesabilitar = atingiuLimite && !selecionado
                 
                 CardInvestimento(
-                    title: card.0,
-                    subtitle: card.1,
-                    isSelected: selectedCards.contains(card.2)
-                )
-                .onTapGesture {
-                    toggleSelection(card.2)
-                }
+                            title: tipo.tituloPrincipal,
+                            subtitle: tipo.subtitulo,
+                            isSelected: selecionado,
+                            isDisabled: deveDesabilitar
+                        ) .onTapGesture {
+                            toggleSelection(tipo)
+                        }
+                        
+                        .disabled(deveDesabilitar)
             }
         }
         .padding(.horizontal, 20)
           .padding(.bottom, 40)
+    }
+    
+    func toggleSelection(_ tipo: TipoDeInvestimento) {
+        
+        if let index = selecionados.firstIndex(of: tipo) {
+            selecionados.remove(at: index)
+            
+            
+        } else if (selecionados.count < maximoDeSelecao){
+            selecionados.append(tipo)
+        }
     }
 }
     
