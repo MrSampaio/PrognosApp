@@ -88,7 +88,7 @@ struct TelaSelecaoView: View {
                 
                 NavigationLink {
                     
-                    TelaInformacoesView()
+                    TelaInformacoesView(investimentos: selecionados)
                     
                 } label: {
                     
