@@ -12,7 +12,7 @@ struct BotaoInvestimento: View {
     let estaSelecionado: Bool
     let acao: () -> Void
     
-   
+    
     
     var body: some View {
         Button(action: acao) {
@@ -23,6 +23,7 @@ struct BotaoInvestimento: View {
                 .background(estaSelecionado ? Color.green : Color.green.opacity(0.2))
                 .foregroundColor(estaSelecionado ? .white : .black)
                 .cornerRadius(16)
+                
         }
     }
 }
@@ -30,9 +31,12 @@ struct BotaoInvestimento: View {
 
 struct TelaEscolha: View {
     
-    @State private var selectedCards: [String] = []
+    @State private var selecionados: [TipoDeInvestimento] = []
+    @State private var desabilitarBotoes: Bool = false
+    
         
-    let maxSelection = 2
+    let maximoDeSelecao: Int = 2
+    @State var texto: String = "sla"
     
     let colunas = [
         GridItem(.flexible()),
@@ -44,36 +48,41 @@ struct TelaEscolha: View {
         LazyVGrid(columns: colunas, spacing: 16) {
             ForEach(TipoDeInvestimento.allCases) { tipo in
                        
+                let selecionado = selecionados.contains(tipo)
+                
                 CardInvestimento(
                             title: tipo.tituloPrincipal,
                             subtitle: tipo.subtitulo,
-                            isSelected: false
+                            isSelected: selecionado
                         ) .onTapGesture {
-                            toggleSelection("CDB")
+                            toggleSelection(tipo)
+                            texto = tipo.tituloPrincipal
                         }
-                
+                        
+                        .disabled(desabilitarBotoes)
             }
         }
         .padding()
         
+        Text(texto)
+        
         
     }
     
-    func toggleSelection(_ card: String) {
+    func toggleSelection(_ tipo: TipoDeInvestimento) {
         
-        if selectedCards.contains(card) {
+        if let index = selecionados.firstIndex(of: tipo) {
+            selecionados.remove(at: index)
+            desabilitarBotoes = false
             
-            selectedCards.removeAll {
-                $0 == card
-            }
-            
-        } else {
-            
-            if selectedCards.count < maxSelection {
-                
-                selectedCards.append(card)
-            }
+        } else if (selecionados.count < maximoDeSelecao){
+            selecionados.append(tipo)
         }
+        
+        if selecionados.count == maximoDeSelecao{
+            desabilitarBotoes = true
+        }
+       
     }
     
     
