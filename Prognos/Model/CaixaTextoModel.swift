@@ -11,10 +11,16 @@ struct CaixaTextoModel: Hashable {
     let placeholder: String
     var texto: String
     let arredondamento: CGFloat
+
+    let cor: Color
     
+    init(placeholder: String, texto: String, arredondamento: CGFloat, cor: Color) {
+
     init(placeholder: String, texto: String, arredondamento: CGFloat) {
+
         self.placeholder = placeholder
         self.texto = texto
         self.arredondamento = arredondamento
+        self.cor = cor
     }
 }
