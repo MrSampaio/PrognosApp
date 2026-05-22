@@ -21,6 +21,7 @@ struct BotaoInvestimento: View {
                 .background(estaSelecionado ? Color.green : Color.green.opacity(0.2))
                 .foregroundColor(estaSelecionado ? .white : .black)
                 .cornerRadius(16)
+                .animation(.easeInOut(duration: 0.3), value: estaSelecionado)
                 
         }
     }
