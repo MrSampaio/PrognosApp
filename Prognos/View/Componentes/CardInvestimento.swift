@@ -9,36 +9,37 @@ import SwiftUI
 
 struct CardInvestimento: View {
     let title: String
-       let subtitle: String
-       let isSelected: Bool
+    let subtitle: String
+    let isSelected: Bool
+    let isDisabled: Bool
        
-       var body: some View {
+   var body: some View {
+       
+       VStack(spacing: 6) {
            
-           VStack(spacing: 6) {
-               
-               Text(title)
-                   .font(.system(size: 22, weight: .bold))
-                   .foregroundColor(Color("CorFonte"))
-               
-               Text(subtitle)
-                   .font(.system(size: 14, weight: .medium))
-                   .foregroundColor(Color("CorFonteCard"))
-           }
-           .frame(height: 112)
-           .frame(maxWidth: .infinity)
-           .background(
-               isSelected
-               ? Color("CorSelecionado")
-               : Color("CorSecundaria")
-           )
-           .cornerRadius(24)
-           .animation(.easeInOut(duration: 0.2), value: isSelected)
+           Text(title)
+               .font(.system(size: 20, weight: .bold))
+               .foregroundColor(isDisabled ? Color.gray : Color("CorFonte"))
+           
+           Text(subtitle)
+               .font(.system(size: 14, weight: .medium))
+               .foregroundColor(Color("CorFonteCard"))
        }
+       .frame(height: 112)
+       .frame(maxWidth: .infinity)
+       .background(
+        isDisabled ? Color.gray.opacity(0.2) :
+                        (isSelected ? Color("CorSelecionado") : Color("CorSecundaria"))
+       )
+       .cornerRadius(16)
+       .animation(.easeInOut(duration: 0.2), value: isSelected)
+   }
    }
     
     #Preview {
         CardInvestimento( title: "CDB",
                           subtitle: "IPCA+",
-                          isSelected: true
+                          isSelected: true,
+                          isDisabled: true
                       )
     }
