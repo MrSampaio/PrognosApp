@@ -46,6 +46,20 @@ struct TelaSelecaoView: View {
         
         ZStack {
             VStack {
+                HStack {
+                    
+                    Spacer()
+                    Image(systemName: "info.circle.fill")
+                            .font(.system(size: 34, weight: .regular))
+                            .symbolRenderingMode(.palette)
+                            .foregroundStyle(Color("FonteUniversal"), Color("CorCaixas"))
+                            
+                    // .foregroundStyle(Color("CorCaixa2"))
+                    
+                }
+                .padding()
+                
+                
                 Text("Selecione os investimentos")
                     .font(.custom("BaiJamjuree-SemiBold", size: 24))
                     .foregroundColor(Color("CorFonteTitulo"))
@@ -58,15 +72,7 @@ struct TelaSelecaoView: View {
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 24)
                 
-                HStack {
-                    Spacer()
-                    Image("Duvidas")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 36, height: 36)
-                    // .foregroundStyle(Color("CorCaixa2"))
-                    
-                }
+              
                 VStack{
                     TabView {
                         ForEach(0..<paginasDeInvestimento.count, id: \.self) { index in
