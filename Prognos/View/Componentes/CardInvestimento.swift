@@ -31,7 +31,7 @@ struct CardInvestimento: View {
         isDisabled ? Color.gray.opacity(0.2) :
                         (isSelected ? Color("CorSelecionado") : Color("CorSecundaria"))
        )
-       .cornerRadius(24)
+       .cornerRadius(16)
        .animation(.easeInOut(duration: 0.2), value: isSelected)
    }
    }
