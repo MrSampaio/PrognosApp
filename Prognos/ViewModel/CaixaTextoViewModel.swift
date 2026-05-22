@@ -14,8 +14,8 @@ class CaixaTextoViewModel {
         CaixaTextoModel(placeholder: "Digite o valor", texto: "", arredondamento: 30, cor: .corCaixa2),
         
 
-        CaixaTextoModel(placeholder: "Digite o valor", texto: "", arredondamento: 30),
-        CaixaTextoModel(placeholder: "Digite o tempo", texto: "", arredondamento: 30)
+//        CaixaTextoModel(placeholder: "Digite o valor", texto: "", arredondamento: 30),
+//        CaixaTextoModel(placeholder: "Digite o tempo", texto: "", arredondamento: 30)
 
     ]
 }

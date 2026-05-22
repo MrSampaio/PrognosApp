@@ -155,5 +155,8 @@ struct TelaSelecaoView: View {
 
 
 #Preview {
-    TelaSelecaoView()
+    NavigationStack{
+        TelaSelecaoView()
+    }
+    
 }
