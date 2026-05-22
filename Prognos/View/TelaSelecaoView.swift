@@ -11,7 +11,6 @@ import SwiftUI
 struct TelaSelecaoView: View {
     
     @State private var selecionados: [TipoDeInvestimento] = []
-    @State private var desabilitarBotoes: Bool = false
     
     let maximoDeSelecao: Int = 2
     
@@ -93,9 +92,13 @@ struct TelaSelecaoView: View {
                 } label: {
                     
                     BotaoView(
-                        texto: "Continuar"
+                        texto: "Continuar",
+                        
+                        habilitado: selecionados.count == maximoDeSelecao
                     )
                 }
+                
+                .disabled(selecionados.count != maximoDeSelecao)
                 
             }
             
@@ -137,7 +140,7 @@ struct TelaSelecaoView: View {
             }
         }
         .padding(.horizontal, 20)
-          .padding(.bottom, 40)
+        .padding(.bottom, 40)
     }
     
     func toggleSelection(_ tipo: TipoDeInvestimento) {
