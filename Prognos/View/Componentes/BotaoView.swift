@@ -15,9 +15,9 @@ struct BotaoView: View {
             
             Text(texto)
                 .font(.custom("BaiJamJuree-SemiBold", size: 20))
-                .foregroundColor(Color("Fonte"))
+                .foregroundColor(Color("FonteUniversal"))
                 .frame(width: 215, height: 48)
-                .background(Color("CorPrimaria"))
+                .background(habilitado ? Color("CorPrimaria") : Color("CorCaixas"))
                 .cornerRadius(30)
                 .opacity(habilitado ? 1 : 0.5)
                 .disabled(!habilitado)
