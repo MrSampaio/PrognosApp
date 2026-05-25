@@ -19,11 +19,14 @@ struct CardView: View {
         VStack(spacing: 0) {
             
             // --- SEÇÃO VERDE (CABEÇALHO) ---
-            HStack(alignment: .top) {
+            HStack(alignment: .center) {
                 // Puxa o título direto do Enum inteligente!
                 Text(viewModel.tipo.tituloPrincipal)
                     .font(.custom("BaiJamjuree-Bold", size: 28, relativeTo: .largeTitle))
                     .foregroundColor(Color.corFonte)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 Spacer()
                 
@@ -31,13 +34,18 @@ struct CardView: View {
                     Text(viewModel.tipo.mediaHistorica)
                         .font(.custom("BaiJamjuree-Bold", size: 16, relativeTo: .title))
                         .foregroundColor(Color.corFonte)
-                    
-                    Text("Média últimos 12 meses")
-                        .font(.custom("BaiJamjuree-Medium", size: 11, relativeTo: .title))
-                        .foregroundColor(Color.corFonte.opacity(0.8))
                         .lineLimit(2)
                         .minimumScaleFactor(0.7)
                         .fixedSize(horizontal: false, vertical: true)
+                    
+                    if !tipoDeTamanho.isAccessibilitySize {
+                        Text("Média últimos 12 meses")
+                            .font(.custom("BaiJamjuree-Medium", size: 11, relativeTo: .title))
+                            .foregroundColor(Color.corFonte.opacity(0.8))
+                            .lineLimit(2)
+                            .minimumScaleFactor(0.7)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
             }
             .padding(.horizontal, paddingAdaptativo)
@@ -50,6 +58,9 @@ struct CardView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(viewModel.tipo.nomeDoInputPrincipal)
                         .font(.custom("BaiJamjuree-Bold", size: 16, relativeTo: .title))
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.7)
+                        .fixedSize(horizontal: false, vertical: true)
                     
                     // Conectando a caixa de texto ao modelo salvo no ViewModel
                     CaixaTextoView(caixa: $viewModel.caixaTexto)
@@ -118,18 +129,16 @@ struct CardView: View {
                                 .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
                         }
                         
-                        VStack(alignment: .leading, spacing: 10) {
+                        if !tipoDeTamanho.isAccessibilitySize {
+                            VStack(alignment: .leading, spacing: 10) {
                             Text("Cor no gráfico")
-                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.7)
-                                .fixedSize(horizontal: false, vertical: true)
-                            
-                            // A bola cresce junto com o texto usando o @ScaledMetric
+                            .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                                                    
                             Circle()
-                                .fill(corGrafico)
-                                .frame(width: tamanhoDaBola, height: tamanhoDaBola)
-                                .overlay(Circle().stroke(Color.black, lineWidth: 1))
+                            .fill(corGrafico)
+                            .frame(width: tamanhoDaBola, height: tamanhoDaBola)
+                            .overlay(Circle().stroke(Color.black, lineWidth: 1))
+                            }
                         }
                     }
                 }
