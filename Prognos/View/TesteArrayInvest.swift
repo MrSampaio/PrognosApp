@@ -18,30 +18,28 @@ struct TelaInformacoesView: View {
     var body: some View {
         ScrollView {
             
-            // CAIXAS GLOBAIS (Valor e Tempo)
             HStack {
                 CaixaValorTempo(modeloValor: $valorGlobal, modeloTempo: $tempoGlobal)
             }
             .frame(width: 350)
             
-            // Conversão segura em tempo real
             let valorConvertido = Float(valorGlobal.texto.replacingOccurrences(of: ",", with: ".")) ?? 0.0
             let tempoConvertido = Int(tempoGlobal.texto) ?? 0
             
-            // RENDERIZAÇÃO DOS CARDS
             ForEach(viewModels) { viewModelDoCard in
                 
-                // Chamamos apenas UM CardView por item, passando os dados necessários
                 CardView(
                     viewModel: viewModelDoCard,
                     valorInvestido: valorConvertido,
                     tempoDeInvestimento: tempoConvertido,
-                    corGrafico: .black // Aqui você pode colocar a lógica da sua cor
+                    corGrafico: .black
                 )
-                .frame(width: 350) // Mantendo a largura que você definiu
-                .padding(.vertical, 10) // Um respiro entre os cards
+                .frame(width: 350)
+                .padding(.vertical, 10)
                 
             }
+            
+            BotaoView(texto: "Simular", habilitado: false)
         }
     }
 }
