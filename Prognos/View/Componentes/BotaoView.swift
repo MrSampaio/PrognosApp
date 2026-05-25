@@ -14,7 +14,10 @@ struct BotaoView: View {
         var body: some View {
             
             Text(texto)
-                .font(.custom("BaiJamJuree-SemiBold", size: 20))
+                .font(.custom("BaiJamjuree-SemiBold", size: 20, relativeTo: .subheadline))
+                .lineLimit(2)
+                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(Color("FonteUniversal"))
                 .frame(width: 215, height: 48)
                 .background(habilitado ? Color("CorPrimaria") : Color("CorCaixas"))
