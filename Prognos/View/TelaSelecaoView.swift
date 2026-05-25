@@ -54,7 +54,7 @@ struct TelaSelecaoView: View {
     
     var body: some View {
         
-        ZStack {
+        ScrollView {
             VStack(spacing: paddingAdaptativo) {
                 HStack {
                     
@@ -62,7 +62,7 @@ struct TelaSelecaoView: View {
                     Image(systemName: "info.circle.fill")
                             .font(.system(size: 34, weight: .regular))
                             .symbolRenderingMode(.palette)
-                            .foregroundStyle(Color("FonteUniversal"), Color("CorCaixas"))
+                            .foregroundStyle(Color("CorFonte"), Color("CorCaixas"))
                             
                     // .foregroundStyle(Color("CorCaixa2"))
                     
@@ -78,8 +78,7 @@ struct TelaSelecaoView: View {
                     .foregroundColor(Color("CorFonteTitulo"))
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
-                    .padding(.vertical, 5)
-                
+                                    
                 Text("Escolha dois tipos de investimento que você gostaria de comparar")
                     .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .subheadline))
                     .lineLimit(nil)
@@ -100,32 +99,35 @@ struct TelaSelecaoView: View {
                         }
                         .indexViewStyle(.page(backgroundDisplayMode: .always))
                         .tabViewStyle(.page(indexDisplayMode: .always))
-                        .frame(minHeight: 430, maxHeight: 600)
-                        
+                        .frame(height: tipoDeTamanho.isAccessibilitySize ? 520 : 430)
                     }
                 }
                 
                 Spacer(minLength: paddingAdaptativo)
                 
-                NavigationLink {
-                    
-                    TelaInformacoesView(investimentos: selecionados)
-                    
-                } label: {
-                    
-                    BotaoView(
-                        texto: "Continuar",
-                        habilitado: selecionados.count == maximoDeSelecao
-                    )
-                }
                 
-                .disabled(selecionados.count != maximoDeSelecao)
                 
             }
+            
             
         }
         .padding()
         .frame(maxWidth: .infinity)
+        
+        NavigationLink {
+            
+            TelaInformacoesView(investimentos: selecionados)
+            
+        } label: {
+            
+            BotaoView(
+                texto: "Continuar",
+                habilitado: selecionados.count == maximoDeSelecao
+            )
+        }
+        
+        .disabled(selecionados.count != maximoDeSelecao)
+       
         
     }
     
