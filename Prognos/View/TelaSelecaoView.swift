@@ -9,7 +9,17 @@ import SwiftUI
 
 
 struct TelaSelecaoView: View {
-    
+    @ScaledMetric(relativeTo: .body)
+    var paddingAdaptativo: CGFloat = 20
+
+    @ScaledMetric(relativeTo: .title)
+    var espacamentoTitulo: CGFloat = 24
+
+    @ScaledMetric(relativeTo: .body)
+    var espacamentoGrid: CGFloat = 10
+
+    @Environment(\.dynamicTypeSize)
+    var tipoDeTamanho
     @State private var selecionados: [TipoDeInvestimento] = []
     
     let maximoDeSelecao: Int = 2
@@ -45,7 +55,7 @@ struct TelaSelecaoView: View {
     var body: some View {
         
         ZStack {
-            VStack {
+            VStack(spacing: paddingAdaptativo) {
                 HStack {
                     
                     Spacer()
@@ -61,35 +71,41 @@ struct TelaSelecaoView: View {
                 
                 
                 Text("Selecione os investimentos")
-                    .font(.custom("BaiJamjuree-SemiBold", size: 24))
+                    .font(.custom("BaiJamjuree-SemiBold", size: 24, relativeTo: .title))
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(Color("CorFonteTitulo"))
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
                     .padding(.vertical, 5)
+                
                 Text("Escolha dois tipos de investimento que você gostaria de comparar")
-                    .font(.custom("BaiJamjuree-Medium", size: 16))
+                    .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .subheadline))
+                    .lineLimit(nil)
+                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(Color("CorFonte"))
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 24)
                 
               
-                VStack{
-                    TabView {
-                        ForEach(0..<paginasDeInvestimento.count, id: \.self) { index in
-                            pageGrid(tiposDaPagina: paginasDeInvestimento[index])
+                VStack(spacing: paddingAdaptativo){
+                    ViewThatFits {
+                        
+                        TabView {
+                            ForEach(0..<paginasDeInvestimento.count, id: \.self) { index in
+                                pageGrid(tiposDaPagina: paginasDeInvestimento[index])
+                            }
                         }
+                        .indexViewStyle(.page(backgroundDisplayMode: .always))
+                        .tabViewStyle(.page(indexDisplayMode: .always))
+                        .frame(minHeight: 430, maxHeight: 600)
+                        
                     }
-                    .indexViewStyle(.page(backgroundDisplayMode: .always))
-                    .tabViewStyle(.page(indexDisplayMode: .always))
-                    .frame(height: 450)
-                    
-                    .indexViewStyle(.page(backgroundDisplayMode: .always))
-                    .tabViewStyle(.page(indexDisplayMode: .always))
-                    .frame(height: 430)
                 }
                 
-                Spacer()
-                    .frame(height: 40)
+                Spacer(minLength: paddingAdaptativo)
                 
                 NavigationLink {
                     
@@ -109,6 +125,7 @@ struct TelaSelecaoView: View {
             
         }
         .padding()
+        .frame(maxWidth: .infinity)
         
     }
     
@@ -120,7 +137,7 @@ struct TelaSelecaoView: View {
             GridItem(.flexible())
         ]
         
-        return LazyVGrid(columns: colunas, spacing: 10) {
+        return LazyVGrid(columns: colunas, spacing: espacamentoGrid) {
             
             ForEach(tiposDaPagina) { tipo in
 
@@ -142,7 +159,7 @@ struct TelaSelecaoView: View {
                         .disabled(deveDesabilitar)
             }
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, paddingAdaptativo)
         .padding(.bottom, 40)
     }
     
