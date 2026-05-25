@@ -6,6 +6,7 @@ struct CaixaTextoView: View {
     // Ele não guarda o texto, ele altera o texto que está na tela principal.
     @Binding var caixa: CaixaTextoModel
     @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 10
+    @FocusState private var focado: Bool
     
     var body: some View {
         TextField("", text: $caixa.texto, prompt: Text(caixa.placeholder)
@@ -15,11 +16,13 @@ struct CaixaTextoView: View {
         .textFieldStyle(.plain) // Remove o fundo branco padrão do Mac/iOS
         .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .title2))
         .foregroundColor(Color(.corFonte))
+        .focused($focado)
         .padding(.horizontal, 20)
-        .padding(.vertical, paddingAdaptativo)
+        .padding(.vertical, focado ? paddingAdaptativo + 8 : paddingAdaptativo)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(caixa.cor)
+        .background(focado ? caixa.cor.opacity(0.8) : caixa.cor)
         .clipShape(RoundedRectangle(cornerRadius: caixa.arredondamento))
+        .animation(.easeInOut(duration: 0.2), value: focado)
     }
 }
 
