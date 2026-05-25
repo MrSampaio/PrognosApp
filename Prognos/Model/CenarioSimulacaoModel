@@ -1,0 +1,38 @@
+//
+//  CenarioSimulacaoModel.swift
+//  Prognos
+//
+//  Created by Julio Sampaio on 25/05/26.
+//
+
+import Foundation
+
+struct PontoDoGrafico: Identifiable {
+    let id = UUID()
+    let nomeInvestimento: String
+    let ano: Int       // Eixo X do Gráfico
+    let saldo: Float   // Eixo Y do Gráfico
+}
+
+enum CenarioEconomico: String, CaseIterable {
+    case otimista = "Inflação Baixa (Otimista)"
+    case historico = "Média 10 anos (Realista)"
+    case pessimista = "Inflação Alta (Pessimista)"
+
+    var taxaIpcaProjetada: Float {
+        switch self {
+        case .otimista: return 3.5  // Cenário bom: inflação controlada
+        case .historico: return 5.8 // Média real do Brasil nos últimos 10 anos
+        case .pessimista: return 9.0 // Cenário ruim: inflação dispara
+        }
+    }
+    
+    // Se quiser ser super completo, a Selic/CDI costuma acompanhar a inflação!
+    var taxaCdiProjetada: Float {
+        switch self {
+        case .otimista: return 8.0  // Inflação baixa = Juros baixos
+        case .historico: return 10.5 // Juros médios normais
+        case .pessimista: return 13.5 // Inflação alta = Banco Central sobe os juros
+        }
+    }
+}
