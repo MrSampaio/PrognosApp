@@ -70,6 +70,55 @@ enum TipoDeInvestimento: String, CaseIterable, Identifiable {
         }
     }
     
+    // MARK: - MÉDIAS HISTÓRICAS (SIMULAÇÃO)
+        
+    var mediaHistorica: String {
+        switch self {
+            
+        // 1. PREFIXADOS
+        case .tesouroPrefixado: return "11,0% a.a."
+        case .cdbPrefixado: return "12,5% a.a."
+        case .lciPrefixado: return "10,5% a.a."
+        case .debComumPrefixada: return "13,0% a.a."
+        case .isentoPrefixado: return "11,5% a.a."
+            
+        // 2. PÓS-FIXADOS
+        case .tesouroSelic: return "100% da Selic"
+        case .cdbCdi: return "102% do CDI"
+        case .lciCdi: return "93% do CDI"
+        case .debComumCdi: return "115% do CDI"
+        case .isentoCdi: return "105% do CDI"
+        case .fundoRendaFixa: return "100% do CDI"
+            
+        // 3. HÍBRIDOS
+        case .tesouroIpca: return "IPCA + 5,5%"
+        case .cdbIpca: return "IPCA + 6,0%"
+        case .lciIpca: return "IPCA + 5,0%"
+        case .debComumIpca: return "IPCA + 7,5%"
+        case .isentoIpca: return "IPCA + 6,5%"
+            
+        }
+    }
+    
+    // MARK: - REGRAS DE TEXTO PARA OS INPUTS
+        
+        var nomeDoInputPrincipal: String {
+            switch self {
+                
+            case .fundoRendaFixa:
+                return "Taxa de Administração"
+            
+            case .cdbCdi, .lciCdi, .debComumCdi, .isentoCdi:
+                return "Percentual do CDI"
+                
+            case .tesouroSelic:
+                return "Taxa Fixa Adicional"
+                
+            default:
+                return "Taxa Prefixada"
+            }
+        }
+    
     // MARK: - REGRAS DE INTERFACE (Inputs)
     
     var pedeTaxaPrefixada: Bool {
