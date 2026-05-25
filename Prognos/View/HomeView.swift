@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct TelaCarregamento: View {
+    
+    @ScaledMetric(relativeTo: .body)
+    var paddingAdaptativo: CGFloat = 20
+
+    @ScaledMetric(relativeTo: .title)
+    var tamanhoLogo: CGFloat = 100
+
+    @ScaledMetric(relativeTo: .title)
+    var alturaImagem: CGFloat = 350
+
+    @Environment(\.dynamicTypeSize)
+    var tipoDeTamanho
+    
     var body: some View {
-        VStack(alignment: .center, spacing: 0) { // spacing: 0 evita espaços em branco indesejados
+        VStack(spacing: paddingAdaptativo) { // spacing: 0 evita espaços em branco indesejados
             
             // --- ÁREA SUPERIOR (Fundo + Logo) ---
             ZStack(alignment: .bottom) {
@@ -44,13 +57,17 @@ struct TelaCarregamento: View {
             .ignoresSafeArea(edges: .top) // Ignora a área segura só no topo
             
             // --- TEXTO ---
-            VStack {
+            VStack(spacing: paddingAdaptativo) {
+                
                 Text("Seu aplicativo de comparação de investimentos!")
-                    .font(.custom("BaiJamjuree-semibold", size: 22))
+                    .font(.custom("BaiJamjuree-semibold", size: 20, relativeTo: .title2))
+                    .lineLimit(4)
+                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
                     .multilineTextAlignment(.center)
-                    .foregroundColor(.corFonte) // Troque por Color.black se der erro
+                    .foregroundColor(Color("CorFonte")) // Troque por Color.black se der erro
                     // Ajuste do padding para acomodar a metade do logo que desceu (50) + espaço extra
-                    .padding(.top, 70)
+                    .padding(.top, tamanhoLogo / 2 + 20)
                     .padding(.horizontal, 16)
             }
             
@@ -65,7 +82,10 @@ struct TelaCarregamento: View {
                         Text("Continuar")
                         Image(systemName: "chevron.right")
                     }
-                    .font(.custom("BaiJamjuree-semibold", size: 20))
+                    .font(.custom("BaiJamjuree-semibold", size: 20, relativeTo: .title2))
+                    .lineLimit(4)
+                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(.corFonte) // Troque por Color.black se der erro
                     .frame(width: 200, height: 16)
                     .padding(.vertical, 18)
@@ -75,7 +95,7 @@ struct TelaCarregamento: View {
             }
             .padding(.bottom, 40) // Dá um respiro da borda de baixo da tela
         }
-        .background(Color.white) // Garante que o fundo geral seja branco
+         // Garante que o fundo geral seja branco
         .ignoresSafeArea(edges: .bottom)
     }
 }
