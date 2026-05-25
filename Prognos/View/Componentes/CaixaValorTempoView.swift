@@ -2,18 +2,19 @@ import SwiftUI
 
 struct CaixaValorTempo: View {
     
+    // Recebe o controle remoto das duas caixas de texto
     @Binding var modeloValor: CaixaTextoModel
     @Binding var modeloTempo: CaixaTextoModel
     
     @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 20
     
+    // Lê a configuração de tamanho de fonte do iPhone do usuário
     @Environment(\.dynamicTypeSize) var tipoDeTamanho
     
     var body: some View {
-        
         Group {
+            // Acessibilidade: Se o usuário usa uma fonte gigante, empilha tudo na vertical (VStack)
             if tipoDeTamanho.isAccessibilitySize {
-
                 VStack(alignment: .leading, spacing: 16) {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Valor")
@@ -34,9 +35,8 @@ struct CaixaValorTempo: View {
                     }
                 }
             } else {
-                
+                // Se o tamanho da fonte for normal, usa um Grid para colocar lado a lado
                 Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 16) {
-                    
                     GridRow {
                         Text("Valor")
                             .font(.custom("BaiJamjuree-SemiBold", size: 20, relativeTo: .title))
@@ -47,13 +47,12 @@ struct CaixaValorTempo: View {
                     RoundedRectangle(cornerRadius: 1)
                         .fill(Color.corCaixas)
                         .frame(height: 2)
-                        .gridCellColumns(2)
+                        .gridCellColumns(2) // Faz a linha cruzar as duas colunas do Grid
                     
                     GridRow {
                         Text("Tempo")
                             .font(.custom("BaiJamjuree-SemiBold", size: 20, relativeTo: .title))
                             .foregroundStyle(Color.corFonte)
-                        
                         CaixaTextoView(caixa: $modeloTempo)
                     }
                 }
@@ -78,5 +77,4 @@ struct CaixaValorTempo: View {
     VStack {
         CaixaValorTempo(modeloValor: $valor, modeloTempo: $tempo)
     }
-   
 }
