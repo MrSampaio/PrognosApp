@@ -18,14 +18,20 @@ struct CardInvestimento: View {
        VStack(spacing: 2) {
            
            Text(title)
-               .font(.custom("BaiJamjuree-SemiBold", size: 21))
+               .font(.custom("BaiJamjuree-SemiBold", size: 21, relativeTo: .subheadline))
+               .lineLimit(4)
+               .minimumScaleFactor(0.7)
+               .fixedSize(horizontal: false, vertical: true)
                //.font(.system(size: 22, weight: .bold))
                .foregroundColor(isDisabled ? Color.gray : Color("FonteUniversal"))
       
 
            
            Text(subtitle)
-               .font(.custom("BaiJamjuree-Medium", size: 12))
+               .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .subheadline))
+               .lineLimit(4)
+               .minimumScaleFactor(0.7)
+               .fixedSize(horizontal: false, vertical: true)
                .foregroundColor(Color("Subtitulos"))
                .frame(maxWidth: .infinity, alignment: .trailing)
                .padding(.trailing, 12)

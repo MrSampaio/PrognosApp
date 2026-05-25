@@ -61,13 +61,20 @@ struct TelaSelecaoView: View {
                 
                 
                 Text("Selecione os investimentos")
-                    .font(.custom("BaiJamjuree-SemiBold", size: 24))
+                    .font(.custom("BaiJamjuree-SemiBold", size: 24, relativeTo: .subheadline))
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(Color("CorFonteTitulo"))
                     .navigationTitle("")
                     .navigationBarTitleDisplayMode(.inline)
                     .padding(.vertical, 5)
+                
                 Text("Escolha dois tipos de investimento que você gostaria de comparar")
-                    .font(.custom("BaiJamjuree-Medium", size: 16))
+                    .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .subheadline))
+                    .lineLimit(10)
+                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(Color("CorFonte"))
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 24)
