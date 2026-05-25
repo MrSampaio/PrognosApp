@@ -2,146 +2,105 @@ import SwiftUI
 
 struct CardView: View {
     
-    // CORREÇÃO: Substituímos as variáveis soltas pelo ViewModel!
-    // @ObservedObject escuta a antena do CardViewModel.
+    // Ouve as mudanças da caixa de texto do card
     @ObservedObject var viewModel: CardViewModel
     
+    // Mantendo a sua responsividade exata
     @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 24
     @Environment(\.dynamicTypeSize) var tipoDeTamanho
-    @ScaledMetric(relativeTo: .subheadline) var tamanhoDaBola: CGFloat = 20
+    
+    // Variáveis que vêm da tela principal
+    let valorInvestido: Float
+    let tempoDeInvestimento: Int
+    let corGrafico: Color
     
     var body: some View {
         VStack(spacing: 0) {
             
-            // --- SEÇÃO VERDE ---
+            // CABEÇALHO
             HStack(alignment: .top) {
-                // Lendo os dados diretamente do 'viewModel.card'
-                Text(viewModel.card.tipoInvestimento)
+                Text(viewModel.tipo.tituloPrincipal)
                     .font(.custom("BaiJamjuree-Bold", size: 28, relativeTo: .largeTitle))
-                    .foregroundColor(Color(.corFonte))
+                    .foregroundColor(Color.corFonte) // Atualizado para a sua cor
                 
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 9) {
-                    Text(viewModel.card.mediaMeses)
+                    Text(viewModel.tipo.mediaHistorica)
                         .font(.custom("BaiJamjuree-Bold", size: 16, relativeTo: .title))
-                        .foregroundColor(Color(.corFonte))
+                        .foregroundColor(Color.corFonte)
                     
                     Text("Média últimos 12 meses")
                         .font(.custom("BaiJamjuree-Medium", size: 11, relativeTo: .title))
-                        .foregroundColor(Color(.corFonte).opacity(0.8))
-                        .lineLimit(2)
-                        .minimumScaleFactor(0.7)
-                        .fixedSize(horizontal: false, vertical: true)
+                        .foregroundColor(Color.corFonte.opacity(0.8))
                 }
             }
-            .padding(.horizontal, paddingAdaptativo)
-            .padding(.vertical, 12)
+            .padding(paddingAdaptativo)
             .background(Color.corPrimaria)
             
-            // --- SEÇÃO CINZA ---
+            // CORPO
             VStack(alignment: .leading, spacing: 24) {
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(viewModel.card.tipoRetornoInvestimento)
+                    // Puxa o label correto (ex: "Taxa de Administração")
+                    Text(viewModel.tipo.nomeDoInputPrincipal)
                         .font(.custom("BaiJamjuree-Bold", size: 16, relativeTo: .title))
                     
-                    // Conectando a caixa de texto ao modelo salvo no ViewModel
+                    // O Bind vai direto para o ViewModel deste card
                     CaixaTextoView(caixa: $viewModel.caixaTexto)
                 }
                 
-                // Mágica Responsiva: Tenta o layout Horizontal. Se não couber, usa o Vertical.
-                ViewThatFits {
-                    
-                    // 🥇 LAYOUT HORIZONTAL
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Valor Investido")
-                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                            HStack {
-                                Text("R$")
-                                    .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
-                                
-                                Text(viewModel.card.valorInvestido, format: .number.notation(.compactName))
-                                    .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
-                            }
-                        }
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Tempo")
-                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                            Text("\(viewModel.card.tempoDeInvestimento) anos")
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Valor Investido")
+                            .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                        HStack {
+                            Text("R$")
                                 .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
-                        }
-                        
-                        Spacer()
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Cor no gráfico")
-                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                            Circle()
-                                .fill(viewModel.card.corGrafico)
-                                .frame(width: 20, height: 20)
-                                .overlay(Circle().stroke(Color.black, lineWidth: 1))
+                            
+                            Text(valorInvestido, format: .number.notation(.compactName))
+                                .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
                         }
                     }
                     
-                    // 🥈 LAYOUT VERTICAL (Para telas estreitas ou fontes grandes)
-                    VStack(alignment: .leading, spacing: 16) {
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Valor Investido")
-                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                                .lineLimit(2) // Permite quebrar linha
-                                .minimumScaleFactor(0.7) // Permite diminuir a fonte se espremer
-                                .fixedSize(horizontal: false, vertical: true)
-                            HStack {
-                                Text("R$")
-                                    .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
-                                
-                                Text(viewModel.card.valorInvestido, format: .number.notation(.compactName))
-                                    .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
-                            }
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Tempo")
-                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                            Text("\(viewModel.card.tempoDeInvestimento) anos")
-                                .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Cor no gráfico")
-                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                                .lineLimit(2)
-                                .minimumScaleFactor(0.7)
-                                .fixedSize(horizontal: false, vertical: true)
-                            
-                            // A bola cresce junto com o texto usando o @ScaledMetric
-                            Circle()
-                                .fill(viewModel.card.corGrafico)
-                                .frame(width: tamanhoDaBola, height: tamanhoDaBola)
-                                .overlay(Circle().stroke(Color.black, lineWidth: 1))
-                        }
+                    Spacer()
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Tempo")
+                            .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                        Text("\(tempoDeInvestimento) anos")
+                            .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Cor no gráfico")
+                            .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                        Circle()
+                            .fill(corGrafico)
+                            .frame(width: 20, height: 20)
+                            .overlay(Circle().stroke(Color.black, lineWidth: 1))
                     }
                 }
             }
             .padding(paddingAdaptativo)
-            .background(Color.corCaixas)
+            .background(Color.corCaixas) // Atualizado para a sua cor
         }
         .clipShape(RoundedRectangle(cornerRadius: 30))
     }
 }
 
 #Preview {
+    // 1. Criamos um ViewModel inicializado com um investimento real do seu Catálogo
+    let viewModelDeTeste = CardViewModel(tipo: .cdbCdi)
+    
+    // 2. Passamos o ViewModel e os dados globais simulados para o Preview
     CardView(
-        viewModel: CardViewModel(
-            cardDeTeste: CardViewModel.dadosDeTeste[0],
-            caixaTexto: CaixaTextoViewModel.caixaTexto[2]
-        )
+        viewModel: viewModelDeTeste,
+        valorInvestido: 1000.00,
+        tempoDeInvestimento: 3,
+        corGrafico: .cyan
     )
     .padding()
 }
