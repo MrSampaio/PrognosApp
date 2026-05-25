@@ -1,49 +1,23 @@
-    //
-    //  CardViewModel.swift
-    //  Prognos
-    //
-    //  Created by Leonardo Gonçalves da Silva on 21/05/26.
-    //
 import SwiftUI
 import Combine
-// ObservableObject permite que essa classe "transmita" mudanças para a View.
-class CardViewModel: ObservableObject {
+
+class CardViewModel: ObservableObject, Identifiable {
     
-    // @Published avisa a tela: "Ei, se esse valor mudar, desenhe a tela de novo!"
-    @Published var card: CardModel
+    let id = UUID() // Exigência do SwiftUI para usar no ForEach
+    let tipo: TipoDeInvestimento
+    
+    // Controla apenas a caixa de texto deste card específico
     @Published var caixaTexto: CaixaTextoModel
     
-    // O init recebe as informações e monta o CardModel final.
-    // Ele depende do Enum TipoDeInvestimento do código do Júlio.
-    init(tipoEscolhido: TipoDeInvestimento, valorInvestido: Float, tempo: Int, caixaTexto: CaixaTextoModel) {
+    init(tipo: TipoDeInvestimento) {
+        self.tipo = tipo
         
-        let novoCard = CardModel(
-            tipoInvestimento: tipoEscolhido.tituloPrincipal,
-            mediaMeses: tipoEscolhido.mediaHistorica,
-            exemploValor: "Ex.: 123%",
-            tipoRetornoInvestimento: tipoEscolhido.subtitulo,
-            valorInvestido: valorInvestido,
-            tempoDeInvestimento: tempo,
-            corGrafico: .black
+        // Puxamos as informações dinâmicas direto do seu Enum (Catalogo)
+        self.caixaTexto = CaixaTextoModel(
+            placeholder: tipo.nomeDoInputPrincipal,
+            texto: "",
+            arredondamento: 10,
+            cor: .white // Ajuste para Color("CorCaixas") se preferir
         )
-        
-        self.card = novoCard
-        self.caixaTexto = caixaTexto
     }
-    init(cardDeTeste: CardModel, caixaTexto: CaixaTextoModel) {
-            self.card = cardDeTeste
-            self.caixaTexto = caixaTexto
-        }
-    // Dados de teste para o Xcode Preview não quebrar
-    public static let dadosDeTeste = [
-        CardModel(
-            tipoInvestimento: "CDI",
-            mediaMeses: "102%",
-            exemploValor: "Ex.: 123%",
-            tipoRetornoInvestimento: "Rendimento",
-            valorInvestido: 150.90,
-            tempoDeInvestimento: 4,
-            corGrafico: .black
-        )
-    ]
 }
