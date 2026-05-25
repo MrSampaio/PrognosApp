@@ -23,12 +23,12 @@ struct TelaInformacoesView: View {
             
             
             let valorConvertido = Float(valor.texto.replacingOccurrences(of: ",", with: ".")) ?? 0.0
-                        
             let tempoConvertido = Int(tempo.texto) ?? 0
             
             ForEach(investimentos) { tipo in
                 
                 @State var valor = CaixaTextoViewModel.caixaTexto[2]
+
                 
                 HStack{
                     CardView(
@@ -36,7 +36,7 @@ struct TelaInformacoesView: View {
                         tipoInvestimento: tipo.tituloPrincipal,
                         mediaMeses: tipo.mediaHistorica,
                         exemploValor: "Ex.: 123%",
-                        tipoRetornoInvestimento: "Rendimento",
+                        tipoRetornoInvestimento: tipo.nomeDoInputPrincipal,
                         valorInvestido: valorConvertido,
                         tempoDeInvestimento: tempoConvertido,
                         corGrafico: .black
