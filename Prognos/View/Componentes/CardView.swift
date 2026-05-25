@@ -2,87 +2,130 @@ import SwiftUI
 
 struct CardView: View {
     
-    @Binding var modeloCard: CaixaTextoModel
+    // CORREÇÃO: Substituímos as variáveis soltas pelo ViewModel!
+    // @ObservedObject escuta a antena do CardViewModel.
+    @ObservedObject var viewModel: CardViewModel
+    
     @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 24
     @Environment(\.dynamicTypeSize) var tipoDeTamanho
-    
-    let tipoInvestimento: String
-    let mediaMeses: String
-    let exemploValor: String
-    let tipoRetornoInvestimento: String
-    let valorInvestido: Float
-    let tempoDeInvestimento: Int
-    let corGrafico: Color
+    @ScaledMetric(relativeTo: .subheadline) var tamanhoDaBola: CGFloat = 20
     
     var body: some View {
-        
         VStack(spacing: 0) {
             
+            // --- SEÇÃO VERDE ---
             HStack(alignment: .top) {
-                Text(tipoInvestimento)
+                // Lendo os dados diretamente do 'viewModel.card'
+                Text(viewModel.card.tipoInvestimento)
                     .font(.custom("BaiJamjuree-Bold", size: 28, relativeTo: .largeTitle))
                     .foregroundColor(Color(.corFonte))
                 
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 9) {
-                    Text(mediaMeses)
+                    Text(viewModel.card.mediaMeses)
                         .font(.custom("BaiJamjuree-Bold", size: 16, relativeTo: .title))
                         .foregroundColor(Color(.corFonte))
                     
                     Text("Média últimos 12 meses")
                         .font(.custom("BaiJamjuree-Medium", size: 11, relativeTo: .title))
                         .foregroundColor(Color(.corFonte).opacity(0.8))
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.7)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .padding(paddingAdaptativo)
+            .padding(.horizontal, paddingAdaptativo)
+            .padding(.vertical, 12)
             .background(Color.corPrimaria)
-        
             
-            
-          
+            // --- SEÇÃO CINZA ---
             VStack(alignment: .leading, spacing: 24) {
                 
-              
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(tipoRetornoInvestimento)
+                    Text(viewModel.card.tipoRetornoInvestimento)
                         .font(.custom("BaiJamjuree-Bold", size: 16, relativeTo: .title))
                     
-                    CaixaTextoView(caixa: $modeloCard)
+                    // Conectando a caixa de texto ao modelo salvo no ViewModel
+                    CaixaTextoView(caixa: $viewModel.caixaTexto)
                 }
                 
-                
-                HStack(alignment: .top) {
-                   
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Valor Investido")
-                            .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                        HStack(){
-                            Text("R$")
+                // Mágica Responsiva: Tenta o layout Horizontal. Se não couber, usa o Vertical.
+                ViewThatFits {
+                    
+                    // 🥇 LAYOUT HORIZONTAL
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Valor Investido")
+                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                            HStack {
+                                Text("R$")
+                                    .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
+                                
+                                Text(viewModel.card.valorInvestido, format: .number.notation(.compactName))
+                                    .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Tempo")
+                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                            Text("\(viewModel.card.tempoDeInvestimento) anos")
                                 .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
-                            
-                            Text(valorInvestido, format: .number.notation(.compactName))
-                                .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
+                        }
+                        
+                        Spacer()
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Cor no gráfico")
+                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                            Circle()
+                                .fill(viewModel.card.corGrafico)
+                                .frame(width: 20, height: 20)
+                                .overlay(Circle().stroke(Color.black, lineWidth: 1))
                         }
                     }
                     
-                    Spacer()
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Tempo")
-                            .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                        Text("\(tempoDeInvestimento) anos")
-                            .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
-                    }
-                    
-                    Spacer()
-                    
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("Cor no gráfico")
-                            .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
-                        Circle()
-                            .fill(corGrafico)
-                            .frame(width: 20, height: 20)
-                            .overlay(Circle().stroke(Color.black, lineWidth: 1))
+                    // 🥈 LAYOUT VERTICAL (Para telas estreitas ou fontes grandes)
+                    VStack(alignment: .leading, spacing: 16) {
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Valor Investido")
+                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                                .lineLimit(2) // Permite quebrar linha
+                                .minimumScaleFactor(0.7) // Permite diminuir a fonte se espremer
+                                .fixedSize(horizontal: false, vertical: true)
+                            HStack {
+                                Text("R$")
+                                    .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
+                                
+                                Text(viewModel.card.valorInvestido, format: .number.notation(.compactName))
+                                    .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
+                            }
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Tempo")
+                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                            Text("\(viewModel.card.tempoDeInvestimento) anos")
+                                .font(.custom("BaiJamjuree-Bold", size: 15, relativeTo: .headline))
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("Cor no gráfico")
+                                .font(.custom("BaiJamjuree-Medium", size: 13, relativeTo: .subheadline))
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.7)
+                                .fixedSize(horizontal: false, vertical: true)
+                            
+                            // A bola cresce junto com o texto usando o @ScaledMetric
+                            Circle()
+                                .fill(viewModel.card.corGrafico)
+                                .frame(width: tamanhoDaBola, height: tamanhoDaBola)
+                                .overlay(Circle().stroke(Color.black, lineWidth: 1))
+                        }
                     }
                 }
             }
@@ -90,22 +133,15 @@ struct CardView: View {
             .background(Color.corCaixas)
         }
         .clipShape(RoundedRectangle(cornerRadius: 30))
-        
     }
 }
 
 #Preview {
-    @Previewable @State var valor = CaixaTextoViewModel.caixaTexto[2]
-    
     CardView(
-        modeloCard: $valor,
-        tipoInvestimento: "CDI",
-        mediaMeses: "102%",
-        exemploValor: "Ex.: 123%",
-        tipoRetornoInvestimento: "Rendimento",
-        valorInvestido: 150.90,
-        tempoDeInvestimento: 4,
-        corGrafico: .black
+        viewModel: CardViewModel(
+            cardDeTeste: CardViewModel.dadosDeTeste[0],
+            caixaTexto: CaixaTextoViewModel.caixaTexto[2]
+        )
     )
     .padding()
 }

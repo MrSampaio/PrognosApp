@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// Struct simples que guarda os dados visuais e o texto de uma caixa.
+// Usamos Hashable para que o SwiftUI consiga identificar cada caixa em listas, se necessário.
 struct CaixaTextoModel: Hashable {
     let placeholder: String
     var texto: String

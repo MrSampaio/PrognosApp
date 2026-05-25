@@ -2,6 +2,8 @@ import SwiftUI
 
 struct CaixaTextoView: View {
     
+    // @Binding funciona como um controle remoto.
+    // Ele não guarda o texto, ele altera o texto que está na tela principal.
     @Binding var caixa: CaixaTextoModel
     @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 10
     
@@ -10,11 +12,11 @@ struct CaixaTextoView: View {
             .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .title2))
             .foregroundColor(Color(.corFonte))
         )
-        .textFieldStyle(.plain)
+        .textFieldStyle(.plain) // Remove o fundo branco padrão do Mac/iOS
         .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .title2))
         .foregroundColor(Color(.corFonte))
         .padding(.horizontal, 20)
-        .padding(.vertical, paddingAdaptativo )
+        .padding(.vertical, paddingAdaptativo)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(caixa.cor)
         .clipShape(RoundedRectangle(cornerRadius: caixa.arredondamento))
@@ -22,6 +24,7 @@ struct CaixaTextoView: View {
 }
 
 #Preview {
+    // Usamos o mock do CaixaTextoViewModel para o Preview
     @Previewable @State var caixa: CaixaTextoModel = CaixaTextoViewModel.caixaTexto[0]
     CaixaTextoView(caixa: $caixa)
         .padding()
