@@ -1,0 +1,60 @@
+import SwiftUI
+import Combine
+
+class TelaResultadosViewModel: ObservableObject {
+    
+    let dadosSimulacao: DadosDaSimulacao
+    
+    // O @Published faz o gráfico redesenhar automaticamente quando o cenário muda
+    @Published var cenarioAtual: CenarioEconomico = .historico
+    
+    init(dados: DadosDaSimulacao) {
+        self.dadosSimulacao = dados
+    }
+    
+    // O Motor Matemático para o Gráfico
+    func gerarPontosDoGrafico() -> [PontoDoGrafico] {
+        var pontos: [PontoDoGrafico] = []
+        
+        for inv in dadosSimulacao.investimentos {
+            var saldoAtual = dadosSimulacao.valorInicial
+            let nomeParaLegenda = "\(inv.tipo.tituloPrincipal) \(inv.tipo.subtitulo)"
+            
+            // 1. Cria o ponto inicial no Ano 0
+            pontos.append(PontoDoGrafico(nomeInvestimento: nomeParaLegenda, ano: 0, saldo: saldoAtual))
+            
+            // 2. Descobre qual será a taxa anual com base no tipo do título e no cenário
+            let taxaAnualDecimal: Float
+            
+            switch inv.tipo {
+                
+            // GRUPO CDI: Pega o CDI do cenário e multiplica pela % digitada (ex: 102% de 10.5%)
+            case .cdbCdi, .lciCdi, .debComumCdi, .isentoCdi, .fundoRendaFixa:
+                let cdiProjetado = cenarioAtual.taxaCdiProjetada / 100.0
+                let percentualDoCdi = inv.taxaDigitada / 100.0
+                taxaAnualDecimal = cdiProjetado * percentualDoCdi
+                
+            // GRUPO HÍBRIDO (IPCA+): Soma a inflação do cenário com a taxa fixa digitada
+            case .tesouroIpca, .cdbIpca, .lciIpca, .debComumIpca, .isentoIpca:
+                let ipcaProjetado = cenarioAtual.taxaIpcaProjetada / 100.0
+                let taxaFixa = inv.taxaDigitada / 100.0
+                // Cálculo real de juros compostos: (1 + IPCA) * (1 + Taxa) - 1
+                taxaAnualDecimal = ((1.0 + ipcaProjetado) * (1.0 + taxaFixa)) - 1.0
+                
+            // GRUPO PREFIXADO: Ignora o cenário econômico e usa exatamente o que foi digitado
+            default:
+                taxaAnualDecimal = inv.taxaDigitada / 100.0
+            }
+            
+            // 3. Calcula o rendimento ano a ano e adiciona no gráfico
+            if dadosSimulacao.tempoAnos > 0 {
+                for ano in 1...dadosSimulacao.tempoAnos {
+                    saldoAtual = saldoAtual * (1.0 + taxaAnualDecimal)
+                    pontos.append(PontoDoGrafico(nomeInvestimento: nomeParaLegenda, ano: ano, saldo: saldoAtual))
+                }
+            }
+        }
+        
+        return pontos
+    }
+}
