@@ -1,61 +1,69 @@
-//
-//  TelaResultadosView.swift
-//  Prognos
-//
-//  Created by Julio Sampaio on 25/05/26.
-//
-
 import SwiftUI
 import Charts
 
-struct DadosDaSimulacao {
-    let valorInicial: Float
-    let tempoAnos: Int
-    let investimentos: [InvestimentoConfigurado]
-}
-
-struct InvestimentoConfigurado {
-    let tipo: TipoDeInvestimento
-    let taxaDigitada: Float
-}
-
 struct TelaResultadosView: View {
     
-    let dados: DadosDaSimulacao
+    @StateObject private var viewModel: TelaResultadosViewModel
+    
+    init(dados: DadosDaSimulacao) {
+        _viewModel = StateObject(wrappedValue: TelaResultadosViewModel(dados: dados))
+    }
     
     var body: some View {
-        VStack {
-            Text("Pronto para os Gráficos!")
-                .font(.title)
+        VStack(spacing: 20) {
             
-            Text("Valor Inicial: R$ \(dados.valorInicial)")
-            Text("Tempo: \(dados.tempoAnos) anos")
+            Text("Projeção do Investimento")
+                .font(.title2.bold())
             
             
-            ForEach(dados.investimentos, id: \.tipo.id) { inv in
-                Text("\(inv.tipo.tituloPrincipal): \(inv.taxaDigitada)%")
-                    .foregroundColor(.blue)
+            Picker("Cenário", selection: $viewModel.cenarioAtual) {
+                ForEach(CenarioEconomico.allCases, id: \.self) { cenario in
+                    Text(cenario.rawValue).tag(cenario)
+                }
             }
+            .pickerStyle(.segmented)
+            .padding(.horizontal)
+            
+            Chart {
+                ForEach(viewModel.pontosDoGrafico) { ponto in
+                    LineMark(
+                        x: .value("Ano", ponto.ano),
+                        y: .value("Saldo", ponto.saldo)
+                    )
+                    .foregroundStyle(by: .value("Investimento", ponto.nomeInvestimento))
+                    
+                    PointMark(
+                        x: .value("Ano", ponto.ano),
+                        y: .value("Saldo", ponto.saldo)
+                    )
+                    .foregroundStyle(by: .value("Investimento", ponto.nomeInvestimento))
+                }
+            }
+            // Animação para a transição das curvas quando o Picker muda
+            // .animation(.spring(response: 0.6, dampingFraction: 0.7), value: viewModel.pontosDoGrafico)
+            .frame(height: 300)
+            .padding()
+            
+            Spacer()
         }
         .navigationTitle("Resultados")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
+// O Preview para desenhar a tela no Canvas
 #Preview {
-   
     let investimentosMock = [
         InvestimentoConfigurado(tipo: .cdbCdi, taxaDigitada: 105.0),
         InvestimentoConfigurado(tipo: .tesouroPrefixado, taxaDigitada: 11.5)
     ]
     
-    
     let pacoteDaSimulacao = DadosDaSimulacao(
         valorInicial: 1500.50,
-        tempoAnos: 3,
+        tempoAnos: 5,
         investimentos: investimentosMock
     )
     
-
     NavigationStack {
         TelaResultadosView(dados: pacoteDaSimulacao)
     }

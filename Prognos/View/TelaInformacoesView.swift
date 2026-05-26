@@ -35,8 +35,13 @@ struct TelaInformacoesView: View {
             
             // Pega as taxas de dentro de CADA card
             let investimentosProntos = viewModels.map { vm -> InvestimentoConfigurado in
-                let stringTaxa = vm.caixaTexto.texto.replacingOccurrences(of: ",", with: ".")
-                let taxaConvertida = Float(stringTaxa) ?? 0.0
+                // Limpa a string: troca vírgula por ponto, remove o '%' e tira os espaços
+                let stringLimpa = vm.caixaTexto.texto
+                    .replacingOccurrences(of: ",", with: ".")
+                    .replacingOccurrences(of: "%", with: "")
+                    .trimmingCharacters(in: .whitespaces)
+                    
+                let taxaConvertida = Float(stringLimpa) ?? 0.0
                 return InvestimentoConfigurado(tipo: vm.tipo, taxaDigitada: taxaConvertida)
             }
             
