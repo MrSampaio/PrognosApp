@@ -43,6 +43,8 @@ struct TelaSelecaoView: View {
         GridItem(.flexible())
     ]
     
+    #if os(iOS)
+    
     init() {
         
         UIPageControl.appearance().currentPageIndicatorTintColor =
@@ -50,6 +52,7 @@ struct TelaSelecaoView: View {
         
         UIPageControl.appearance().pageIndicatorTintColor = UIColor.lightGray.withAlphaComponent(0.4)
     }
+    #endif
     
     
     var body: some View {
@@ -63,8 +66,7 @@ struct TelaSelecaoView: View {
                     .minimumScaleFactor(0.7)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(Color("CorFonteTitulo"))
-                    .navigationTitle("")
-                    .navigationBarTitleDisplayMode(.inline)
+                   
                                     
                 Text("Escolha dois tipos de investimento que você gostaria de comparar")
                     .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .subheadline))
@@ -75,7 +77,8 @@ struct TelaSelecaoView: View {
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 24)
                 
-              
+            #if os(iOS)
+
                 VStack(spacing: paddingAdaptativo){
                     ViewThatFits {
                         
@@ -92,13 +95,14 @@ struct TelaSelecaoView: View {
                 
                 Spacer(minLength: paddingAdaptativo)
                 
-                
+
+            #endif
                 
             }
             
             
         }
-        
+    #if os(iOS)
         .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
 
@@ -116,6 +120,8 @@ struct TelaSelecaoView: View {
             .toolbarTitleDisplayMode(.inline)
         .padding()
         .frame(maxWidth: .infinity)
+        
+        #endif
         
         NavigationLink {
             
