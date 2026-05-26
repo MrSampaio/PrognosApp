@@ -17,6 +17,9 @@ struct TelaCarregamento: View {
 
     @ScaledMetric(relativeTo: .title)
     var alturaImagem: CGFloat = 350
+    
+    @ScaledMetric(relativeTo: .title)
+    var zoomImagem: CGFloat = 1.01
 
     @Environment(\.dynamicTypeSize)
     var tipoDeTamanho
@@ -30,10 +33,13 @@ struct TelaCarregamento: View {
                 Image("Imagem")
                     .resizable()
                     .scaledToFill()
+                    .scaleEffect(zoomImagem)
+                    //.scaleEffect(1.1)
                     // 1. Deixa a largura fluida para caber em qualquer iPhone
                     .frame(maxWidth: .infinity)
                     // 2. Trava a altura em 350, igual ao container
                     .frame(height: 500)
+                   // .clipped()
                     // 3. Arredonda apenas os cantos inferiores
                     .clipShape(
                         UnevenRoundedRectangle(
