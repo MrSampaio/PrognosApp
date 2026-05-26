@@ -13,7 +13,7 @@ struct InformacaoInvestimentoMacView: View {
     
     
     var body: some View {
-        VStack(){
+        VStack(alignment: .leading){
             HStack(){
                 Text(tituloInicio + " ")
                     .font(.custom("BaiJamjuree-Bold", size: 24, relativeTo: .body))
@@ -25,15 +25,16 @@ struct InformacaoInvestimentoMacView: View {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 20)
-            .contentShape(Rectangle())
             .background(Color.corPrimaria)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             
             Text(descricao)
             .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .subheadline))
             .foregroundColor(Color.corFonte.opacity(0.7))
             .multilineTextAlignment(.leading)
+            .padding(.horizontal, 20)
         }
-        .frame()
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 #Preview {
