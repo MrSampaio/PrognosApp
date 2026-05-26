@@ -26,7 +26,8 @@ class TelaInvestimentosViewModel: ObservableObject {
             return todosInvestimentos
         } else {
             return todosInvestimentos.filter { item in
-                item.titulo.localizedCaseInsensitiveContains(modeloBusca.pesquisa)
+                let tituloCompleto = "\(item.tituloInicio) \(item.tituloFinal)"
+                return tituloCompleto.localizedCaseInsensitiveContains(modeloBusca.pesquisa)
             }
         }
     }
