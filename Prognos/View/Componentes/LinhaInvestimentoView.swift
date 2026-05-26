@@ -8,7 +8,8 @@ import SwiftUI
 
 struct LinhaInvestimentoView: View {
     
-    let titulo: String
+    let tituloInicio: String
+    let tituloFinal: String
     let descricao: String
     let mostrarLinhaDivisoria: Bool
     
@@ -22,22 +23,27 @@ struct LinhaInvestimentoView: View {
                     estaExpandido.toggle()
                 }
             }){
-                HStack{
-                    Text(titulo)
-                        .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
-                        .foregroundColor(Color.corFonte)
-                    
-                    Spacer()
-                    
-                    Image(systemName: "chevron.down")
-                        .foregroundColor(Color.corFonte)
-                        .font(.system(size: 14, weight: .bold))
+              
+                    HStack{
+                        Text(tituloInicio + " ")
+                            .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
+                            .foregroundColor(Color.corPrimaria)
+                        Text(tituloFinal)
+                            .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
+                            .foregroundColor(Color.corFonte)
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(Color.corFonte)
+                            .font(.system(size: 14, weight: .bold))
                         // Faz a setinha girar 180 graus quando está aberto
-                        .rotationEffect(.degrees(estaExpandido ? 180 : 0))
+                            .rotationEffect(.degrees(estaExpandido ? 180 : 0))
+                    
                 }
-                .padding(.vertical, 16)
-                .padding(.horizontal, 20)
-                .contentShape(Rectangle())
+                    .padding(.vertical, 16)
+                    .padding(.horizontal, 20)
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             
@@ -47,6 +53,7 @@ struct LinhaInvestimentoView: View {
                     .font(.custom("BaiJamjuree-Medium", size: 14, relativeTo: .subheadline))
                     .foregroundColor(Color.corFonte.opacity(0.7))
                     .multilineTextAlignment(.leading)
+                    
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 16)
@@ -68,12 +75,14 @@ struct LinhaInvestimentoView: View {
         
         VStack {
             LinhaInvestimentoView(
-                titulo: "Investimento 1",
+                tituloInicio: "Investimento",
+                tituloFinal: "1",
                 descricao: "Aqui entra o texto explicativo sobre o que é este investimento e como ele funciona.",
                 mostrarLinhaDivisoria: true
             )
             LinhaInvestimentoView(
-                titulo: "Investimento 2",
+                tituloInicio: "Investimento",
+                tituloFinal: "2",
                 descricao: "Outra explicação de investimento.",
                 mostrarLinhaDivisoria: false
             )

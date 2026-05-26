@@ -12,13 +12,12 @@ struct InformacaoInvestimentoView: View {
     
     var body: some View {
         VStack {
-            // Changed HStack to VStack so the rows stack vertically!
             VStack {
-                // Fixed the missing ')' and cleaned up the closure syntax
                 ForEach(Array(viewModel.investimentos.enumerated()), id: \.element.id) { index, item in
                     
                     LinhaInvestimentoView(
-                        titulo: item.titulo,
+                        tituloInicio: item.tituloInicio,
+                        tituloFinal: item.tituloFinal,
                         descricao: item.descricao,
                         mostrarLinhaDivisoria: index < (viewModel.investimentos.count - 1)
                     )
@@ -31,7 +30,7 @@ struct InformacaoInvestimentoView: View {
 #Preview {
     InformacaoInvestimentoView(
         viewModel: InformacaoInvestimentoViewModel(
-            investimentos: InformacaoInvestimentoViewModel.testes
+            investimentos: InformacaoInvestimentoViewModel.listaInvestimentos
         )
     )
 }
