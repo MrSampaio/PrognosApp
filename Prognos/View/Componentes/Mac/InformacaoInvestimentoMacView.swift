@@ -17,10 +17,10 @@ struct InformacaoInvestimentoMacView: View {
             HStack(){
                 Text(tituloInicio + " ")
                     .font(.custom("BaiJamjuree-Bold", size: 24, relativeTo: .body))
-                    .foregroundColor(Color.fonte)
+                    .foregroundColor(Color.fonteUniversal)
                 Text(tituloFinal)
                     .font(.custom("BaiJamjuree-Medium", size: 24, relativeTo: .body))
-                    .foregroundColor(Color.fonte)
+                    .foregroundColor(Color.fonteUniversal)
                 Spacer()
             }
             .padding(.vertical, 16)

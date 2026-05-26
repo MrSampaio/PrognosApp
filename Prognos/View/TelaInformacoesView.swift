@@ -58,8 +58,6 @@ struct TelaInformacoesView: View {
                     .minimumScaleFactor(0.7)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(Color("CorFonteTitulo"))
-                    .navigationTitle("")
-                    .navigationBarTitleDisplayMode(.inline)
                     .padding(.top, 10)
                 
                 Text("Insira o valor e o tempo que você gostaria de consultar o seu investimento")
@@ -85,8 +83,6 @@ struct TelaInformacoesView: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color("CorFonte"))
-                    .navigationTitle("")
-                    .navigationBarTitleDisplayMode(.inline)
                     .padding(.vertical, 5)
                 
                 let valorConvertido = Float(valorGlobal.texto.replacingOccurrences(of: ",", with: ".")) ?? 0.0

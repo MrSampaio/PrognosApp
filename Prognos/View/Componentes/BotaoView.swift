@@ -18,7 +18,7 @@ struct BotaoView: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.7)
                 .fixedSize(horizontal: false, vertical: true)
-                .foregroundColor(Color("CorFonte"))
+                .foregroundColor(Color("FonteUniversal"))
                 .frame(width: 215, height: 48)
                 .background(habilitado ? Color("CorPrimaria") : Color("CorCaixas"))
                 .cornerRadius(30)
