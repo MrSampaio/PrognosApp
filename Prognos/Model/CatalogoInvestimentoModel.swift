@@ -43,10 +43,10 @@ enum TipoDeInvestimento: String, CaseIterable, Identifiable {
     var tituloPrincipal: String {
         switch self {
         case .tesouroPrefixado, .tesouroSelic, .tesouroIpca: return "Tesouro"
-        case .cdbPrefixado, .cdbCdi, .cdbIpca: return "CDB / LC"
-        case .lciPrefixado, .lciCdi, .lciIpca: return "LCI / LCA"
-        case .debComumPrefixada, .debComumCdi, .debComumIpca: return "Debênture"
-        case .isentoPrefixado, .isentoCdi, .isentoIpca: return "CRI / CRA"
+        case .cdbPrefixado, .cdbCdi, .cdbIpca: return "CDB/LC"
+        case .lciPrefixado, .lciCdi, .lciIpca: return "LCI/LCA"
+        case .debComumPrefixada, .debComumCdi, .debComumIpca: return "Debênt."
+        case .isentoPrefixado, .isentoCdi, .isentoIpca: return "CRI/CRA"
         case .fundoRendaFixa: return "Fundo"
         }
     }
@@ -60,10 +60,10 @@ enum TipoDeInvestimento: String, CaseIterable, Identifiable {
             return "Selic"
             
         case .cdbCdi, .lciCdi, .debComumCdi, .isentoCdi:
-            return "Pós-fixado (CDI)"
+            return "Pós-fixado"
             
         case .tesouroIpca, .cdbIpca, .lciIpca, .debComumIpca, .isentoIpca:
-            return "Híbrido (IPCA+)"
+            return "Híbrido"
             
         case .fundoRendaFixa:
             return "Renda Fixa"

@@ -14,10 +14,13 @@ struct BotaoView: View {
         var body: some View {
             
             Text(texto)
-                .font(.custom("BaiJamJuree-SemiBold", size: 20))
-                .foregroundColor(Color("Fonte"))
+                .font(.custom("BaiJamjuree-SemiBold", size: 20, relativeTo: .subheadline))
+                .lineLimit(2)
+                .minimumScaleFactor(0.7)
+                .fixedSize(horizontal: false, vertical: true)
+                .foregroundColor(Color("CorFonte"))
                 .frame(width: 215, height: 48)
-                .background(Color("CorPrimaria"))
+                .background(habilitado ? Color("CorPrimaria") : Color("CorCaixas"))
                 .cornerRadius(30)
                 .opacity(habilitado ? 1 : 0.5)
                 .disabled(!habilitado)
