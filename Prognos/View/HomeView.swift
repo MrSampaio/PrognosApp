@@ -11,105 +11,123 @@ struct HomeView: View {
     
     @ScaledMetric(relativeTo: .body)
     var paddingAdaptativo: CGFloat = 20
-
-    @ScaledMetric(relativeTo: .title)
-    var tamanhoLogo: CGFloat = 100
-
-    @ScaledMetric(relativeTo: .title)
-    var alturaImagem: CGFloat = 350
     
     @ScaledMetric(relativeTo: .title)
-    var zoomImagem: CGFloat = 1.01
-
-    @Environment(\.dynamicTypeSize)
-    var tipoDeTamanho
+    var alturaImagem: CGFloat = 360
     
+    @ScaledMetric(relativeTo: .title)
+    var tamanhoLogo: CGFloat = 95
+    
+    @ScaledMetric(relativeTo: .body)
+    var larguraBotao: CGFloat = 205
+    
+    @ScaledMetric(relativeTo: .body)
+    var alturaBotao: CGFloat = 56
+    
+    @ScaledMetric(relativeTo: .title)
+    var zoomImagem: CGFloat = 1.03
     
     var body: some View {
-        VStack(spacing: paddingAdaptativo) { // spacing: 0 evita espaços em branco indesejados
+        
+        ZStack {
             
-            // --- ÁREA SUPERIOR (Fundo + Logo) ---
-            ZStack(alignment: .bottom) {
+            VStack(spacing: 0) {
                 
-                Image("Imagem")
-                    .resizable()
-                    .scaledToFill()
-                    .scaleEffect(zoomImagem)
-                    //.scaleEffect(1.1)
-                    // 1. Deixa a largura fluida para caber em qualquer iPhone
-                    .frame(maxWidth: .infinity)
-                    // 2. Trava a altura em 350, igual ao container
-                    .frame(height: 500)
-                   // .clipped()
-                    // 3. Arredonda apenas os cantos inferiores
-                    .clipShape(
-                        UnevenRoundedRectangle(
-                            topLeadingRadius: 0,
-                            bottomLeadingRadius: 40,
-                            bottomTrailingRadius: 40,
-                            topTrailingRadius: 0
+                // MARK: IMAGEM SUPERIOR
+                
+                ZStack(alignment: .bottom) {
+                    
+                    Image("Imagem")
+                        .resizable()
+                        .scaledToFill()
+                        .scaleEffect(zoomImagem)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: alturaImagem)
+                        .clipped()
+                        .clipShape(
+                            UnevenRoundedRectangle(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: 42,
+                                bottomTrailingRadius: 42,
+                                topTrailingRadius: 0
+                            )
                         )
-                    )
+                    
+                    
+                    // MARK: LOGO
+                    
+                    Image("Logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: tamanhoLogo,
+                               height: tamanhoLogo)
+                        .clipShape(Circle())
+                        .offset(y: tamanhoLogo / 2)
+                }
+                .frame(height: alturaImagem)
+                .ignoresSafeArea(edges: .top)
                 
-                Image("Logo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    // 4. Joga o logo exatamente para a linha de corte (metade da altura dele)
-                    .offset(y: 50)
                 
-            }
-            .frame(height: 350) // Define a altura total desse bloco superior
-            .ignoresSafeArea(edges: .top) // Ignora a área segura só no topo
-            
-            // --- TEXTO ---
-            
-            VStack(spacing: paddingAdaptativo) {
+                // MARK: TEXO
                 
-                Text("Seu aplicativo de comparação de investimentos!")
-                    .font(.custom("BaiJamjuree-semibold", size: 20, relativeTo: .title2))
-                    .lineLimit(4)
-                    .minimumScaleFactor(0.7)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(Color("CorFonte")) // Troque por Color.black se der erro
-                    // Ajuste do padding para acomodar a metade do logo que desceu (50) + espaço extra
-                    .padding(.top, tamanhoLogo / 2 + 20)
-                    .padding(.horizontal, 16)
-            }
-            
-            Spacer() // Empurra o botão para baixo
-            
-            // --- BOTÃO ---
-            VStack {
+                VStack(spacing: paddingAdaptativo) {
+                    
+                    Text("Seu aplicativo de comparação de investimentos.")
+                        .font(
+                            .custom(
+                                "BaiJamjuree-SemiBold",
+                                size: 22,
+                                relativeTo: .title2
+                            )
+                        )
+                        .foregroundColor(Color("CorFonte"))
+                        .multilineTextAlignment(.center)
+                        .lineLimit(3)
+                        .minimumScaleFactor(0.75)
+                        .padding(.top, tamanhoLogo / 2 + 26)
+                        .padding(.horizontal, 28)
+                }
+                
+                Spacer()
+                
+                
+                // MARK: BOTÃO
+                
                 NavigationLink {
+                    
+                    TelaSelecaoView()
+                    
+                } label: {
+                    
+                    HStack(spacing: 8) {
                         
-                        TelaSelecaoView()
+                        Text("Consultar")
                         
-                    } label: {
-                    HStack {
-                        Text("Continuar")
                         Image(systemName: "chevron.right")
                     }
-                    .font(.custom("BaiJamjuree-semibold", size: 20, relativeTo: .title2))
-                    .lineLimit(4)
-                    .minimumScaleFactor(0.7)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .foregroundColor(.corFonte) // Troque por Color.black se der erro
-                    .frame(width: 200, height: 16)
-                    .padding(.vertical, 18)
-                    .background(Color.corPrimaria) // Troque por Color.green se der erro
-                    .cornerRadius(60)
+                    .font(
+                        .custom(
+                            "BaiJamjuree-SemiBold",
+                            size: 22,
+                            relativeTo: .title3
+                        )
+                    )
+                    .foregroundColor(Color("FonteUniversal"))
+                    .frame(width: larguraBotao,
+                           height: alturaBotao)
+                    .background(Color("CorPrimaria"))
+                    .clipShape(Capsule())
                 }
+                .padding(.bottom, 42)
             }
-            .padding(.bottom, 40) // Dá um respiro da borda de baixo da tela
         }
-         // Garante que o fundo geral seja branco
-        .ignoresSafeArea(edges: .bottom)
+        .navigationBarBackButtonHidden(true)
     }
 }
 
 #Preview {
-    HomeView()
+    
+    NavigationStack {
+        HomeView()
+    }
 }

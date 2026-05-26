@@ -43,6 +43,8 @@ struct TelaSelecaoView: View {
         GridItem(.flexible())
     ]
     
+    #if os(iOS)
+    
     init() {
         
         UIPageControl.appearance().currentPageIndicatorTintColor =
@@ -50,34 +52,21 @@ struct TelaSelecaoView: View {
         
         UIPageControl.appearance().pageIndicatorTintColor = UIColor.lightGray.withAlphaComponent(0.4)
     }
+    #endif
     
     
     var body: some View {
         
         ScrollView {
             VStack(spacing: paddingAdaptativo) {
-                HStack {
-                    
-                    Spacer()
-                    Image(systemName: "info.circle.fill")
-                            .font(.system(size: 34, weight: .regular))
-                            .symbolRenderingMode(.palette)
-                            .foregroundStyle(Color("CorFonte"), Color("CorCaixas"))
-                            
-                    // .foregroundStyle(Color("CorCaixa2"))
-                    
-                }
-                .padding()
-                
-                
+ 
                 Text("Selecione os investimentos")
                     .font(.custom("BaiJamjuree-SemiBold", size: 24, relativeTo: .title))
                     .lineLimit(2)
                     .minimumScaleFactor(0.7)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(Color("CorFonteTitulo"))
-                    .navigationTitle("")
-                    .navigationBarTitleDisplayMode(.inline)
+                   
                                     
                 Text("Escolha dois tipos de investimento que você gostaria de comparar")
                     .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .subheadline))
@@ -88,7 +77,8 @@ struct TelaSelecaoView: View {
                     .multilineTextAlignment(.center)
                     .padding(.vertical, 24)
                 
-              
+            #if os(iOS)
+
                 VStack(spacing: paddingAdaptativo){
                     ViewThatFits {
                         
@@ -105,14 +95,33 @@ struct TelaSelecaoView: View {
                 
                 Spacer(minLength: paddingAdaptativo)
                 
-                
+
+            #endif
                 
             }
             
             
         }
+    #if os(iOS)
+        .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+
+                    Button {
+
+                    } label: {
+
+                        Image(systemName: "info.circle.fill")
+                            .font(.system(size: 25, weight: .semibold))
+                        
+                    }
+                }
+            }
+
+            .toolbarTitleDisplayMode(.inline)
         .padding()
         .frame(maxWidth: .infinity)
+        
+        #endif
         
         NavigationLink {
             
@@ -130,6 +139,7 @@ struct TelaSelecaoView: View {
        
         
     }
+    
     
     func pageGrid(tiposDaPagina: [TipoDeInvestimento]) -> some View {
         
