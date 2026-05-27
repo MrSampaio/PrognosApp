@@ -111,5 +111,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    TelaCarregamento()
+    HomeView()
 }

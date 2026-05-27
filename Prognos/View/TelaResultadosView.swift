@@ -1,62 +1,104 @@
-//
-//  TelaResultadosView.swift
-//  Prognos
-//
-//  Created by Julio Sampaio on 25/05/26.
-//
-
 import SwiftUI
 import Charts
 
-struct DadosDaSimulacao {
-    let valorInicial: Float
-    let tempoAnos: Int
-    let investimentos: [InvestimentoConfigurado]
-}
-
-struct InvestimentoConfigurado {
-    let tipo: TipoDeInvestimento
-    let taxaDigitada: Float
-}
-
 struct TelaResultadosView: View {
-    
-    let dados: DadosDaSimulacao
+    // Escuta a ViewModel
+    @ObservedObject var viewModel: TelaResultadosViewModel
     
     var body: some View {
-        VStack {
-            Text("Pronto para os Gráficos!")
-                .font(.title)
+        VStack(alignment: .leading, spacing: 20) {
             
-            Text("Valor Inicial: R$ \(dados.valorInicial)")
-            Text("Tempo: \(dados.tempoAnos) anos")
-            
-            
-            ForEach(dados.investimentos, id: \.tipo.id) { inv in
-                Text("\(inv.tipo.tituloPrincipal): \(inv.taxaDigitada)%")
-                    .foregroundColor(.blue)
+            // MARK: - Header (Cenário da Inflação)
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Cenário da")
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                    
+                    Text("Inflação \(viewModel.cenarioAtual.rawValue)")
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(Color.primary)
+                }
+                
+                Spacer()
+                
             }
+            .padding(.horizontal)
+            
+            // MARK: - Gráfico
+            Chart(viewModel.pontosDoGrafico) { ponto in
+                LineMark(
+                    x: .value("Ano", ponto.ano),
+                    y: .value("Valor", ponto.montante)
+                )
+                .foregroundStyle(by: .value("Investimento", ponto.nomeInvestimento))
+                .interpolationMethod(.monotone)
+                
+            }
+            .chartXAxis {
+                AxisMarks(values: .automatic(desiredCount: viewModel.tempoInvestimento))
+            }
+            .frame(height: 350)
+            .padding(.horizontal)
+            
+            // MARK: - Controles (< | >)
+            HStack {
+                Spacer()
+                
+                HStack(spacing: 16) {
+                    Button(action: {
+                        viewModel.cenarioAnterior()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.primary)
+                    }
+                    
+                    Divider()
+                        .frame(height: 16)
+                    
+                    Button(action: {
+                        viewModel.proximoCenario()
+                    }) {
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.primary)
+                    }
+                }
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(Color.gray.opacity(0.15))
+                .cornerRadius(30)
+                
+                Spacer()
+            }
+            .padding(.top, 10)
         }
-        .navigationTitle("Resultados")
+        .padding(.vertical)
+        .background(Color(UIColor.secondarySystemBackground).opacity(0.5))
+        .cornerRadius(24)
     }
 }
-
+// MARK: - Preview
 #Preview {
-   
-    let investimentosMock = [
-        InvestimentoConfigurado(tipo: .cdbCdi, taxaDigitada: 105.0),
-        InvestimentoConfigurado(tipo: .tesouroPrefixado, taxaDigitada: 11.5)
-    ]
+    let cdbPos = CardViewModel(tipo: .cdbCdi)
+    cdbPos.caixaTexto.texto = "110"
     
+    let tesouroPre = CardViewModel(tipo: .tesouroPrefixado)
+    tesouroPre.caixaTexto.texto = "12,5"
     
-    let pacoteDaSimulacao = DadosDaSimulacao(
-        valorInicial: 1500.50,
-        tempoAnos: 3,
-        investimentos: investimentosMock
+    let lciPre = CardViewModel(tipo: .lciPrefixado)
+    lciPre.caixaTexto.texto = "10,5"
+    
+    // Iniciamos a ViewModel primeiro
+    let mockViewModel = TelaResultadosViewModel(
+        valorInvestido: 10000.0,
+        tempoInvestimento: 5,
+        dadosDosCards: [cdbPos, tesouroPre, lciPre]
     )
     
-
-    NavigationStack {
-        TelaResultadosView(dados: pacoteDaSimulacao)
+    return NavigationStack {
+        // Passamos a ViewModel para a View
+        TelaResultadosView(viewModel: mockViewModel)
     }
 }
