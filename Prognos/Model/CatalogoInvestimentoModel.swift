@@ -100,6 +100,35 @@ enum TipoDeInvestimento: String, CaseIterable, Identifiable {
         }
     }
     
+    //cores
+    var cores: String {
+        switch self {
+            
+        // 1. PREFIXADOS
+        case .tesouroPrefixado: return "TesouroPrefixado"
+        case .cdbPrefixado: return "CdbLcPrefixado"
+        case .lciPrefixado: return "LciLcaPrefixada"
+        case .debComumPrefixada: return "DebenturePrefixado"
+        case .isentoPrefixado: return "CriCraPrefixado"
+            
+        // 2. PÓS-FIXADOS
+        case .tesouroSelic: return "TesouroSelic"
+        case .cdbCdi: return "CdbLcPosFixado"
+        case .lciCdi: return "LciLcaPosfixada"
+        case .debComumCdi: return "DebenturePosfixado"
+        case .isentoCdi: return "CriCraPosfixado"
+        case .fundoRendaFixa: return "FundoRendaFixa"
+            
+        // 3. HÍBRIDOS
+        case .tesouroIpca: return "TesouroHibrido"
+        case .cdbIpca: return "CdbLcHibrido"
+        case .lciIpca: return "LciLcaHibrido"
+        case .debComumIpca: return "DebentureHibrido"
+        case .isentoIpca: return "CriCraHibrido"
+            
+        }
+    }
+    
     // MARK: - REGRAS DE TEXTO PARA OS INPUTS
         
         var nomeDoInputPrincipal: String {
