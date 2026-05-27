@@ -55,6 +55,7 @@
 				ViewModel/CardViewModel.swift,
 				ViewModel/InformacaoInvestimentoViewModel.swift,
 				ViewModel/OpcoesInvestimentoViewModel.swift,
+				ViewModel/SimuladorInvestimentosViewModel.swift,
 				ViewModel/TelaInvestimentosViewModel.swift,
 				ViewModel/TelaResultadosViewModel.swift,
 			);
