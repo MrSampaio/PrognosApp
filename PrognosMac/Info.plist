@@ -4,10 +4,10 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>BaiJamjuree-Bold.otf</string>
-		<string>BaiJamjuree-Regular.otf</string>
-		<string>BaiJamjuree-SemiBold.otf</string>
-		<string>BaiJamjuree-Medium.otf</string>
+		<string>BaiJamjuree-Bold.ttf</string>
+		<string>BaiMedium.ttf</string>
+		<string>BaiRegular.ttf</string>
+		<string>BaiSemiBold.ttf</string>
 	</array>
 </dict>
 </plist>

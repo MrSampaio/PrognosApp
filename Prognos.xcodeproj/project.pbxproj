@@ -12,14 +12,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2E1B635A2FC62D9100532094 /* Exceptions for "PrognosMac" folder in "PrognosMac" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 2E1B634D2FC62D8700532094 /* PrognosMac */;
-		};
-		2E82E74F2FBD040E00DDFE7F /* Exceptions for "Prognos" folder in "Prognos" target */ = {
+		2E1F03BD2FC63D18008A780D /* Exceptions for "Prognos" folder in "Prognos" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -69,17 +62,13 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2E1B634F2FC62D8700532094 /* PrognosMac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				2E1B635A2FC62D9100532094 /* Exceptions for "PrognosMac" folder in "PrognosMac" target */,
-			);
 			path = PrognosMac;
 			sourceTree = "<group>";
 		};
 		36AFA0C72FBCDEBC007F1B05 /* Prognos */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				2E82E74F2FBD040E00DDFE7F /* Exceptions for "Prognos" folder in "Prognos" target */,
-				3766280B2FC63E2E00A6DA50 /* Exceptions for "Prognos" folder in "PrognosMac" target */,
+				2E1F03BD2FC63D18008A780D /* Exceptions for "Prognos" folder in "Prognos" target */,
 			);
 			path = Prognos;
 			sourceTree = "<group>";
