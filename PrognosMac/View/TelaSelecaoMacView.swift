@@ -18,6 +18,19 @@ struct TelaSelecaoMacView: View {
         VStack {
             ScrollView(.vertical) {
                 
+                
+//                NavigationLink {
+//                    
+//                    TelaInformacoesMacView(investimentos: selecionados)
+//                    
+//                } label: {
+//                    
+//                    BotaoView(
+//                        texto: "Continuar",
+//                        habilitado: true
+//                    )
+//                } .disabled(selecionados.count != maximoDeSelecao)
+                
                 LazyVGrid(columns: colunasResponsivas, spacing: 40) {
                     
                     ForEach(TipoDeInvestimento.allCases) { item in
@@ -57,10 +70,13 @@ struct TelaSelecaoMacView: View {
                 }
                 .padding(40)
             }
+
         }
     }
 }
 
 #Preview {
-    TelaSelecaoMacView()
+    NavigationStack {
+            TelaSelecaoMacView()
+        }
 }
