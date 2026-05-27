@@ -28,7 +28,7 @@ struct LinhaInvestimentoView: View {
                     HStack {
                         Text(tituloInicio + " ")
                             .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
-                            .foregroundColor(Color.corPrimaria)
+                            .foregroundColor(Color.corFonteTitulo)
                         
                         Text(tituloFinal)
                             .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
@@ -49,7 +49,7 @@ struct LinhaInvestimentoView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(tituloInicio)
                                 .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
-                                .foregroundColor(Color.corPrimaria)
+                                .foregroundColor(Color.corFonteTitulo)
                             
                             Text(tituloFinal)
                                 .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
