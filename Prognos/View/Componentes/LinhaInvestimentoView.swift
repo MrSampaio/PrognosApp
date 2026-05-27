@@ -23,11 +23,13 @@ struct LinhaInvestimentoView: View {
                     estaExpandido.toggle()
                 }
             }){
-              
-                    HStack{
+                ViewThatFits {
+                    
+                    HStack {
                         Text(tituloInicio + " ")
                             .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
                             .foregroundColor(Color.corPrimaria)
+                        
                         Text(tituloFinal)
                             .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
                             .foregroundColor(Color.corFonte)
@@ -37,13 +39,35 @@ struct LinhaInvestimentoView: View {
                         Image(systemName: "chevron.down")
                             .foregroundColor(Color.corFonte)
                             .font(.system(size: 14, weight: .bold))
-                        // Faz a setinha girar 180 graus quando está aberto
                             .rotationEffect(.degrees(estaExpandido ? 180 : 0))
-                    
-                }
+                    }
                     .padding(.vertical, 16)
                     .padding(.horizontal, 20)
                     .contentShape(Rectangle())
+                    
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(tituloInicio)
+                                .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
+                                .foregroundColor(Color.corPrimaria)
+                            
+                            Text(tituloFinal)
+                                .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
+                                .foregroundColor(Color.corFonte)
+                        }
+                        
+                        Spacer()
+                        
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(Color.corFonte)
+                            .font(.system(size: 14, weight: .bold))
+                            .rotationEffect(.degrees(estaExpandido ? 180 : 0))
+                    }
+                    .padding(.vertical, 16)
+                    .padding(.horizontal, 20)
+                    .contentShape(Rectangle())
+                    
+                } 
             }
             .buttonStyle(.plain)
             
@@ -67,6 +91,7 @@ struct LinhaInvestimentoView: View {
                 .padding(.horizontal, 20)
             }
         }
+            
     }
 }
 #Preview {

@@ -7,10 +7,18 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		2E1B634E2FC62D8700532094 /* PrognosMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PrognosMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		36AFA0C52FBCDEBC007F1B05 /* Prognos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Prognos.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2E1B635A2FC62D9100532094 /* Exceptions for "PrognosMac" folder in "PrognosMac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2E1B634D2FC62D8700532094 /* PrognosMac */;
+		};
 		2E82E74F2FBD040E00DDFE7F /* Exceptions for "Prognos" folder in "Prognos" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -18,13 +26,60 @@
 			);
 			target = 36AFA0C42FBCDEBC007F1B05 /* Prognos */;
 		};
+		3766280B2FC63E2E00A6DA50 /* Exceptions for "Prognos" folder in "PrognosMac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				Model/BarraPesquisaModel.swift,
+				Model/CaixaTextoModel.swift,
+				Model/CardModel.swift,
+				Model/CatalogoInvestimentoModel.swift,
+				Model/InformacaoInvestimentoModel.swift,
+				Model/InvestimentoModel.swift,
+				View/CarregamentoView.swift,
+				View/Componentes/BarraPesquisaView.swift,
+				View/Componentes/BotaoInvestimento.swift,
+				View/Componentes/BotaoView.swift,
+				View/Componentes/CaixaTextoView.swift,
+				View/Componentes/CaixaValorTempoView.swift,
+				View/Componentes/CardInvestimento.swift,
+				View/Componentes/CardView.swift,
+				View/Componentes/InformacaoInvestimentoView.swift,
+				View/Componentes/LinhaInvestimentoView.swift,
+				View/Componentes/Mac/InformacaoInvestimentoMacView.swift,
+				View/HomeView.swift,
+				View/TelaInformacoesView.swift,
+				View/TelaInvestimentosView.swift,
+				View/TelaResultadosView.swift,
+				View/TelaSelecaoView.swift,
+				View/TelasMac/TelaInvestimentosMacView.swift,
+				View/TesteInputs.swift,
+				ViewModel/BarraPesquisaViewModel.swift,
+				ViewModel/CaixaTextoViewModel.swift,
+				ViewModel/CalculoViewModel.swift,
+				ViewModel/CardViewModel.swift,
+				ViewModel/InformacaoInvestimentoViewModel.swift,
+				ViewModel/OpcoesInvestimentoViewModel.swift,
+				ViewModel/TelaInvestimentosViewModel.swift,
+			);
+			target = 2E1B634D2FC62D8700532094 /* PrognosMac */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		2E1B634F2FC62D8700532094 /* PrognosMac */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2E1B635A2FC62D9100532094 /* Exceptions for "PrognosMac" folder in "PrognosMac" target */,
+			);
+			path = PrognosMac;
+			sourceTree = "<group>";
+		};
 		36AFA0C72FBCDEBC007F1B05 /* Prognos */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				2E82E74F2FBD040E00DDFE7F /* Exceptions for "Prognos" folder in "Prognos" target */,
+				3766280B2FC63E2E00A6DA50 /* Exceptions for "Prognos" folder in "PrognosMac" target */,
 			);
 			path = Prognos;
 			sourceTree = "<group>";
@@ -32,6 +87,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2E1B634B2FC62D8700532094 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		36AFA0C22FBCDEBC007F1B05 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -46,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				36AFA0C72FBCDEBC007F1B05 /* Prognos */,
+				2E1B634F2FC62D8700532094 /* PrognosMac */,
 				36AFA0C62FBCDEBC007F1B05 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				36AFA0C52FBCDEBC007F1B05 /* Prognos.app */,
+				2E1B634E2FC62D8700532094 /* PrognosMac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -61,6 +125,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2E1B634D2FC62D8700532094 /* PrognosMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2E1B63562FC62D8800532094 /* Build configuration list for PBXNativeTarget "PrognosMac" */;
+			buildPhases = (
+				2E1B634A2FC62D8700532094 /* Sources */,
+				2E1B634B2FC62D8700532094 /* Frameworks */,
+				2E1B634C2FC62D8700532094 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2E1B634F2FC62D8700532094 /* PrognosMac */,
+			);
+			name = PrognosMac;
+			packageProductDependencies = (
+			);
+			productName = PrognosMac;
+			productReference = 2E1B634E2FC62D8700532094 /* PrognosMac.app */;
+			productType = "com.apple.product-type.application";
+		};
 		36AFA0C42FBCDEBC007F1B05 /* Prognos */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 36AFA0D02FBCDEBC007F1B05 /* Build configuration list for PBXNativeTarget "Prognos" */;
@@ -93,6 +179,9 @@
 				LastSwiftUpdateCheck = 2650;
 				LastUpgradeCheck = 2650;
 				TargetAttributes = {
+					2E1B634D2FC62D8700532094 = {
+						CreatedOnToolsVersion = 26.5;
+					};
 					36AFA0C42FBCDEBC007F1B05 = {
 						CreatedOnToolsVersion = 26.5;
 					};
@@ -113,11 +202,19 @@
 			projectRoot = "";
 			targets = (
 				36AFA0C42FBCDEBC007F1B05 /* Prognos */,
+				2E1B634D2FC62D8700532094 /* PrognosMac */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2E1B634C2FC62D8700532094 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		36AFA0C32FBCDEBC007F1B05 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,6 +225,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2E1B634A2FC62D8700532094 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		36AFA0C12FBCDEBC007F1B05 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -138,6 +242,76 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		2E1B63572FC62D8800532094 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A54TARWH57;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PrognosMac/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mariana.PrognosMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		2E1B63582FC62D8800532094 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = A54TARWH57;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PrognosMac/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mariana.PrognosMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		36AFA0CE2FBCDEBC007F1B05 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -261,7 +435,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YDGZTDXJVC;
+				DEVELOPMENT_TEAM = A54TARWH57;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -307,7 +481,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YDGZTDXJVC;
+				DEVELOPMENT_TEAM = A54TARWH57;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -349,6 +523,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2E1B63562FC62D8800532094 /* Build configuration list for PBXNativeTarget "PrognosMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E1B63572FC62D8800532094 /* Debug */,
+				2E1B63582FC62D8800532094 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		36AFA0C02FBCDEBC007F1B05 /* Build configuration list for PBXProject "Prognos" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
