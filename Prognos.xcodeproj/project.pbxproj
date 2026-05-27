@@ -19,6 +19,15 @@
 			);
 			target = 36AFA0C42FBCDEBC007F1B05 /* Prognos */;
 		};
+		3610AA482FC786BB00E6110F /* Exceptions for "PrognosMac" folder in "Prognos" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				View/Componentes/InformacaoInvestimentoMacView.swift,
+				View/Componentes/InvestimentosMacView.swift,
+				View/TelaInvestimentosMacView.swift,
+			);
+			target = 36AFA0C42FBCDEBC007F1B05 /* Prognos */;
+		};
 		37E42ABF2FC76D0E00735BCE /* Exceptions for "Prognos" folder in "PrognosMac" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -41,9 +50,6 @@
 				View/Componentes/GraficoEvolucaoView.swift,
 				View/Componentes/InformacaoInvestimentoView.swift,
 				View/Componentes/LinhaInvestimentoView.swift,
-				View/Componentes/Mac/InformacaoInvestimentoMacView.swift,
-				View/Componentes/Mac/InvestimentosMacView.swift,
-				View/TelasMac/TelaInvestimentosMacView.swift,
 				ViewModel/BarraPesquisaViewModel.swift,
 				ViewModel/CaixaTextoViewModel.swift,
 				ViewModel/CardViewModel.swift,
@@ -59,6 +65,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2E1B634F2FC62D8700532094 /* PrognosMac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3610AA482FC786BB00E6110F /* Exceptions for "PrognosMac" folder in "Prognos" target */,
+			);
 			path = PrognosMac;
 			sourceTree = "<group>";
 		};
@@ -237,7 +246,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ASZ8558R77;
+				DEVELOPMENT_TEAM = YDGZTDXJVC;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -272,7 +281,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ASZ8558R77;
+				DEVELOPMENT_TEAM = YDGZTDXJVC;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
