@@ -13,75 +13,85 @@ struct HomeMacView: View {
         
         NavigationStack {
             
-            HStack(spacing: 0) {
+            GeometryReader { geometry in
 
-                // IMAGEM
+                HStack(spacing: 0) {
 
-                Image("Imagem")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(maxWidth: .infinity)
-                    .frame(maxHeight: .infinity)
-                    .clipped()
-                    .clipShape(
-                        UnevenRoundedRectangle(
-                            topLeadingRadius: 0,
-                            bottomLeadingRadius: 0,
-                            bottomTrailingRadius: 32,
-                            topTrailingRadius: 32
-                        )
-                    )
-                    .layoutPriority(1)
+                    // IMAGEM
 
-
-                // LADO DIREITO
-
-                VStack(alignment: .leading, spacing: 20) {
-
-                    Spacer()
-
-                    Image("Logo")
+                    Image("Imagem")
                         .resizable()
-                        .scaledToFit()
-                        .frame(width: 72, height: 72)
+                        .scaledToFill()
+                        .frame(
+                            width: geometry.size.width * 0.50
+                        )
+                        .frame(maxHeight: .infinity)
+                        .clipped()
+                        .clipShape(
+                            UnevenRoundedRectangle(
+                                topLeadingRadius: 0,
+                                bottomLeadingRadius: 0,
+                                bottomTrailingRadius: 32,
+                                topTrailingRadius: 32
+                            )
+                        )
 
-                    Text("""
-                    Seu aplicativo
-                    de consulta de
-                    investimentos
-                    """)
-                    .font(.custom("Avenir Next Demi Bold", size: 36))
-                    .foregroundStyle(Color("CorFonte"))
 
-                    NavigationLink {
 
-                    } label: {
+                    // LADO DIREITO
 
-                        HStack(spacing: 10) {
+                    VStack(alignment: .leading, spacing: 20) {
 
-                            Text("Consultar")
+                        Spacer()
 
-                            Image(systemName: "arrow.right")
+                        Image("Logo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 72, height: 72)
+                            .clipShape(Circle())
+
+                        Text("""
+                        Seu aplicativo
+                        de consulta de
+                        investimentos
+                        """)
+                        .font(.custom("Avenir Next Demi Bold", size: 36))
+                        .foregroundStyle(Color("CorFonte"))
+
+                        NavigationLink {
+
+                        } label: {
+
+                            HStack(spacing: 10) {
+
+                                Text("Consultar")
+
+                                Image(systemName: "arrow.right")
+                            }
+                            .font(.custom("Avenir Next Demi Bold", size: 20))
+                            .foregroundStyle(Color("FonteUniversal"))
+                            .frame(width: 240, height: 55)
+                            .background(Color("CorPrimaria"))
+                            .cornerRadius(30)
                         }
-                        .font(.custom("Avenir Next Demi Bold", size: 20))
-                        .foregroundStyle(Color("FonteUniversal"))
-                        .frame(width: 240, height: 58)
-                        .background(Color("CorPrimaria"))
-                        .clipShape(Capsule())
-                    }
-                    .buttonStyle(.plain)
+                        .buttonStyle(.plain)
 
-                    Spacer()
+                        Spacer()
+                    }
+                    .frame(
+                        width: geometry.size.width * 0.28
+                    )
+                    .padding(.horizontal, 40)
                 }
-                .frame(width: 420)
-                .padding(.horizontal, 60)
             }
+            .ignoresSafeArea()
             }
-                
-            }
-            
-            
         }
+                
+        }
+            
+            
+        
     
 
 
