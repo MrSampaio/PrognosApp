@@ -14,6 +14,25 @@ struct CardInvestimentoView: View {
     
     @Binding var selecionado: Bool
     
+    @ScaledMetric(relativeTo: .title3)
+    var larguraCard: CGFloat = 260
+    
+    @ScaledMetric(relativeTo: .body)
+    var alturaCard: CGFloat = 82
+    
+    @ScaledMetric(relativeTo: .body)
+    var tamanhoCirculo: CGFloat = 34
+    
+    @ScaledMetric(relativeTo: .title3)
+    var fonteTitulo: CGFloat = 18
+    
+    @ScaledMetric(relativeTo: .body)
+    var fonteSubtitulo: CGFloat = 12
+    
+    @ScaledMetric(relativeTo: .body)
+    var paddingHorizontal: CGFloat = 16
+    
+    
     var body: some View {
         
         Button {
@@ -23,29 +42,43 @@ struct CardInvestimentoView: View {
         } label: {
             
             HStack {
+           
                 
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading,
+                       spacing: 2) {
                     
                     Text(titulo)
                         .font(
                             .custom(
                                 "Avenir Next Demi Bold",
-                                size: 18
+                                size: fonteTitulo
                             )
                         )
-                        .foregroundStyle(Color("FonteUniversal"))
+                        .foregroundStyle(
+                            Color("FonteUniversal")
+                        )
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                    
                     
                     Text(subtitulo)
                         .font(
                             .custom(
                                 "Avenir Next Medium",
-                                size: 12
+                                size: fonteSubtitulo
                             )
                         )
-                        .foregroundStyle(Color("CorSubtitulo"))
+                        .foregroundStyle(
+                            Color("CorSubtitulo")
+                        )
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
                 }
                 
+                
                 Spacer()
+                
+
                 
                 ZStack {
                     
@@ -55,31 +88,47 @@ struct CardInvestimentoView: View {
                             ? Color("CorPrimaria")
                             : Color.gray.opacity(0.15)
                         )
-                        .frame(width: 34, height: 34)
+                        .frame(
+                            width: tamanhoCirculo,
+                            height: tamanhoCirculo
+                        )
+                    
                     
                     if selecionado {
                         
                         Image(systemName: "checkmark")
-                            .font(.system(size: 14, weight: .bold))
+                            .font(
+                                .system(
+                                    size: tamanhoCirculo * 0.4,
+                                    weight: .bold
+                                )
+                            )
                             .foregroundStyle(.white)
                     }
                 }
             }
-            .padding(.horizontal, 16)
-            .frame(width: 260, height: 82)
+            .padding(.horizontal, paddingHorizontal)
+            .frame(
+                width: larguraCard,
+                height: alturaCard
+            )
             .background(
                 selecionado
                 ? Color("CardSelecionado")
                 : Color("CardNaoSelecionado")
             )
             .clipShape(
-                RoundedRectangle(cornerRadius: 18)
+                RoundedRectangle(cornerRadius: 15)
             )
         }
         .buttonStyle(.plain)
-        .animation(.easeInOut(duration: 0.15), value: selecionado)
+        .animation(
+            .easeInOut(duration: 0.15),
+            value: selecionado
+        )
     }
 }
+
 
 #Preview {
     
@@ -88,5 +137,6 @@ struct CardInvestimentoView: View {
         subtitulo: "Prefixado",
         selecionado: .constant(true)
     )
+    .padding()
 }
 
