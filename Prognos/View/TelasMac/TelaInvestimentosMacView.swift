@@ -6,49 +6,47 @@
 //
 import SwiftUI
 
-struct TelaGradeInvestimentosMacView: View {
+struct TelaInvestimentosMacView: View {
     
-    // We bring in your ViewModel to get the data
-    @StateObject var viewModel = InformacaoInvestimentoViewModel(
-        investimentos: InformacaoInvestimentoViewModel.listaInvestimentos
-    )
+
+    @StateObject var viewModel = TelaInvestimentosViewModel(
+        investimentosIniciais: InformacaoInvestimentoViewModel.listaInvestimentos
+        )
     
-    // 🎯 THE RESPONSIVE RULE:
-    // Columns will be at least 320pts wide, with 24pts of empty space between them.
+    
     let colunasResponsivas = [
-        GridItem(.adaptive(minimum: 320, maximum: .infinity), spacing: 24)
+        GridItem(.adaptive(minimum: 400, maximum: .infinity), spacing: 90)
     ]
     
     var body: some View {
-        ZStack {
-            // The dark background from your screenshot
-            Color(red: 0.12, green: 0.12, blue: 0.12).ignoresSafeArea()
+        VStack {
             
-            // A ScrollView so the user can scroll down to see the rest of the items
-            ScrollView(showsIndicators: false) {
+           
+            
+            ScrollView(.vertical) {
                 
-                // 🎯 THE GRID
-                LazyVGrid(columns: colunasResponsivas, spacing: 24) {
+                BarraPesquisaView(pesquisar: $viewModel.modeloBusca)
+                    .padding(40)
+                    .padding(.horizontal, 250)
+                
+                LazyVGrid(columns: colunasResponsivas, spacing: 40) {
                     
-                    // We loop through your list of investments
-                    ForEach(viewModel.investimentos, id: \.tituloFinal) { item in
+                    ForEach(viewModel.investimentosFiltrados, id: \.self) { item in
                         
-                        // We use the component you just built!
                         InformacaoInvestimentoMacView(
                             tituloInicio: item.tituloInicio,
                             tituloFinal: item.tituloFinal,
                             descricao: item.descricao
                         )
-                        // Make sure the cards stretch to fill their grid space uniformly
                         .frame(maxHeight: .infinity, alignment: .top)
                     }
                 }
-                .padding(32) // Gives nice breathing room around the edges of the screen
+                .padding(40)
             }
         }
     }
 }
 
 #Preview {
-    TelaGradeInvestimentosMacView()
+    TelaInvestimentosMacView()
 }

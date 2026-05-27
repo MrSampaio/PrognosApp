@@ -15,11 +15,11 @@ struct InformacaoInvestimentoMacView: View {
     var body: some View {
         VStack(alignment: .leading){
             HStack(){
-                Text(tituloInicio + " ")
-                    .font(.custom("BaiJamjuree-Bold", size: 24, relativeTo: .body))
+                Text(tituloInicio)
+                    .font(.custom("Avenir Next Bold", size: 24, relativeTo: .body))
                     .foregroundColor(Color.fonteUniversal)
                 Text(tituloFinal)
-                    .font(.custom("BaiJamjuree-Medium", size: 24, relativeTo: .body))
+                    .font(.custom("Avenir Next Medium", size: 24, relativeTo: .body))
                     .foregroundColor(Color.fonteUniversal)
                 Spacer()
             }
@@ -29,10 +29,11 @@ struct InformacaoInvestimentoMacView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             
             Text(descricao)
-            .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .subheadline))
+            .font(.custom("Avenir Next Medium", size: 16, relativeTo: .subheadline))
             .foregroundColor(Color.corFonte.opacity(0.7))
             .multilineTextAlignment(.leading)
             .padding(.horizontal, 20)
+            .padding(.top)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

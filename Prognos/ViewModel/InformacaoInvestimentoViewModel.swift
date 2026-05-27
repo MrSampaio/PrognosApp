@@ -28,7 +28,7 @@ class InformacaoInvestimentoViewModel: ObservableObject {
         ),
         InformacaoInvestimentoModel(
             tituloInicio: "Tesouro",
-            tituloFinal: "IPCA+",
+            tituloFinal: "Híbrido",
             descricao: "O Tesouro IPCA é um título público que combina uma taxa de juros fixa com a variação da inflação, garantindo que o seu dinheiro sempre ganhe do aumento dos preços (o chamado ganho real). É o investimento ideal para proteger e multiplicar o seu patrimônio no longo prazo, como para uma aposentadoria. No entanto, ele exige planejamento: a garantia de rendimento só vale se o título for mantido até a data de vencimento."
         ),
         InformacaoInvestimentoModel(
@@ -38,12 +38,12 @@ class InformacaoInvestimentoViewModel: ObservableObject {
         ),
         InformacaoInvestimentoModel(
             tituloInicio: "CDB/LC",
-            tituloFinal: "CDI",
+            tituloFinal: "Pós-Fixado",
             descricao: "O CDB/LC Pós-Fixado é um investimento onde você empresta seu dinheiro para um banco (CDB) ou para uma financeira (LC) e o seu rendimento acompanha um indicador da economia, quase sempre a taxa CDI (que anda lado a lado com a Taxa Selic)."
         ),
         InformacaoInvestimentoModel(
             tituloInicio: "CDB/LC",
-            tituloFinal: "IPCA+",
+            tituloFinal: "Híbrido",
             descricao: "O CDB/LC Híbrido (muito mais conhecido no mercado e nos aplicativos de banco como CDB IPCA+ ou LC IPCA+) é um investimento onde você empresta seu dinheiro para um banco ou financeira e recebe uma rentabilidade composta por duas partes, exatamente como no Tesouro Híbrido (IPCA+)."
         ),
         InformacaoInvestimentoModel(
@@ -53,12 +53,12 @@ class InformacaoInvestimentoViewModel: ObservableObject {
         ),
         InformacaoInvestimentoModel(
             tituloInicio: "LCI/LCA",
-            tituloFinal: "CDI",
+            tituloFinal: "Pós-Fixado",
             descricao: "A LCI (Letra de Crédito Imobiliário) e a LCA (Letra de Crédito do Agronegócio) Pós-Fixadas são investimentos onde você empresta dinheiro para o banco financiar o setor de imóveis ou do agronegócio, e o rendimento acompanha as variações da economia (quase sempre atrelado à taxa CDI)."
         ),
         InformacaoInvestimentoModel(
             tituloInicio: "LCI/LCA",
-            tituloFinal: "IPCA+",
+            tituloFinal: "Híbrido",
             descricao: "A LCI (Letra de Crédito Imobiliário) e a LCA (Letra de Crédito do Agronegócio) Híbridas (geralmente encontradas nas corretoras como LCI IPCA+ ou LCA IPCA+) são investimentos que unem o melhor de dois mundos: a proteção contra a inflação e a isenção de impostos."
         ),
         InformacaoInvestimentoModel(
@@ -68,12 +68,12 @@ class InformacaoInvestimentoViewModel: ObservableObject {
         ),
         InformacaoInvestimentoModel(
             tituloInicio: "Debênture Comum",
-            tituloFinal: "CDI",
+            tituloFinal: "Pós-Fixado",
             descricao: "A Debênture Pós-Fixada é um investimento onde você empresta o seu dinheiro diretamente para uma grande empresa privada (como uma concessionária de rodovias, uma empresa de energia ou de saneamento) e, em troca, recebe uma rentabilidade que flutua acompanhando a economia do país – quase sempre atrelada à taxa CDI."
         ),
         InformacaoInvestimentoModel(
             tituloInicio: "Debênture Comum",
-            tituloFinal: "IPCA+",
+            tituloFinal: "Híbrido",
             descricao: "A Debênture Híbrida (muito mais conhecida nas corretoras como Debênture IPCA+) é um investimento onde você empresta seu dinheiro diretamente para uma grande empresa privada e, em troca, recebe uma rentabilidade composta por duas partes: a inflação do período (IPCA) somada a uma taxa de juros fixa (por exemplo, IPCA + 7% ao ano)."
         ),
         InformacaoInvestimentoModel(
@@ -83,12 +83,12 @@ class InformacaoInvestimentoViewModel: ObservableObject {
         ),
         InformacaoInvestimentoModel(
             tituloInicio: "CRI/CRA",
-            tituloFinal: "CDI",
+            tituloFinal: "Pós-Fixado",
             descricao: "O CRI (Certificado de Recebíveis Imobiliários) e o CRA (Certificado de Recebíveis do Agronegócio) Pós-Fixados são investimentos onde você financia grandes projetos do setor de imóveis ou do agronegócio (sem usar um banco como intermediário) e recebe um rendimento que acompanha as variações da economia, quase sempre atrelado à taxa CDI."
         ),
         InformacaoInvestimentoModel(
             tituloInicio: "CRI/CRA",
-            tituloFinal: "IPCA+",
+            tituloFinal: "Híbrido",
             descricao: "O CRI (Certificado de Recebíveis Imobiliários) e o CRA (Certificado de Recebíveis do Agronegócio) Híbridos (mais encontrados nas corretoras como CRI IPCA+ ou CRA IPCA+) são investimentos onde você financia grandes projetos do setor de imóveis ou do agronegócio e recebe uma rentabilidade composta por duas partes: a variação da inflação (IPCA) mais uma taxa de juros fixa (por exemplo, IPCA + 8% ao ano)."
         ),
         InformacaoInvestimentoModel(
