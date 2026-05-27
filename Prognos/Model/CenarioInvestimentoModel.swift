@@ -9,9 +9,9 @@ import Foundation
 
 // MARK: - Model: Cenários de Inflação
 enum CenarioInflacao: String, CaseIterable {
-    case boa = "Controlada"
-    case ruim = "Alta"
-    case randomica = "Randômica"
+    case boa = "Boa (controlada)"
+    case ruim = "Ruim (alta)"
+    case randomica = "Histórica"
     
     // Histórico fictício/aproximado dos últimos 10 anos
     var taxasPossiveis: [Double] {

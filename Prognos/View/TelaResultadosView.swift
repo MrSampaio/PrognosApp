@@ -6,77 +6,98 @@ struct TelaResultadosView: View {
     @ObservedObject var viewModel: TelaResultadosViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            
-            // MARK: - Header (Cenário da Inflação)
-            HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Cenário da")
-                        .font(.title3)
-                        .foregroundColor(.gray)
-                    
-                    Text("Inflação \(viewModel.cenarioAtual.rawValue)")
-                        .font(.system(size: 32, weight: .bold))
-                        .foregroundColor(Color.primary)
+        ScrollView{
+            VStack(alignment: .leading, spacing: 20) {
+                
+                HStack{
+                    VStack{
+                        Text("Valor do investimento")
+                        Text("R$ \(viewModel.valorInvestido, specifier: "%.2f")")
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundColor(Color.primary)
+                    }
+                   
                 }
-                
-                Spacer()
-                
-            }
-            .padding(.horizontal)
-            
-            // MARK: - Gráfico
-            Chart(viewModel.pontosDoGrafico) { ponto in
-                LineMark(
-                    x: .value("Ano", ponto.ano),
-                    y: .value("Valor", ponto.montante)
-                )
-                .foregroundStyle(by: .value("Investimento", ponto.nomeInvestimento))
-                .interpolationMethod(.monotone)
-                
-            }
-            .chartXAxis {
-                AxisMarks(values: .automatic(desiredCount: viewModel.tempoInvestimento))
-            }
-            .frame(height: 350)
-            .padding(.horizontal)
-            
-            // MARK: - Controles (< | >)
-            HStack {
-                Spacer()
-                
-                HStack(spacing: 16) {
-                    Button(action: {
-                        viewModel.cenarioAnterior()
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.primary)
+                .frame(maxWidth: 300)
+                .frame(height: 100)
+                .background(Color.corPrimaria)
+                .cornerRadius(20)
+                    
+                // MARK: - Header (Cenário da Inflação)
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Cenário da")
+                            .font(.title3)
+                            .foregroundColor(.gray)
+                        
+                        Text("Inflação \(viewModel.cenarioAtual.rawValue)")
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundColor(Color.primary)
                     }
                     
-                    Divider()
-                        .frame(height: 16)
+                    Spacer()
                     
-                    Button(action: {
-                        viewModel.proximoCenario()
-                    }) {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.primary)
-                    }
                 }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 12)
-                .background(Color.gray.opacity(0.15))
-                .cornerRadius(30)
+                .padding(.horizontal)
                 
-                Spacer()
+                // MARK: - Gráfico
+                Chart(viewModel.pontosDoGrafico) { ponto in
+                    LineMark(
+                        x: .value("Ano", ponto.ano),
+                        y: .value("Valor", ponto.montante)
+                    )
+                    .foregroundStyle(by: .value("Investimento", ponto.nomeInvestimento))
+                    .interpolationMethod(.monotone)
+                    
+                }
+                .chartXAxis {
+                    AxisMarks(values: .automatic(desiredCount: viewModel.tempoInvestimento))
+                }
+                .frame(height: 350)
+                .padding(.horizontal)
+                
+    //            .chartYAxis{
+    //                // AxisMarks(values: .automatic(desiredCount:))
+    //            }
+                
+                // MARK: - Controles (< | >)
+                HStack {
+                    Spacer()
+                    
+                    HStack(spacing: 16) {
+                        Button(action: {
+                            viewModel.cenarioAnterior()
+                        }) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.primary)
+                        }
+                        
+                        Divider()
+                            .frame(height: 16)
+                        
+                        Button(action: {
+                            viewModel.proximoCenario()
+                        }) {
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.primary)
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(Color.gray.opacity(0.15))
+                    .cornerRadius(30)
+                    
+                    Spacer()
+                }
+                .padding(.top, 10)
             }
-            .padding(.top, 10)
+            .padding(.vertical)
+            .background(Color(UIColor.secondarySystemBackground).opacity(0.5))
+            .cornerRadius(24)
         }
-        .padding(.vertical)
-        .background(Color(UIColor.secondarySystemBackground).opacity(0.5))
-        .cornerRadius(24)
+
     }
 }
 // MARK: - Preview

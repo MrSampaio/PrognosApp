@@ -9,7 +9,6 @@ import SwiftUI
 import Charts
 
 struct GraficoEvolucaoView: View {
-    // Parâmetros que o componente precisa para desenhar o gráfico
     let dados: [PontoEvolucao]
     let tempoInvestimento: Int
     
@@ -21,11 +20,11 @@ struct GraficoEvolucaoView: View {
                     x: .value("Ano", ponto.ano),
                     y: .value("Valor (R$)", ponto.montante)
                 )
-                // Diferencia a cor da linha pelo nome do investimento
+                // diferencia a cor do investimento
                 .foregroundStyle(by: .value("Investimento", ponto.nomeInvestimento))
-                // Adiciona marcadores (bolinhas/quadrados) em cada ponto
+                // adiciona formatos diferentes para cada tipo
                 .symbol(by: .value("Investimento", ponto.nomeInvestimento))
-                // Deixa a curva levemente arredondada
+                // deixa a curva arredondada
                 .interpolationMethod(.monotone)
             }
             .frame(height: 320)
@@ -44,7 +43,7 @@ struct GraficoEvolucaoView: View {
 }
 
 // MARK: - Preview do Componente Isolado
-#if DEBUG
+
 #Preview {
     // Criando alguns dados falsos apenas para testar o visual do componente
     let dadosMock = [
@@ -60,4 +59,4 @@ struct GraficoEvolucaoView: View {
     return GraficoEvolucaoView(dados: dadosMock, tempoInvestimento: 2)
         .padding()
 }
-#endif
+

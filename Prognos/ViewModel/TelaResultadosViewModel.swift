@@ -14,14 +14,16 @@ class TelaResultadosViewModel: ObservableObject {
     let tempoInvestimento: Int
     let dadosDosCards: [CardViewModel]
     
-    // 1. Controle do Cenário Atual
+    // 1. "Cofre" que guarda os dados calculados de TODOS os cenários
+    private var dadosPorCenario: [CenarioInflacao: [PontoEvolucao]] = [:]
+    
     @Published var cenarioAtual: CenarioInflacao = .randomica {
         didSet {
-            // Toda vez que o cenário muda, recalculamos o gráfico!
-            gerarDadosDoGrafico()
+            atualizarGraficoParaCenarioAtual()
         }
     }
     
+    // Variável que a View efetivamente desenha
     @Published var pontosDoGrafico: [PontoEvolucao] = []
     
     init(valorInvestido: Float, tempoInvestimento: Int, dadosDosCards: [CardViewModel]) {
@@ -29,7 +31,11 @@ class TelaResultadosViewModel: ObservableObject {
         self.tempoInvestimento = tempoInvestimento
         self.dadosDosCards = dadosDosCards
         
-        gerarDadosDoGrafico()
+        // 3. Ao nascer, a ViewModel já calcula e guarda o histórico dos 3 cenários de uma vez
+        gerarTodosOsCenarios()
+        
+        // 4. Define o que vai aparecer primeiro na tela
+        atualizarGraficoParaCenarioAtual()
     }
     
     // MARK: - Navegação dos Cenários
@@ -49,53 +55,71 @@ class TelaResultadosViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Motor de Geração
-    private func gerarDadosDoGrafico() {
-        var novosDados: [PontoEvolucao] = []
-        let valorInicialDouble = Double(valorInvestido)
-        
-        // Vamos simular um indicador CDI que também flutua levemente acompanhando a inflação
-        let cdiBase = 0.104
-        
-        for card in dadosDosCards {
-            let nomeLegenda = "\(card.tipo.tituloPrincipal)"
-            let valorInput = (Double(card.caixaTexto.texto.replacingOccurrences(of: ",", with: ".")) ?? 0) / 100.0
+    // MARK: - Motores de Geração
+    
+    // Puxa do dicionário os pontos corretos e joga para a View
+    private func atualizarGraficoParaCenarioAtual() {
+        self.pontosDoGrafico = dadosPorCenario[cenarioAtual] ?? []
+    }
+    
+    // Roda um Loop pelos 3 cenários e salva os cálculos definitivos no Dicionário
+    private func gerarTodosOsCenarios() {
+        for cenario in CenarioInflacao.allCases {
+            dadosPorCenario[cenario] = calcularMatematica(para: cenario)
+        }
+    }
+    
+    // funcao que calcula os pontos do grafico ja recebendo o cenário
+    private func calcularMatematica(para cenario: CenarioInflacao) -> [PontoEvolucao] {
+            var novosDados: [PontoEvolucao] = []
+            let valorInicialDouble = Double(valorInvestido)
             
-            var taxaFixa: Double = 0.0
-            var percentualCDI: Double = 0.0
-            var taxaAdm: Double = 0.0
+            let cdiBase = 0.104
             
-            if card.tipo.pedeTaxaPrefixada { taxaFixa = valorInput }
-            if card.tipo.pedePercentualCDI { percentualCDI = valorInput }
-            if card.tipo.pedeTaxasDeFundo { taxaAdm = valorInput }
-            
-            let investimento = card.tipo.criarInvestimento(
-                taxaFixa: taxaFixa,
-                percentualCDI: percentualCDI,
-                taxaAdministracao: taxaAdm
-            )
-            
-            for ano in 0...tempoInvestimento {
-                let meses = ano * 12
+            // 1. Mudamos para .enumerated() para ter acesso ao índice (0, 1, 2...)
+            for (index, card) in dadosDosCards.enumerated() {
                 
-                // SORTEIO: Pega uma inflação aleatória baseada no cenário escolhido!
-                let inflacaoSorteada = cenarioAtual.sortearTaxa()
+                // 2. Criamos um nome ÚNICO para a legenda.
+                // Ex: "1. Tesouro (12,5%)" e "2. Tesouro (10,5%)"
+                let taxaDigitada = card.caixaTexto.texto.isEmpty ? "0" : card.caixaTexto.texto
+                let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal) (\(taxaDigitada)%)"
                 
-                let montanteFinal = investimento.calcular(
-                    valor: valorInicialDouble,
-                    meses: meses,
-                    inflacao: inflacaoSorteada,
-                    indicador: cdiBase // Se quiser, pode randomizar o CDI aqui também!
+                let valorInput = (Double(card.caixaTexto.texto.replacingOccurrences(of: ",", with: ".")) ?? 0) / 100.0
+                
+                var taxaFixa: Double = 0.0
+                var percentualCDI: Double = 0.0
+                var taxaAdm: Double = 0.0
+                
+                if card.tipo.pedeTaxaPrefixada { taxaFixa = valorInput }
+                if card.tipo.pedePercentualCDI { percentualCDI = valorInput }
+                if card.tipo.pedeTaxasDeFundo { taxaAdm = valorInput }
+                
+                let investimento = card.tipo.criarInvestimento(
+                    taxaFixa: taxaFixa,
+                    percentualCDI: percentualCDI,
+                    taxaAdministracao: taxaAdm
                 )
                 
-                novosDados.append(PontoEvolucao(
-                    nomeInvestimento: nomeLegenda,
-                    ano: ano,
-                    montante: montanteFinal
-                ))
+                for ano in 0...tempoInvestimento {
+                    let meses = ano * 12
+                    
+                    let inflacaoSorteada = cenario.sortearTaxa()
+                    
+                    let montanteFinal = investimento.calcular(
+                        valor: valorInicialDouble,
+                        meses: meses,
+                        inflacao: inflacaoSorteada,
+                        indicador: cdiBase
+                    )
+                    
+                    novosDados.append(PontoEvolucao(
+                        nomeInvestimento: nomeLegenda,
+                        ano: ano,
+                        montante: montanteFinal
+                    ))
+                }
             }
+            
+            return novosDados
         }
-        
-        self.pontosDoGrafico = novosDados
-    }
 }
