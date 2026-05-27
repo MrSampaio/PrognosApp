@@ -14,13 +14,14 @@ struct HomeMacView: View {
         NavigationStack {
             
             HStack(spacing: 0) {
-                
 
-                
+                // IMAGEM
+
                 Image("Imagem")
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 360, height: 520)
+                    .frame(maxWidth: .infinity)
+                    .frame(maxHeight: .infinity)
                     .clipped()
                     .clipShape(
                         UnevenRoundedRectangle(
@@ -30,72 +31,59 @@ struct HomeMacView: View {
                             topTrailingRadius: 32
                         )
                     )
-                
-                
-                
+                    .layoutPriority(1)
+
+
+                // LADO DIREITO
+
                 VStack(alignment: .leading, spacing: 20) {
-                    
+
                     Spacer()
-                    
-                    
-                    
+
                     Image("Logo")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 60, height: 60)
-                        .clipShape(Circle())
-                    
-                    
-                    
+                        .frame(width: 72, height: 72)
+
                     Text("""
                     Seu aplicativo
                     de consulta de
                     investimentos
                     """)
-                    .font(
-                        .custom("Avenir Next Regular",size: 22))
+                    .font(.custom("Avenir Next Demi Bold", size: 36))
                     .foregroundStyle(Color("CorFonte"))
-                    .lineSpacing(4)
-                    
-                    
-                    
+
                     NavigationLink {
-                        
-                        TelaSelecaoMacView()
-                        
+
                     } label: {
-                        
+
                         HStack(spacing: 10) {
-                            
+
                             Text("Consultar")
-                            
+
                             Image(systemName: "arrow.right")
                         }
-                        .font(
-                            .custom(
-                                "Avenir Next Demi Bold",
-                                size: 14
-                            )
-                        )
+                        .font(.custom("Avenir Next Demi Bold", size: 20))
                         .foregroundStyle(Color("FonteUniversal"))
-                        .frame(width: 150, height: 35)
+                        .frame(width: 240, height: 58)
                         .background(Color("CorPrimaria"))
-                        .cornerRadius(120)
+                        .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
-                    
-                    
+
                     Spacer()
                 }
-                .frame(maxWidth: .infinity)
-                .offset(x: -30)
+                .frame(width: 420)
+                .padding(.horizontal, 60)
+            }
+            }
                 
             }
-            .frame(width: 760, height: 520)
+            
             
         }
-    }
-}
+    
+
 
 #Preview {
     HomeMacView()
