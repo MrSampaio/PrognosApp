@@ -36,6 +36,7 @@
 				View/Componentes/CaixaTextoView.swift,
 				View/Componentes/CaixaValorTempoView.swift,
 				View/Componentes/CardInvestimento.swift,
+				View/Componentes/CardResultadoView.swift,
 				View/Componentes/CardView.swift,
 				View/Componentes/GraficoEvolucaoView.swift,
 				View/Componentes/InformacaoInvestimentoView.swift,
@@ -235,7 +236,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = A54TARWH57;
+				DEVELOPMENT_TEAM = ASZ8558R77;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -270,7 +271,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = A54TARWH57;
+				DEVELOPMENT_TEAM = ASZ8558R77;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
