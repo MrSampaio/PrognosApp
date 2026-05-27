@@ -11,7 +11,6 @@ struct BarraPesquisaView: View {
     
     @Binding var pesquisar: BarraPesquisaModel
     @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 20
-    @FocusState private var focado: Bool
     
     var body: some View {
         HStack(alignment: .center) {
@@ -35,7 +34,6 @@ struct BarraPesquisaView: View {
                         .textFieldStyle(.plain)
                         .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
                         .foregroundColor(pesquisar.corTexto)
-                        .focused($focado)
                         .lineLimit(1...4)
                 
             }
@@ -44,9 +42,8 @@ struct BarraPesquisaView: View {
         .padding(.horizontal, 20)
         .padding(.vertical, paddingAdaptativo)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(focado ? pesquisar.corFundo.opacity(0.8) : pesquisar.corFundo)
+        .background(pesquisar.corFundo.opacity(0.8))
         .clipShape(RoundedRectangle(cornerRadius: pesquisar.arredondamento))
-        .animation(.easeInOut(duration: 0.2), value: focado)
     }
 }
 

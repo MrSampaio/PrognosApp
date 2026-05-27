@@ -12,7 +12,7 @@ struct InformacaoInvestimentoView: View {
     
     var body: some View {
         VStack {
-            VStack {
+        
                 ForEach(Array(viewModel.investimentos.enumerated()), id: \.element.id) { index, item in
                     
                     LinhaInvestimentoView(
@@ -23,7 +23,7 @@ struct InformacaoInvestimentoView: View {
                     )
                 }
             }
-        }
+        
     }
 }
 

@@ -109,7 +109,7 @@ struct TelaResultadosView: View {
                 .padding(.top, 10)
             }
             .padding(.vertical)
-            .background(Color(UIColor.secondarySystemBackground).opacity(0.5))
+            //.background(Color(UIColor.secondarySystemBackground).opacity(0.5))
             .cornerRadius(24)
         }
     }
