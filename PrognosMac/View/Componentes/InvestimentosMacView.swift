@@ -1,9 +1,3 @@
-//
-//  InvestimentosMacView.swift
-//  Prognos
-//
-//  Created by Leonardo Gonçalves da Silva on 27/05/26.
-//
 import SwiftUI
 
 struct InvestimentosMacView: View {
@@ -20,9 +14,10 @@ struct InvestimentosMacView: View {
             // 1. THE HEADER (Colored Dot + Title)
             HStack(spacing: 8) {
                 Circle()
-                .fill(corGrafico)
-                .frame(width: tamanhoDoCirculo, height: tamanhoDoCirculo)
-                .overlay(Circle().stroke(Color.black, lineWidth: 1))
+                    // ⚠️ CORREÇÃO APLICADA AQUI ⚠️
+                    .fill(corGrafico)
+                    .frame(width: tamanhoDoCirculo, height: tamanhoDoCirculo)
+                    .overlay(Circle().stroke(Color.black, lineWidth: 1))
                 
                 // Swap "CDI" with your enum property, e.g., viewModel.tipo.tituloPrincipal
                 Text(viewModel.tipo.tituloPrincipal)
@@ -34,10 +29,7 @@ struct InvestimentosMacView: View {
                 
             }
             
-           
             CaixaTextoView(caixa: $viewModel.caixaTexto)
-                
-       
             
             Text(viewModel.tipo.mediaHistorica)
                 .font(.custom("BaiJamjuree-Medium", size: 14, relativeTo: .title3))
@@ -51,6 +43,7 @@ struct InvestimentosMacView: View {
         .padding()
     }
 }
+
 #Preview {
     InvestimentosMacView(
         viewModel: CardViewModel(tipo: .cdbCdi),
@@ -60,4 +53,3 @@ struct InvestimentosMacView: View {
     )
     .padding()
 }
-
