@@ -4,34 +4,51 @@ import Charts
 struct TelaResultadosView: View {
     @ObservedObject var viewModel: TelaResultadosViewModel
     
+    @ScaledMetric(relativeTo: .body)
+    var paddingAdaptativo: CGFloat = 20
+    
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(spacing: paddingAdaptativo) {
+               
+                    
+                    Text("Simulação")
+                    .font(.custom("BaiJamjuree-SemiBold", size: 24, relativeTo: .title))
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.7)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .foregroundColor(Color("CorFonteTitulo"))
+                    
+                
+                    
                 
                 HStack{
-                    VStack(alignment: .leading){
+                    VStack{
                         Text("Valor do investimento")
+                            .font(.custom("BaiJamjuree-Medium", size: 16))
+                            .foregroundStyle(Color("FonteUniversal"))
                         Text("R$ \(viewModel.valorInvestido, format: .number.precision(.fractionLength(2)))")
-                            .font(.system(size: 32, weight: .bold))
+                            .font(.custom("BaiJamjuree-SemiBold", size: 32))
+                            .foregroundStyle(Color("FonteUniversal"))
                             .foregroundColor(Color.primary)
                     }
                     .padding()
                 }
-                .frame(maxWidth: 300)
+                .frame(maxWidth: 400)
                 .frame(height: 100)
-                .background(Color.green.opacity(0.3)) // Ajuste para a sua corPrimaria
-                .cornerRadius(20)
+                .background(Color("CorPrimaria")) // Ajuste para a sua corPrimaria
+                .cornerRadius(14)
                 .padding(.horizontal)
                     
                 // MARK: - Header (Cenário da Inflação)
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Cenário da")
-                            .font(.title3)
+                            .font(.custom("BaiJamjujuree-Medium", size: 20))
                             .foregroundColor(.gray)
                         
                         Text("Inflação \(viewModel.cenarioAtual.rawValue)")
-                            .font(.system(size: 32, weight: .bold))
+                            .font(.custom("BaiJamjuree-SemiBold", size: 28))
                             .foregroundColor(Color.primary)
                             // Adicionando uma transição suave no título também
                             .animation(.default, value: viewModel.cenarioAtual)
@@ -45,8 +62,8 @@ struct TelaResultadosView: View {
                 // Assim, quando o botão for clicado, o gráfico reage animando!
                 Toggle(isOn: $viewModel.mostrarValorReal.animation(.easeInOut(duration: 0.6))) {
                     Text("Descontar Inflação (Poder de Compra)")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                        .font(.custom("BaiJamjujuree-Medium", size: 16))
+                        .foregroundColor(.gray)
                 }
                 .padding(.horizontal)
                 .tint(.green)
@@ -107,11 +124,90 @@ struct TelaResultadosView: View {
                     Spacer()
                 }
                 .padding(.top, 10)
+               // Spacer()
+                
+                VStack(spacing: paddingAdaptativo){
+                    
+                    Text("Comparação de resultados")
+                        .font(.custom("BaiJamjuree-SemiBold", size: 24, relativeTo: .title))
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.7)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .foregroundColor(Color("CorFonteTitulo"))
+                    
+                }
+                .padding(.top, 10)
+                
+                VStack(spacing: 36) {
+                    
+                    CardResultadoView(
+                        titulo: "CDB",
+                        descricao: "O investimento em CDB apresenta um melhor rendimento ao final da simulação",
+                        icone: "checkmark",
+                        corIcone: .corPrimaria
+                    )
+                    
+                    CardResultadoView(
+                        titulo: "CDI",
+                        descricao: "O investimento em CDI apresenta um pior resultado ao final da simulação",
+                        icone: "exclamationmark",
+                        corIcone: .iconeCard
+                    )
+                    Spacer()
+                    
+                    NavigationLink {
+                        
+                        TelaSelecaoView()
+                        
+                    } label: {
+                        
+                        HStack(spacing: 8) {
+                            
+                            Text("Recomeçar consulta")
+                            
+                        }
+                        .font(
+                            .custom(
+                                "BaiJamjuree-SemiBold",
+                                size: 22,
+                                relativeTo: .title3
+                            )
+                        )
+                        .foregroundColor(Color("FonteUniversal"))
+                        .frame(width: 300,
+                               height: 48)
+                        .background(Color("CorPrimaria"))
+                        .clipShape(Capsule())
+                    }
+                    .padding(.bottom, 42)
+                }
+                .padding()
+                
             }
             .padding(.vertical)
             //.background(Color(UIColor.secondarySystemBackground).opacity(0.5))
             .cornerRadius(24)
         }
+#if os(iOS)
+    .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+
+                Button {
+
+                } label: {
+
+                    Image(systemName: "arrow.down.to.line.compact")
+                        .font(.system(size: 18, weight: .medium))
+                    
+                }
+            }
+        }
+
+        .toolbarTitleDisplayMode(.inline)
+    //.padding()
+    .frame(maxWidth: .infinity)
+    
+    #endif
     }
 }
 // MARK: - Preview
