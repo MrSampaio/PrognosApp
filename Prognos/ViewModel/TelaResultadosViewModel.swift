@@ -1,73 +1,101 @@
 import Foundation
 import Combine
 
+// MARK: - Model para o Gráfico
+struct PontoEvolucao: Identifiable {
+    let id = UUID()
+    let nomeInvestimento: String
+    let ano: Int
+    let montante: Double
+}
+
 class TelaResultadosViewModel: ObservableObject {
+    let valorInvestido: Float
+    let tempoInvestimento: Int
+    let dadosDosCards: [CardViewModel]
     
-    private let dadosSimulacao: DadosDaSimulacao
-    
-    // A View vai ler essa lista para desenhar as linhas
-    @Published var pontosDoGrafico: [PontoDoGrafico] = []
-    
-    // O didSet escuta o Picker e recalcula o gráfico automaticamente
-    @Published var cenarioAtual: CenarioEconomico = .historico {
+    // 1. Controle do Cenário Atual
+    @Published var cenarioAtual: CenarioInflacao = .randomica {
         didSet {
-            recalcularGrafico()
+            // Toda vez que o cenário muda, recalculamos o gráfico!
+            gerarDadosDoGrafico()
         }
     }
     
-    init(dados: DadosDaSimulacao) {
-        self.dadosSimulacao = dados
-        self.recalcularGrafico() // Roda a matemática ao abrir a tela
+    @Published var pontosDoGrafico: [PontoEvolucao] = []
+    
+    init(valorInvestido: Float, tempoInvestimento: Int, dadosDosCards: [CardViewModel]) {
+        self.valorInvestido = valorInvestido
+        self.tempoInvestimento = tempoInvestimento
+        self.dadosDosCards = dadosDosCards
+        
+        gerarDadosDoGrafico()
     }
     
-    private func recalcularGrafico() {
-        var novosPontos: [PontoDoGrafico] = []
+    // MARK: - Navegação dos Cenários
+    func proximoCenario() {
+        let todos = CenarioInflacao.allCases
+        if let indexAtual = todos.firstIndex(of: cenarioAtual) {
+            let proximoIndex = (indexAtual + 1) % todos.count
+            cenarioAtual = todos[proximoIndex]
+        }
+    }
+    
+    func cenarioAnterior() {
+        let todos = CenarioInflacao.allCases
+        if let indexAtual = todos.firstIndex(of: cenarioAtual) {
+            let indexAnterior = (indexAtual - 1 + todos.count) % todos.count
+            cenarioAtual = todos[indexAnterior]
+        }
+    }
+    
+    // MARK: - Motor de Geração
+    private func gerarDadosDoGrafico() {
+        var novosDados: [PontoEvolucao] = []
+        let valorInicialDouble = Double(valorInvestido)
         
-        for inv in dadosSimulacao.investimentos {
-            let valorInicialOriginal = Double(dadosSimulacao.valorInicial)
-            let nomeParaLegenda = "\(inv.tipo.tituloPrincipal) \(inv.tipo.subtitulo)"
+        // Vamos simular um indicador CDI que também flutua levemente acompanhando a inflação
+        let cdiBase = 0.104
+        
+        for card in dadosDosCards {
+            let nomeLegenda = "\(card.tipo.tituloPrincipal)"
+            let valorInput = (Double(card.caixaTexto.texto.replacingOccurrences(of: ",", with: ".")) ?? 0) / 100.0
             
-            // 1. Cria o Ponto Inicial (Ano 0 - Dinheiro sem rendimento)
-            novosPontos.append(PontoDoGrafico(nomeInvestimento: nomeParaLegenda, ano: 0, saldo: Float(valorInicialOriginal)))
+            var taxaFixa: Double = 0.0
+            var percentualCDI: Double = 0.0
+            var taxaAdm: Double = 0.0
             
-            // 2. Prepara a taxa decimal (ex: 105% vira 1.05)
-            let taxaDecimal = Double(inv.taxaDigitada) / 100.0
+            if card.tipo.pedeTaxaPrefixada { taxaFixa = valorInput }
+            if card.tipo.pedePercentualCDI { percentualCDI = valorInput }
+            if card.tipo.pedeTaxasDeFundo { taxaAdm = valorInput }
             
-            // 3. Cria a "máquina" que sabe as regras de Imposto e B3 deste título
-            let motorDoInvestimento = inv.tipo.criarInvestimento(
-                taxaFixa: taxaDecimal,
-                percentualCDI: taxaDecimal,
-                taxaAdministracao: taxaDecimal
+            let investimento = card.tipo.criarInvestimento(
+                taxaFixa: taxaFixa,
+                percentualCDI: percentualCDI,
+                taxaAdministracao: taxaAdm
             )
             
-            // Puxa as projeções de inflação e juros do cenário atual (Otimista, Histórico, etc)
-            let inflacaoCenario = Double(cenarioAtual.taxaIpcaProjetada) / 100.0
-            let indicadorCenario = Double(cenarioAtual.taxaCdiProjetada) / 100.0
-            
-            // 4. Loop dos anos: pede pro motor calcular o valor líquido exato
-            if dadosSimulacao.tempoAnos > 0 {
-                for ano in 1...dadosSimulacao.tempoAnos {
-                    
-                    let mesesAcumulados = ano * 12
-                    
-                    // A mágica: calcula os juros sobre juros e abate os impostos reais
-                    let saldoLiquidoNoAno = motorDoInvestimento.calcular(
-                        valor: valorInicialOriginal,
-                        meses: mesesAcumulados,
-                        inflacao: inflacaoCenario,
-                        indicador: indicadorCenario
-                    )
-                    
-                    novosPontos.append(PontoDoGrafico(
-                        nomeInvestimento: nomeParaLegenda,
-                        ano: ano,
-                        saldo: Float(saldoLiquidoNoAno)
-                    ))
-                }
+            for ano in 0...tempoInvestimento {
+                let meses = ano * 12
+                
+                // SORTEIO: Pega uma inflação aleatória baseada no cenário escolhido!
+                let inflacaoSorteada = cenarioAtual.sortearTaxa()
+                
+                let montanteFinal = investimento.calcular(
+                    valor: valorInicialDouble,
+                    meses: meses,
+                    inflacao: inflacaoSorteada,
+                    indicador: cdiBase // Se quiser, pode randomizar o CDI aqui também!
+                )
+                
+                novosDados.append(PontoEvolucao(
+                    nomeInvestimento: nomeLegenda,
+                    ano: ano,
+                    montante: montanteFinal
+                ))
             }
         }
         
-        // Atualiza a tela com os novos dados processados
-        self.pontosDoGrafico = novosPontos
+        self.pontosDoGrafico = novosDados
     }
 }
