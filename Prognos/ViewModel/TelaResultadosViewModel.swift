@@ -2,23 +2,28 @@ import Foundation
 import Combine
 
 // MARK: - Model para o Gráfico
-struct PontoEvolucao: Identifiable {
-    let id = UUID()
+struct PontoEvolucao: Identifiable, Equatable {
+    var id: String { "\(nomeInvestimento)-\(ano)" }
+    
     let nomeInvestimento: String
     let ano: Int
-    let montante: Double
+    let montanteNominal: Double
+    let montanteReal: Double
+    
 }
-
 class TelaResultadosViewModel: ObservableObject {
     let valorInvestido: Float
     let tempoInvestimento: Int
     let dadosDosCards: [CardViewModel]
     
-    // 1. Controle do Cenário Atual
+    // NOVO: Controle do Toggle na tela (começa ativado mostrando o Valor Real)
+    @Published var mostrarValorReal: Bool = true
+    
+    private var dadosPorCenario: [CenarioInflacao: [PontoEvolucao]] = [:]
+    
     @Published var cenarioAtual: CenarioInflacao = .randomica {
         didSet {
-            // Toda vez que o cenário muda, recalculamos o gráfico!
-            gerarDadosDoGrafico()
+            atualizarGraficoParaCenarioAtual()
         }
     }
     
@@ -29,7 +34,8 @@ class TelaResultadosViewModel: ObservableObject {
         self.tempoInvestimento = tempoInvestimento
         self.dadosDosCards = dadosDosCards
         
-        gerarDadosDoGrafico()
+        gerarTodosOsCenarios()
+        atualizarGraficoParaCenarioAtual()
     }
     
     // MARK: - Navegação dos Cenários
@@ -49,16 +55,26 @@ class TelaResultadosViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Motor de Geração
-    private func gerarDadosDoGrafico() {
+    // MARK: - Motores de Geração
+    private func atualizarGraficoParaCenarioAtual() {
+        self.pontosDoGrafico = dadosPorCenario[cenarioAtual] ?? []
+    }
+    
+    private func gerarTodosOsCenarios() {
+        for cenario in CenarioInflacao.allCases {
+            dadosPorCenario[cenario] = calcularMatematica(para: cenario)
+        }
+    }
+    
+    private func calcularMatematica(para cenario: CenarioInflacao) -> [PontoEvolucao] {
         var novosDados: [PontoEvolucao] = []
         let valorInicialDouble = Double(valorInvestido)
-        
-        // Vamos simular um indicador CDI que também flutua levemente acompanhando a inflação
         let cdiBase = 0.104
         
-        for card in dadosDosCards {
-            let nomeLegenda = "\(card.tipo.tituloPrincipal)"
+        for (index, card) in dadosDosCards.enumerated() {
+            let taxaDigitada = card.caixaTexto.texto.isEmpty ? "0" : card.caixaTexto.texto
+            let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal) (\(taxaDigitada)%)"
+            
             let valorInput = (Double(card.caixaTexto.texto.replacingOccurrences(of: ",", with: ".")) ?? 0) / 100.0
             
             var taxaFixa: Double = 0.0
@@ -77,25 +93,29 @@ class TelaResultadosViewModel: ObservableObject {
             
             for ano in 0...tempoInvestimento {
                 let meses = ano * 12
+                let inflacaoSorteada = cenario.sortearTaxa()
                 
-                // SORTEIO: Pega uma inflação aleatória baseada no cenário escolhido!
-                let inflacaoSorteada = cenarioAtual.sortearTaxa()
-                
-                let montanteFinal = investimento.calcular(
+                // 1. Calcula o montante nominal (bruto - taxas e impostos)
+                let montanteNominal = investimento.calcular(
                     valor: valorInicialDouble,
                     meses: meses,
                     inflacao: inflacaoSorteada,
-                    indicador: cdiBase // Se quiser, pode randomizar o CDI aqui também!
+                    indicador: cdiBase
                 )
+                
+                // 2. Calcula o montante real (descontando a inflação do período)
+                let fatorDescontoInflacao = pow(1.0 + inflacaoSorteada, Double(ano))
+                let montanteReal = montanteNominal / fatorDescontoInflacao
                 
                 novosDados.append(PontoEvolucao(
                     nomeInvestimento: nomeLegenda,
                     ano: ano,
-                    montante: montanteFinal
+                    montanteNominal: montanteNominal,
+                    montanteReal: montanteReal // Salvando ambos no cofre
                 ))
             }
         }
         
-        self.pontosDoGrafico = novosDados
+        return novosDados
     }
 }
