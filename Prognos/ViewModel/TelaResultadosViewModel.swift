@@ -73,7 +73,7 @@ class TelaResultadosViewModel: ObservableObject {
         
         for (index, card) in dadosDosCards.enumerated() {
             let taxaDigitada = card.caixaTexto.texto.isEmpty ? "0" : card.caixaTexto.texto
-            let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal) (\(taxaDigitada)%)"
+            let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal) (\(card.tipo.subtitulo))"
             
             let valorInput = (Double(card.caixaTexto.texto.replacingOccurrences(of: ",", with: ".")) ?? 0) / 100.0
             
