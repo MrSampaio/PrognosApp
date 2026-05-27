@@ -8,7 +8,7 @@ struct CardView: View {
     // Suas variáveis de responsividade originais
     @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 24
     @Environment(\.dynamicTypeSize) var tipoDeTamanho
-    @ScaledMetric(relativeTo: .subheadline) var tamanhoDaBola: CGFloat = 20
+    @ScaledMetric(relativeTo: .subheadline) var tamanhoDoCirculo: CGFloat = 20
     
     // Variáveis que vêm da TelaPrincipal (os inputs globais)
     let valorInvestido: Float
@@ -136,7 +136,7 @@ struct CardView: View {
                                                     
                             Circle()
                             .fill(corGrafico)
-                            .frame(width: tamanhoDaBola, height: tamanhoDaBola)
+                            .frame(width: tamanhoDoCirculo, height: tamanhoDoCirculo)
                             .overlay(Circle().stroke(Color.black, lineWidth: 1))
                             }
                         }

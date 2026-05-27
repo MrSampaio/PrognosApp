@@ -19,11 +19,29 @@ struct TelaInvestimentosView: View {
                 
                 ScrollView(showsIndicators: false) {
                     
+                    Text("Conheça os investimentos")
+                        .font(.custom("BaiJamjuree-Medium" , size:  24, relativeTo: .body))
+                        .foregroundStyle(Color.corFonteTitulo)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.7)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding()
+                    
+                    Text("Veja abaixo informações sobre cada investimento antes de comparar.")
+                        .font(.custom("BaiJamjuree-Medium" , size:  16, relativeTo: .title))
+                        .foregroundStyle(Color.corFonte)
+                        .lineLimit(3)
+                        .minimumScaleFactor(0.7)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding()
+                    
                     VStack(spacing: 0) {
+                        
+                        
                         if viewModel.investimentosFiltrados.isEmpty {
                             Text("Nenhum investimento encontrado")
                                 .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
-                                .foregroundColor(.corFonte)
+                                .foregroundColor(.corFonteTitulo)
                                 .padding(.vertical, 32)
                                 .padding(.horizontal, 32)
                         } else {

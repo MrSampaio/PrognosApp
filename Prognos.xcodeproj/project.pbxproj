@@ -42,6 +42,7 @@
 				View/Componentes/InformacaoInvestimentoView.swift,
 				View/Componentes/LinhaInvestimentoView.swift,
 				View/Componentes/Mac/InformacaoInvestimentoMacView.swift,
+				View/Componentes/Mac/InvestimentosMacView.swift,
 				View/TelasMac/TelaInvestimentosMacView.swift,
 				ViewModel/BarraPesquisaViewModel.swift,
 				ViewModel/CaixaTextoViewModel.swift,

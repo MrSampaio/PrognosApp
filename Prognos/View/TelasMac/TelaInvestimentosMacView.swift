@@ -30,19 +30,28 @@ struct TelaInvestimentosMacView: View {
                     .padding(.vertical, 40)
                     .padding(.horizontal, 40)
                 
-                LazyVGrid(columns: colunasResponsivas, spacing: 40) {
-                    
-                    ForEach(viewModel.investimentosFiltrados, id: \.self) { item in
+                
+                if viewModel.investimentosFiltrados.isEmpty {
+                    Text("Nenhum investimento encontrado")
+                        .font(.custom("Avenir Next Bold", size: 24, relativeTo: .body))
+                        .foregroundColor(Color.corFonte)
+                        .padding(.vertical, 32)
+                        .padding(.horizontal, 32)
+                } else {
+                    LazyVGrid(columns: colunasResponsivas, spacing: 40) {
                         
-                        InformacaoInvestimentoMacView(
-                            tituloInicio: item.tituloInicio,
-                            tituloFinal: item.tituloFinal,
-                            descricao: item.descricao
-                        )
-                        .frame(maxHeight: .infinity, alignment: .top)
+                        ForEach(viewModel.investimentosFiltrados, id: \.self) { item in
+                            
+                            InformacaoInvestimentoMacView(
+                                tituloInicio: item.tituloInicio,
+                                tituloFinal: item.tituloFinal,
+                                descricao: item.descricao
+                            )
+                            .frame(maxHeight: .infinity, alignment: .top)
+                        }
                     }
+                    .padding(40)
                 }
-                .padding(40)
             }
         }
     }
