@@ -9,6 +9,34 @@ import SwiftUI
 
 struct CardResultadoView: View {
     
+    @Environment(\.dynamicTypeSize)
+    var tipoDeTamanho
+
+    @ScaledMetric(relativeTo: .body)
+    var alturaCard: CGFloat = 180
+
+    @ScaledMetric(relativeTo: .body)
+    var tamanhoTitulo: CGFloat = 44
+
+    @ScaledMetric(relativeTo: .body)
+    var tamanhoDescricao: CGFloat = 18
+
+    @ScaledMetric(relativeTo: .body)
+    var tamanhoIconeExterno: CGFloat = 58
+
+    @ScaledMetric(relativeTo: .body)
+    var tamanhoIconeInterno: CGFloat = 44
+
+    @ScaledMetric(relativeTo: .body)
+    var tamanhoImagem: CGFloat = 20
+
+    @ScaledMetric(relativeTo: .body)
+    var paddingHorizontal: CGFloat = 24
+
+    @ScaledMetric(relativeTo: .body)
+    var offsetIcone: CGFloat = 28
+    
+    
     let titulo: String
     let descricao: String
     
@@ -19,11 +47,13 @@ struct CardResultadoView: View {
         
         ZStack(alignment: .topLeading) {
             
-            // CARD
+       
             
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading,
+                   spacing: tipoDeTamanho.isAccessibilitySize ? 14 : 10) {
                 
                 Spacer()
+                
                 
                 // TÍTULO
                 
@@ -31,10 +61,13 @@ struct CardResultadoView: View {
                     .font(
                         .custom(
                             "BaiJamjuree-SemiBold",
-                            size: 44
+                            size: tamanhoTitulo,
+                            relativeTo: .title2
                         )
                     )
                     .foregroundStyle(Color("CorFonte"))
+                    .minimumScaleFactor(0.7)
+                    .lineLimit(1)
                 
                 
                 // DESCRIÇÃO
@@ -43,20 +76,29 @@ struct CardResultadoView: View {
                     .font(
                         .custom(
                             "BaiJamjuree-Medium",
-                            size: 16
+                            size: tamanhoDescricao,
+                            relativeTo: .body
                         )
                     )
                     .foregroundStyle(Color("CorFonte"))
                     .multilineTextAlignment(.leading)
+                    .minimumScaleFactor(0.8)
+                    .lineLimit(nil)
+                
                 
                 Spacer()
             }
-            .padding(.horizontal, 28)
+            .padding(.horizontal, paddingHorizontal)
+            .padding(.vertical, 8)
+            .frame(
+                height: tipoDeTamanho.isAccessibilitySize
+                ? 210
+                : alturaCard
+            )
             .frame(maxWidth: .infinity)
-            .frame(height: 200)
             .background(Color("CorCaixas"))
             .clipShape(
-                RoundedRectangle(cornerRadius: 20)
+                RoundedRectangle(cornerRadius: 22)
             )
             
             
@@ -66,29 +108,49 @@ struct CardResultadoView: View {
                 
                 Circle()
                     .fill(.white)
-                    .frame(width: 58, height: 58)
+                    .frame(
+                        width: tamanhoIconeExterno,
+                        height: tamanhoIconeExterno
+                    )
                 
                 Circle()
-                    .stroke(corIcone, lineWidth: 4)
-                    .frame(width: 60, height: 58)
+                    .stroke(
+                        corIcone,
+                        lineWidth: 3
+                    )
+                    .frame(
+                        width: tamanhoIconeExterno,
+                        height: tamanhoIconeExterno
+                    )
                 
                 Circle()
                     .fill(corIcone)
-                    .frame(width: 42, height: 42)
+                    .frame(
+                        width: tamanhoIconeInterno,
+                        height: tamanhoIconeInterno
+                    )
                 
                 Image(systemName: icone)
-                    .font(.system(size: 22, weight: .bold))
+                    .font(
+                        .system(
+                            size: tamanhoImagem,
+                            weight: .bold
+                        )
+                    )
                     .foregroundStyle(.white)
             }
-            .offset(x: 20, y: -25)
+            .offset(
+                x: offsetIcone,
+                y: -offsetIcone
+            )
         }
-        .padding(.top, 20)
+        .padding(.top, 14)
     }
 }
 
 #Preview {
     
-    VStack(spacing: 40) {
+    VStack(spacing: 36) {
         
         CardResultadoView(
             titulo: "CDB",
