@@ -11,7 +11,7 @@ import SwiftUI
 struct PrognosMacApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeMacView()
+            TelaInvestimentosMacView()
         }
     }
 }

@@ -19,16 +19,18 @@
 			);
 			target = 36AFA0C42FBCDEBC007F1B05 /* Prognos */;
 		};
-		3766280B2FC63E2E00A6DA50 /* Exceptions for "Prognos" folder in "PrognosMac" target */ = {
+		376629DE2FC764B500A6DA50 /* Exceptions for "Prognos" folder in "PrognosMac" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Assets.xcassets,
+				ContentView.swift,
 				Model/BarraPesquisaModel.swift,
 				Model/CaixaTextoModel.swift,
 				Model/CardModel.swift,
-				Model/CatalogoInvestimentoModel.swift,
+				Model/CenarioInvestimentoModel.swift,
 				Model/InformacaoInvestimentoModel.swift,
-				Model/InvestimentoModel.swift,
+				Model/SimulacaoModel.swift,
+				PrognosApp.swift,
 				View/CarregamentoView.swift,
 				View/Componentes/BarraPesquisaView.swift,
 				View/Componentes/BotaoInvestimento.swift,
@@ -37,6 +39,7 @@
 				View/Componentes/CaixaValorTempoView.swift,
 				View/Componentes/CardInvestimento.swift,
 				View/Componentes/CardView.swift,
+				View/Componentes/GraficoEvolucaoView.swift,
 				View/Componentes/InformacaoInvestimentoView.swift,
 				View/Componentes/LinhaInvestimentoView.swift,
 				View/Componentes/Mac/InformacaoInvestimentoMacView.swift,
@@ -46,14 +49,22 @@
 				View/TelaResultadosView.swift,
 				View/TelaSelecaoView.swift,
 				View/TelasMac/TelaInvestimentosMacView.swift,
-				View/TesteInputs.swift,
 				ViewModel/BarraPesquisaViewModel.swift,
 				ViewModel/CaixaTextoViewModel.swift,
-				ViewModel/CalculoViewModel.swift,
 				ViewModel/CardViewModel.swift,
 				ViewModel/InformacaoInvestimentoViewModel.swift,
 				ViewModel/OpcoesInvestimentoViewModel.swift,
 				ViewModel/TelaInvestimentosViewModel.swift,
+				ViewModel/TelaResultadosViewModel.swift,
+			);
+			target = 2E1B634D2FC62D8700532094 /* PrognosMac */;
+		};
+		37E8D98B2FC76707006DA8F5 /* Exceptions for "PrognosMac" folder in "PrognosMac" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Assets.xcassets,
+				ContentView.swift,
+				Info.plist,
 			);
 			target = 2E1B634D2FC62D8700532094 /* PrognosMac */;
 		};
@@ -62,6 +73,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2E1B634F2FC62D8700532094 /* PrognosMac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				37E8D98B2FC76707006DA8F5 /* Exceptions for "PrognosMac" folder in "PrognosMac" target */,
+			);
 			path = PrognosMac;
 			sourceTree = "<group>";
 		};
@@ -69,6 +83,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				2E1F03BD2FC63D18008A780D /* Exceptions for "Prognos" folder in "Prognos" target */,
+				376629DE2FC764B500A6DA50 /* Exceptions for "Prognos" folder in "PrognosMac" target */,
 			);
 			path = Prognos;
 			sourceTree = "<group>";
