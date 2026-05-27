@@ -34,7 +34,7 @@ struct InvestimentosMacView: View {
                 
             }
             
-            // 2. THE INPUT BOX (Reusing your bug-free component!)
+           
             CaixaTextoView(caixa: $viewModel.caixaTexto)
                 
        
