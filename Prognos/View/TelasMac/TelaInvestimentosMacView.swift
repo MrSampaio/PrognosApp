@@ -26,8 +26,9 @@ struct TelaInvestimentosMacView: View {
             ScrollView(.vertical) {
                 
                 BarraPesquisaView(pesquisar: $viewModel.modeloBusca)
-                    .padding(40)
-                    .padding(.horizontal, 250)
+                    .frame(maxWidth: 600)
+                    .padding(.vertical, 40)
+                    .padding(.horizontal, 40)
                 
                 LazyVGrid(columns: colunasResponsivas, spacing: 40) {
                     

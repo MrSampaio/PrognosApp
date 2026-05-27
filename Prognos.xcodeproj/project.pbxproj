@@ -24,6 +24,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2E1B634F2FC62D8700532094 /* PrognosMac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				37E8D98B2FC76707006DA8F5 /* Exceptions for "PrognosMac" folder in "PrognosMac" target */,
+			);
 			path = PrognosMac;
 			sourceTree = "<group>";
 		};
@@ -31,6 +34,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				2E1F03BD2FC63D18008A780D /* Exceptions for "Prognos" folder in "Prognos" target */,
+				376629DE2FC764B500A6DA50 /* Exceptions for "Prognos" folder in "PrognosMac" target */,
 			);
 			path = Prognos;
 			sourceTree = "<group>";
