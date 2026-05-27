@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@main
+
 struct PrognosApp: App {
     var body: some Scene {
         WindowGroup {
