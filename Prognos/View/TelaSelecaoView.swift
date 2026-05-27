@@ -106,8 +106,8 @@ struct TelaSelecaoView: View {
         .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
 
-                    Button {
-
+                    NavigationLink{
+                       TelaInvestimentosView()
                     } label: {
 
                         Image(systemName: "info.circle.fill")
