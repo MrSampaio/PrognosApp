@@ -78,7 +78,7 @@ struct TelaResultadosView: View {
                     AxisMarks(values: .automatic(desiredCount: viewModel.tempoInvestimento))
                 }
                 .chartXAxisLabel("Anos", alignment: .center)
-                // 👇 Configuração para colocar o eixo Y à direita
+                
                 .chartYAxis {
                     AxisMarks(position: .trailing) { value in
                         AxisGridLine()
@@ -86,7 +86,7 @@ struct TelaResultadosView: View {
                         AxisValueLabel(format: .currency(code: "BRL"))
                     }
                 }
-                // ------------------------------------
+                
                 .chartForegroundStyleScale(
                     domain: viewModel.nomesLegendas,
                     range: viewModel.coresLegendas
@@ -143,11 +143,11 @@ struct TelaResultadosView: View {
                     ForEach(0..<viewModel.dadosDosCards.count, id: \.self) { indice in
                         let card = viewModel.dadosDosCards[indice]
                         
-                        // 1. Puxa os dados com a nova função robusta
+                        
                         let montanteFinal = viewModel.obterMontanteFinal(noIndice: indice)
                         let melhor = viewModel.eOMelhorInvestimento(noIndice: indice)
                         
-                        // 2. Calcula o lucro exato (sem esconder números negativos!)
+                        
                         let lucroCalculado = montanteFinal - Double(viewModel.valorInvestido)
                         
                         CardResultadoView(
@@ -159,10 +159,8 @@ struct TelaResultadosView: View {
                     
                     Spacer().frame(height: 20)
                     
-                    // Botão de Recomeçar
-                    Button(action: {
-                        // Ação para resetar ou voltar telas
-                    }) {
+                    
+                    NavigationLink(destination: TelaSelecaoView()) {
                         HStack(spacing: 8) {
                             Text("Recomeçar consulta")
                         }
