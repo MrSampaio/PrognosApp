@@ -22,6 +22,7 @@
 		3610AA482FC786BB00E6110F /* Exceptions for "PrognosMac" folder in "Prognos" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				View/Componentes/CaixaValorTempoMacView.swift,
 				View/Componentes/InformacaoInvestimentoMacView.swift,
 				View/Componentes/InvestimentosMacView.swift,
 				View/TelaInvestimentosMacView.swift,
@@ -247,7 +248,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YDGZTDXJVC;
+				DEVELOPMENT_TEAM = ASZ8558R77;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -282,7 +283,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YDGZTDXJVC;
+				DEVELOPMENT_TEAM = ASZ8558R77;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

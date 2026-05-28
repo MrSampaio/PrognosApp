@@ -19,7 +19,7 @@ struct HomeMacView: View {
 
                     // IMAGEM
 
-                    Image("Imagem")
+                    Image("Image")
                         .resizable()
                         .scaledToFill()
                         .frame(
@@ -44,7 +44,7 @@ struct HomeMacView: View {
 
                         Spacer()
 
-                        Image("Logo")
+                        Image("LogoMac")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 72, height: 72)

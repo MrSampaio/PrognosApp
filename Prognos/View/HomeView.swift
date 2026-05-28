@@ -76,7 +76,7 @@ struct HomeView: View {
                         .font(
                             .custom(
                                 "BaiJamjuree-SemiBold",
-                                size: 22,
+                                size: 24,
                                 relativeTo: .title2
                             )
                         )
@@ -119,6 +119,7 @@ struct HomeView: View {
                     .clipShape(Capsule())
                 }
                 .padding(.bottom, 42)
+                Spacer()
             }
         }
         .navigationBarBackButtonHidden(true)
