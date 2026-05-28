@@ -79,7 +79,7 @@ class TelaResultadosViewModel: ObservableObject {
         var cores: [Color] = []
         
         for (index, card) in dadosDosCards.enumerated() {
-            let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal) (\(card.tipo.subtitulo))"
+            let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal)"
             nomes.append(nomeLegenda)
             
             // 👇 BUSCA A COR RESPECTIVA DAQUELE TIPO ESPECÍFICO
@@ -160,7 +160,7 @@ class TelaResultadosViewModel: ObservableObject {
         let cdiBase = 0.104
         
         for (index, card) in dadosDosCards.enumerated() {
-            let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal) (\(card.tipo.subtitulo))"
+            let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal)"
             let valorInput = (Double(card.caixaTexto.texto.replacingOccurrences(of: ",", with: ".")) ?? 0) / 100.0
             
             var taxaFixa: Double = 0.0
