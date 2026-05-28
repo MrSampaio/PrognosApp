@@ -12,7 +12,7 @@ struct PrognosMacApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                TelaSelecaoMacView()
+                HomeMacView()
             }
         }
     }

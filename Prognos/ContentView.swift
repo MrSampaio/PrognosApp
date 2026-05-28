@@ -1,21 +1,20 @@
-//
-//  ContentView.swift
-//  Prognos
-//
-//  Created by Julio Sampaio on 19/05/26.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        
-        NavigationStack {
-            HomeView()
-        }
+        // O SwiftUI decide qual "casa" abrir dependendo do aparelho
+        #if os(macOS)
+            // No Mac, a HomeMacView já possui o seu próprio NavigationStack
+            HomeMacView()
+        #else
+            // No iPhone, iniciamos a HomeView dentro da pilha de navegação
+            NavigationStack {
+                HomeView()
+            }
+        #endif
     }
 }
 
 #Preview {
-    TelaInvestimentosMacView()
+    ContentView()
 }

@@ -1,3 +1,10 @@
+//
+//  TelaInformacoesMacView.swift
+//  PrognosMac
+//
+//  Created by Leonardo Gonçalves da Silva on 27/05/26.
+//
+
 import SwiftUI
 import Charts
 import Combine
@@ -5,38 +12,45 @@ import Combine
 struct TelaInformacoesMacView: View {
     
     @Environment(\.dismiss) var dismiss
-    @State var viewModels: [CardViewModel]
+    
+    @StateObject var gerente: SimuladorInvestimentosViewModel
     @StateObject var chartViewModel: TelaResultadosViewModel
     
     @State var valorGlobal = CaixaTextoViewModel.caixaTexto[0]
     @State var tempoGlobal = CaixaTextoViewModel.caixaTexto[1]
     
-    init(investimentos: [TipoDeInvestimento]) {
-        let vmsMapeados = investimentos.map { CardViewModel(tipo: $0) }
-        _viewModels = State(initialValue: vmsMapeados)
-        
-        _chartViewModel = StateObject(wrappedValue: TelaResultadosViewModel(
-            valorInvestido: 0,
-            tempoInvestimento: 0,
-            dadosDosCards: vmsMapeados
-        ))
-    }
-    
-    private func dispararAtualizacaoDoGrafico() {
-        let valorLimpo = valorGlobal.texto
+    // 1. CÁLCULOS MOVIDOS PARA FORA DO VIEWBUILDER
+    // Isto evita que o SwiftUI se perca e dispare os erros de Generic/Binding
+    private var valorConvertido: Float {
+        let limpo = valorGlobal.texto
             .replacingOccurrences(of: "R$", with: "")
             .replacingOccurrences(of: ".", with: "")
             .replacingOccurrences(of: ",", with: ".")
             .trimmingCharacters(in: .whitespaces)
-            
-        let novoValorFloat = Float(valorLimpo) ?? 0.0
-        let novoTempoInt = Int(tempoGlobal.texto.trimmingCharacters(in: .whitespaces)) ?? 1
-            
+        return Float(limpo) ?? 0.0
+    }
+    
+    private var tempoConvertido: Int {
+        return Int(tempoGlobal.texto.trimmingCharacters(in: .whitespaces)) ?? 0
+    }
+    
+    init(investimentos: [TipoDeInvestimento]) {
+        let novoGerente = SimuladorInvestimentosViewModel(tiposEscolhidos: investimentos)
+        _gerente = StateObject(wrappedValue: novoGerente)
+        
+        _chartViewModel = StateObject(wrappedValue: TelaResultadosViewModel(
+            valorInvestido: 0,
+            tempoInvestimento: 0,
+            dadosDosCards: novoGerente.cardsDeInvestimento
+        ))
+    }
+    
+    private func dispararAtualizacaoDoGrafico() {
         withAnimation(.easeInOut(duration: 0.4)) {
             chartViewModel.recalcularSimulacao(
-                novoValor: novoValorFloat,
-                novoTempo: novoTempoInt,
-                cardsAtualizados: viewModels
+                novoValor: valorConvertido,
+                novoTempo: tempoConvertido,
+                cardsAtualizados: gerente.cardsDeInvestimento
             )
         }
     }
@@ -84,6 +98,9 @@ struct TelaInformacoesMacView: View {
                 // MARK: - DIVISÃO PRINCIPAL EM DUAS COLUNAS
                 HStack(alignment: .top, spacing: 40) {
                     
+                    // =========================================
+                    // COLUNA ESQUERDA: GRÁFICO E RESULTADOS
+                    // =========================================
                     VStack(spacing: 30) {
                         
                         // 1. CAIXA DO GRÁFICO
@@ -145,20 +162,27 @@ struct TelaInformacoesMacView: View {
                         .background(Color.gray.opacity(0.15))
                         .cornerRadius(24)
                         
-                        ForEach(0..<chartViewModel.dadosDosCards.count, id: \.self) { indice in
-                            let card = chartViewModel.dadosDosCards[indice]
-                            let montante = chartViewModel.obterMontanteFinal(para: card)
-                            let melhor = chartViewModel.eOMelhorInvestimento(card)
+                        // Mini-cards de resultado abaixo do gráfico
+                        HStack(spacing: 16) {
                             
-                            CardResultadoView(
-                                titulo: card.tipo.tituloPrincipal,
-                                lucroLiquido: montante - Double(chartViewModel.valorInvestido),
-                                eOMelhor: melhor
-                            )
+                            // 2. FOR EACH CORRIGIDO (Usando a coleção direta com id)
+                            ForEach(chartViewModel.dadosDosCards, id: \.id) { card in
+                                let montante = chartViewModel.obterMontanteFinal(para: card)
+                                let melhor = chartViewModel.eOMelhorInvestimento(card)
+                                
+                                CardResultadoView(
+                                    titulo: card.tipo.tituloPrincipal,
+                                    lucroLiquido: montante - Double(chartViewModel.valorInvestido),
+                                    eOMelhor: melhor
+                                )
+                            }
                         }
                     }
                     .frame(maxWidth: .infinity)
                     
+                    // =========================================
+                    // COLUNA DIREITA: CARDS DE INPUT
+                    // =========================================
                     VStack(alignment: .leading, spacing: 20) {
                         Text("Informe os parâmetros\nde cada investimento")
                             .font(.custom("BaiJamjuree-SemiBold", size: 24))
@@ -167,28 +191,22 @@ struct TelaInformacoesMacView: View {
                         
                         ScrollView(showsIndicators: false) {
                             VStack(spacing: 20) {
-                                ForEach(0..<viewModels.count, id: \.self) { indice in
-                                    
-                                    let bindingDoTexto = Binding(
-                                        get: { viewModels[indice].caixaTexto.texto },
-                                        set: { novoTexto in
-                                            viewModels[indice].caixaTexto.texto = novoTexto
-                                            dispararAtualizacaoDoGrafico()
-                                        }
-                                    )
-                                    
+                                
+                                // 3. FOR EACH CORRIGIDO (Lê diretamente a coleção do gerente)
+                                ForEach(gerente.cardsDeInvestimento, id: \.id) { cardVM in
                                     InvestimentosMacView(
-                                        viewModel: viewModels[indice],
-                                        valorInvestido: 1000,
-                                        tempoDeInvestimento: 13,
-                                        corGrafico: .blue
+                                        viewModel: cardVM,
+                                        valorInvestido: valorConvertido,
+                                        tempoDeInvestimento: tempoConvertido,
+                                        corGrafico: Color(cardVM.tipo.cores)
                                     )
-                                    .onReceive(viewModels[indice].objectWillChange) { _ in
+                                    .onReceive(cardVM.objectWillChange) { _ in
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                             dispararAtualizacaoDoGrafico()
                                         }
                                     }
                                 }
+                                
                             }
                         }
                     }
@@ -240,4 +258,9 @@ struct TelaInformacoesMacView: View {
             dispararAtualizacaoDoGrafico()
         }
     }
+}
+
+#Preview {
+    TelaInformacoesMacView(investimentos: [.cdbCdi, .tesouroPrefixado, .lciIpca])
+        .frame(width: 1200, height: 800)
 }

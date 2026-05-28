@@ -1,30 +1,18 @@
-//
-//  HomeMacView.swift
-//  PrognosMac
-//
-//  Created by Mariana Fracaroli Lopes on 26/05/26.
-//
-
 import SwiftUI
 
 struct HomeMacView: View {
     
     var body: some View {
-        
+        // A raiz da navegação começa aqui!
         NavigationStack {
-            
             GeometryReader { geometry in
-
                 HStack(spacing: 0) {
 
                     // IMAGEM
-
                     Image("Image")
                         .resizable()
                         .scaledToFill()
-                        .frame(
-                            width: geometry.size.width * 0.50
-                        )
+                        .frame(width: geometry.size.width * 0.50)
                         .frame(maxHeight: .infinity)
                         .clipped()
                         .clipShape(
@@ -36,10 +24,7 @@ struct HomeMacView: View {
                             )
                         )
 
-
-
                     // LADO DIREITO
-
                     VStack(alignment: .leading, spacing: 20) {
 
                         Spacer()
@@ -58,14 +43,12 @@ struct HomeMacView: View {
                         .font(.custom("Avenir Next Demi Bold", size: 36))
                         .foregroundStyle(Color("CorFonte"))
 
+                        // ⚠️ CONECTADO: Agora leva direto para a tela de seleção
                         NavigationLink {
-
+                            TelaSelecaoMacView()
                         } label: {
-
                             HStack(spacing: 10) {
-
                                 Text("Consultar")
-
                                 Image(systemName: "arrow.right")
                             }
                             .font(.custom("Avenir Next Demi Bold", size: 20))
@@ -78,22 +61,14 @@ struct HomeMacView: View {
 
                         Spacer()
                     }
-                    .frame(
-                        width: geometry.size.width * 0.28
-                    )
+                    .frame(width: geometry.size.width * 0.28)
                     .padding(.horizontal, 40)
                 }
             }
             .ignoresSafeArea()
-            }
         }
-                
-        }
-            
-            
-        
-    
-
+    }
+}
 
 #Preview {
     HomeMacView()
