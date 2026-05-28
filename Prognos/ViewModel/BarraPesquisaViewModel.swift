@@ -17,7 +17,7 @@ class BarraPesquisaViewModel: ObservableObject {
         }
     
    public static let barraPesquisa = [
-    BarraPesquisaModel(arredondamento: 30, corFundo: .corCaixas, placeholder: "Pesquisa", corTexto: .corFonte, pesquisa: "")
+    BarraPesquisaModel(arredondamento: 30, corFundo: .corInfos, placeholder: "Pesquisa", corTexto: .corFonte, pesquisa: "")
    ]
     
 }

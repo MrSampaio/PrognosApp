@@ -112,7 +112,7 @@ struct LinhaInvestimentoView: View {
                 mostrarLinhaDivisoria: false
             )
         }
-        .background(Color.corCaixas)
+        .background(Color.corInfos)
         .clipShape(RoundedRectangle(cornerRadius: 24))
         .padding()
     }
