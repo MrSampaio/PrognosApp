@@ -17,7 +17,11 @@ struct CaixaTextoView: View {
             // ✅ Usa a cor customizada do placeholder se ela for passada, senão usa a padrão
             .foregroundColor(corPlaceholderCustomizada ?? Color("CorFonte"))
         )
-        .keyboardType(.decimalPad)
+        
+        #if canImport(UIKit)
+                .keyboardType(.decimalPad)
+        #endif
+
         .textFieldStyle(.plain) // Remove o fundo branco padrão do Mac/iOS
         .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .title2))
         // ✅ Usa a cor customizada do texto se ela for passada, senão usa a padrão

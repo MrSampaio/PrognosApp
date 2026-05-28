@@ -13,8 +13,8 @@ struct PontoEvolucao: Identifiable, Equatable {
 }
 
 class TelaResultadosViewModel: ObservableObject {
-    var valorInvestido: Float
-    var tempoInvestimento: Int
+    @Published var valorInvestido: Float
+    @Published var tempoInvestimento: Int
     var dadosDosCards: [CardViewModel]
     
     @Published var nomesLegendas: [String] = []
@@ -25,7 +25,7 @@ class TelaResultadosViewModel: ObservableObject {
     private var inflacaoFixadaPorAno: [CenarioInflacao: [Double]] = [:]
     public var dadosPorCenario: [CenarioInflacao: [PontoEvolucao]] = [:]
     
-    @Published var cenarioAtual: CenarioInflacao = .randomica {
+    @Published var cenarioAtual: CenarioInflacao = .historica {
         didSet { atualizarGraficoParaCenarioAtual() }
     }
     
@@ -35,26 +35,21 @@ class TelaResultadosViewModel: ObservableObject {
         self.dadosDosCards = dadosDosCards
         
         configurarLegendasECores()
-        
-        // 🔥 1. Sorteia e fixa a inflação para toda a linha do tempo logo na inicialização
         gerarLinhaDoTempoDaInflacao()
-        
         gerarTodosOsCenarios()
         atualizarGraficoParaCenarioAtual()
     }
     
-    // 🔥 2. NOVA FUNÇÃO: Sorteia as taxas uma única vez e guarda no cofrinho
     private func gerarLinhaDoTempoDaInflacao() {
         inflacaoFixadaPorAno = [:]
-        
         for cenario in CenarioInflacao.allCases {
-            var taxasDoPeriodo: [Double] = []
-            // Sorteia uma taxa para o ano 0, ano 1, ano 2... até o limite de tempo
-            for _ in 0...tempoInvestimento {
-                taxasDoPeriodo.append(cenario.sortearTaxa())
+            // Garantimos que a trajetória tenha pelo menos o tamanho necessário
+            // Se a trajetória for curta, nós a estendemos com o último valor
+            var taxa = cenario.trajetoria
+            while taxa.count <= tempoInvestimento {
+                taxa.append(taxa.last ?? 0.045)
             }
-            // Guarda o array estável desse cenário
-            inflacaoFixadaPorAno[cenario] = taxasDoPeriodo
+            inflacaoFixadaPorAno[cenario] = taxa
         }
     }
     
@@ -62,8 +57,6 @@ class TelaResultadosViewModel: ObservableObject {
         self.valorInvestido = novoValor
         self.dadosDosCards = cardsAtualizados
         
-        // 🔥 3. Se o usuário alterou a quantidade de anos, a linha do tempo cresceu/encolheu.
-        // Só nesse caso re-sorteamos as inflações para o novo período.
         if novoTempo != self.tempoInvestimento {
             self.tempoInvestimento = novoTempo
             gerarLinhaDoTempoDaInflacao()
@@ -81,8 +74,6 @@ class TelaResultadosViewModel: ObservableObject {
         for (index, card) in dadosDosCards.enumerated() {
             let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal)"
             nomes.append(nomeLegenda)
-            
-            // 👇 BUSCA A COR RESPECTIVA DAQUELE TIPO ESPECÍFICO
             let corDoInvestimento = obterCorRespectiva(para: card.tipo)
             cores.append(corDoInvestimento)
         }
@@ -96,28 +87,22 @@ class TelaResultadosViewModel: ObservableObject {
         case .tesouroPrefixado:   return .tesouroPrefixado
         case .tesouroSelic:       return .tesouroSelic
         case .tesouroIpca:        return .tesouroHibrido
-        
         case .cdbPrefixado:       return .cdbLcPrefixado
         case .cdbCdi:             return .cdbLcPosFixado
         case .cdbIpca:            return .cdbLcHibrido
-        
         case .lciPrefixado:       return .lciLcaPrefixada
         case .lciCdi:             return .lciLcaPosfixada
         case .lciIpca:            return .lciLcaHibrido
-        
         case .debComumPrefixada:  return .debenturePrefixado
         case .debComumCdi:        return .debenturePosfixado
         case .debComumIpca:       return .debentureHibrido
-        
         case .isentoPrefixado:    return .criCraPrefixado
         case .isentoCdi:          return .criCraPosfixado
         case .isentoIpca:         return .criCraHibrido
-        
         case .fundoRendaFixa:     return .fundoRendaFixa
         }
     }
     
-    // MARK: - Navegação dos Cenários
     func proximoCenario() {
         let todos = CenarioInflacao.allCases
         if let indexAtual = todos.firstIndex(of: cenarioAtual) {
@@ -151,7 +136,15 @@ class TelaResultadosViewModel: ObservableObject {
         
         for (index, card) in dadosDosCards.enumerated() {
             let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal)"
-            let valorInput = (Double(card.caixaTexto.texto.replacingOccurrences(of: ",", with: ".")) ?? 0) / 100.0
+            
+            // 🔥 FILTRO BLINDADO DE TEXTO:
+            // Transforma " 10,5 % " em "10.5" puro antes de tentar converter para Double!
+            let textoNumericoCru = card.caixaTexto.texto
+                .replacingOccurrences(of: ",", with: ".") // Troca vírgula por ponto
+                .components(separatedBy: CharacterSet(charactersIn: "0123456789.").inverted) // Tira %, letras e espaços
+                .joined()
+            
+            let valorInput = (Double(textoNumericoCru) ?? 0.0) / 100.0
             
             var taxaFixa: Double = 0.0
             var percentualCDI: Double = 0.0
@@ -170,8 +163,10 @@ class TelaResultadosViewModel: ObservableObject {
             for ano in 0...tempoInvestimento {
                 let meses = ano * 12
                 
-                // 🔥 4. AQUI ESTÁ A MUDANÇA MATEMÁTICA:
-                let inflacaoSorteada = inflacaoFixadaPorAno[cenario]?[ano] ?? 0.045
+                // 🔥 SEGURANÇA TOTAL:
+                // Se o cenário não tiver taxa para este ano, usamos a última taxa disponível ou 4.5%
+                let trajetoriaDoCenario = inflacaoFixadaPorAno[cenario] ?? [0.045]
+                let inflacaoSorteada = ano < trajetoriaDoCenario.count ? trajetoriaDoCenario[ano] : (trajetoriaDoCenario.last ?? 0.045)
                 
                 let montanteNominal = investimento.calcular(
                     valor: valorInicialDouble,
@@ -191,7 +186,6 @@ class TelaResultadosViewModel: ObservableObject {
                 ))
             }
         }
-        
         return novosDados
     }
 }
@@ -199,35 +193,37 @@ class TelaResultadosViewModel: ObservableObject {
 // MARK: - Extensão de Lógica Reativa
 extension TelaResultadosViewModel {
     
-    // Função inteligente: acha o lucro exato cruzando o ID do card com a posição dele no gráfico
-        func obterMontanteFinal(para card: CardViewModel) -> Double {
-            // 1. Descobre a posição (index) exata deste card na nossa lista
-            guard let index = dadosDosCards.firstIndex(where: { $0.id == card.id }) else { return 0.0 }
+    func obterMontanteFinal(noIndice index: Int) -> Double {
+            // 1. Segurança: Verifique se o índice existe na lista de cards
+            guard index >= 0 && index < dadosDosCards.count else { return Double(valorInvestido) }
             
-            // 2. Recria o nome exato que o gráfico usou (ex: "1. CDB")
-            let nomeLegendaEsperado = "\(index + 1). \(card.tipo.tituloPrincipal)"
-            let anoFinal = tempoInvestimento
+            // 2. Segurança: Verifique se o gráfico já processou algo para o cenário atual
+            let pontosBrutos = dadosPorCenario[cenarioAtual] ?? []
+            guard !pontosBrutos.isEmpty else { return Double(valorInvestido) }
             
-            // 3. Puxa do cenário que está passando na tela agora
-            let pontos = dadosPorCenario[cenarioAtual] ?? []
-            let pontoExato = pontos.first(where: { $0.nomeInvestimento == nomeLegendaEsperado && $0.ano == anoFinal })
+            let card = dadosDosCards[index]
+            let legendaExata = "\(index + 1). \(card.tipo.tituloPrincipal)"
             
-            // 👇 4. A MÁGICA: Retorna o valor Real ou Nominal dependendo do Toggle da tela!
-            if mostrarValorReal {
-                return pontoExato?.montanteReal ?? 0.0
-            } else {
-                return pontoExato?.montanteNominal ?? 0.0
-            }
+            // 3. Pega o último ponto disponível para este investimento (ano final)
+            // Se por algum motivo o ano final não foi calculado ainda, pega o último da lista
+            let pontoFinal = pontosBrutos.last(where: { $0.nomeInvestimento == legendaExata })
+            
+            let valorCalculado = mostrarValorReal ? (pontoFinal?.montanteReal ?? 0.0) : (pontoFinal?.montanteNominal ?? 0.0)
+            
+            // 4. Se o valor for 0 (erro de processamento), retorna o valor investido inicial
+            return valorCalculado > 0 ? max(Double(valorInvestido), valorCalculado) : Double(valorInvestido)
         }
     
-    // Compara todos os cards para ver quem leva a medalha de ouro (o ícone verde)
-    func eOMelhorInvestimento(_ card: CardViewModel) -> Bool {
-        let montantes = dadosDosCards.map { obterMontanteFinal(para: $0) }
-        let maximo = montantes.max() ?? 0.0
+    func eOMelhorInvestimento(noIndice index: Int) -> Bool {
+        var montantes: [Double] = []
         
-        // Evita dar troféu se tudo estiver zerado
+        for i in 0..<dadosDosCards.count {
+            montantes.append(obterMontanteFinal(noIndice: i))
+        }
+        
+        let maximo = montantes.max() ?? 0.0
         if maximo == 0.0 { return false }
         
-        return obterMontanteFinal(para: card) == maximo
+        return obterMontanteFinal(noIndice: index) == maximo
     }
 }

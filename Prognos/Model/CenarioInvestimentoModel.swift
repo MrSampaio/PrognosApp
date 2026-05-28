@@ -9,27 +9,29 @@ import Foundation
 
 // MARK: - Model: Cenários de Inflação
 enum CenarioInflacao: String, CaseIterable {
-    case boa = "Boa (controlada)"
-    case ruim = "Ruim (alta)"
-    case randomica = "Histórica"
+    case boa = "Boa (Controlada)"
+    case ruim = "Ruim (Alta)"
+    case historica = "Histórica (Randômica)"
     
-    // Histórico fictício/aproximado dos últimos 10 anos
-    var taxasPossiveis: [Double] {
+    // Agora as taxas são trajetórias estáveis, não elementos isolados
+    var trajetoria: [Double] {
         switch self {
         case .boa:
-            // Anos de inflação na meta (ex: 3% a 4.5%)
-            return [0.03, 0.032, 0.035, 0.04, 0.045]
+            // Inflação constante e baixa (3.5% ao ano)
+            return Array(repeating: 0.035, count: 20)
         case .ruim:
-            // Anos de crise/inflação estourada (ex: 8% a 11%)
-            return [0.08, 0.085, 0.09, 0.10, 0.106, 0.11]
-        case .randomica:
-            // Um mix de todos os anos
-            return [0.03, 0.04, 0.085, 0.035, 0.106, 0.045, 0.09]
+            // Inflação alta e persistente (9% ao ano)
+            return Array(repeating: 0.09, count: 20)
+        case .historica:
+            // Trajetória que simula um ciclo de economia (sobe e desce suave)
+            return [0.04, 0.045, 0.06, 0.08, 0.10, 0.08, 0.06, 0.05, 0.04, 0.035] + Array(repeating: 0.035, count: 10)
         }
     }
     
-    // Sorteia uma taxa do pool correspondente ao cenário
-    func sortearTaxa() -> Double {
-        return taxasPossiveis.randomElement() ?? 0.045
+    // Função para pegar a taxa do ano correspondente sem sortear nada
+    func obterTaxaParaAno(_ ano: Int) -> Double {
+        let array = trajetoria
+        // Se o ano for maior que a trajetória, repete o último valor
+        return ano < array.count ? array[ano] : array.last!
     }
 }

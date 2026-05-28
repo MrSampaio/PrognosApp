@@ -50,7 +50,6 @@
 				View/Componentes/CardInvestimento.swift,
 				View/Componentes/CardResultadoView.swift,
 				View/Componentes/CardView.swift,
-				View/Componentes/GraficoEvolucaoView.swift,
 				View/Componentes/InformacaoInvestimentoView.swift,
 				View/Componentes/LinhaInvestimentoView.swift,
 				View/TelaInvestimentosView.swift,
