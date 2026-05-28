@@ -7,7 +7,12 @@
 import SwiftUI
 
 struct CardResultadoView: View {
-    // Mantendo suas propriedades escaláveis para responsividade
+    
+    // MARK: - MÉTRICAS RESPONSIVAS
+    // Aumenta os tamanhos automaticamente com base nas configurações de fonte do sistema do usuário
+    @ScaledMetric(relativeTo: .title) var tamanhoIcone: CGFloat = 36
+    @ScaledMetric(relativeTo: .body) var paddingCard: CGFloat = 24
+    
     @Environment(\.dynamicTypeSize) var tipoDeTamanho
     
     let titulo: String
@@ -15,61 +20,65 @@ struct CardResultadoView: View {
     let eOMelhor: Bool
     
     var body: some View {
-        ZStack(alignment: .topLeading) {
+        VStack(alignment: .leading, spacing: 12) {
             
-            // CONTEÚDO DO CARD
-            VStack(alignment: .leading, spacing: 10) {
+            // 1. HEADER (Ícone + Título lado a lado)
+            HStack(spacing: 12) {
+                
+                // Ícone Perfeito
+                ZStack {
+                    Circle()
+                        .fill(eOMelhor ? Color.green : Color.red)
+                        .frame(width: tamanhoIcone, height: tamanhoIcone)
+                    
+                    Image(systemName: eOMelhor ? "checkmark" : "exclamationmark")
+                        .font(.system(size: tamanhoIcone * 0.5, weight: .bold))
+                        .foregroundColor(.white)
+                }
+                
+                // Título
                 Text(titulo)
-                    .font(.custom("BaiJamjuree-SemiBold", size: 24))
+                    .font(.custom("BaiJamjuree-SemiBold", size: 24, relativeTo: .title2))
                     .foregroundStyle(Color("CorFonte"))
-                    .lineLimit(1)
-                
-                Text("Lucro Líquido: R$ \(lucroLiquido, format: .number.precision(.fractionLength(2)))")
-                    .font(.custom("BaiJamjuree-Medium", size: 18))
-                    .foregroundStyle(Color("CorFonte").opacity(0.8))
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
             }
-            .padding(24)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color("CorCaixas"))
-            .clipShape(RoundedRectangle(cornerRadius: 22))
             
-            // ÍCONE (Sempre posicionado no canto superior esquerdo)
-            ZStack {
-                Circle()
-                    .fill(Color.white) // Fundo branco atrás do ícone
-                    .frame(width: 58, height: 58)
-                
-                Circle()
-                    .fill(eOMelhor ? Color.green : Color.red)
-                    .frame(width: 44, height: 44)
-                
-                Image(systemName: eOMelhor ? "checkmark" : "exclamationmark")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.white)
-            }
-            .offset(x: -10, y: -10)
+            // 2. CORPO (Lucro Líquido)
+            Text("Lucro Líquido: R$ \(lucroLiquido, format: .number.precision(.fractionLength(2)))")
+                .font(.custom("BaiJamjuree-Medium", size: 18, relativeTo: .body))
+                .foregroundStyle(Color("CorFonte").opacity(0.8))
+                .lineLimit(3)
+                .minimumScaleFactor(0.8)
         }
-        .padding(.top, 10) // Espaço para o ícone não cortar no topo
+        .padding(paddingCard)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color("CorCaixas"))
+        .clipShape(RoundedRectangle(cornerRadius: 22))
+        
+        // MARK: - ACESSIBILIDADE (VoiceOver)
+        // Ignora os textos soltos e lê uma frase limpa e profissional para o usuário
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(eOMelhor ? "Melhor rendimento: \(titulo)." : "Resultado em atenção: \(titulo).")
+        .accessibilityValue("Lucro líquido de R$ \(lucroLiquido, format: .number.precision(.fractionLength(2))).")
     }
 }
 
-// MARK: - PREVIEW CORRIGIDO
+// MARK: - PREVIEW
 #Preview {
     VStack(spacing: 40) {
-        // Caso 1: O Vencedor (Verde)
         CardResultadoView(
-            titulo: "CDB",
+            titulo: "Debênt. Pós",
             lucroLiquido: 1250.50,
             eOMelhor: true
         )
         
-        // Caso 2: O Perdedor (Vermelho)
         CardResultadoView(
-            titulo: "CDI",
+            titulo: "Debênt. Pré",
             lucroLiquido: 890.20,
             eOMelhor: false
         )
     }
     .padding()
-    .background(Color.black) // Simulando o fundo do app
+    .background(Color.black)
 }
