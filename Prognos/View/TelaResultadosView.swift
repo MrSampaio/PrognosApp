@@ -53,7 +53,7 @@ struct TelaResultadosView: View {
                 
                 // MARK: - Toggle Animado
                 Toggle(isOn: $viewModel.mostrarValorReal.animation(.easeInOut(duration: 0.6))) {
-                    Text("Descontar Inflação (Poder de Compra)")
+                    Text("Considerar inflação")
                         .font(.custom("BaiJamjuree-Medium", size: 16))
                         .foregroundColor(.gray)
                 }
@@ -61,6 +61,7 @@ struct TelaResultadosView: View {
                 .tint(.green)
                 
                 // MARK: - Gráfico Animado
+                // MARK: - Gráfico Animado (iPhone)
                 Chart(viewModel.pontosDoGrafico) { ponto in
                     LineMark(
                         x: .value("Ano", ponto.ano),
@@ -72,6 +73,12 @@ struct TelaResultadosView: View {
                 .chartXAxis {
                     AxisMarks(values: .automatic(desiredCount: viewModel.tempoInvestimento))
                 }
+                // 👇 AQUI A MÁGICA ACONTECE: Forçamos o uso das cores do seu catálogo
+                .chartForegroundStyleScale(
+                    domain: viewModel.nomesLegendas,
+                    range: viewModel.coresLegendas
+                )
+                // ------------------------------------------------------------------
                 .frame(height: 350)
                 .padding(.horizontal)
                 .animation(.easeInOut(duration: 0.6), value: viewModel.pontosDoGrafico)
