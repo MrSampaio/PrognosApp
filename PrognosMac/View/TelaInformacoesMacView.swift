@@ -217,21 +217,21 @@ struct TelaInformacoesMacView: View {
                 
                 // MARK: - FOOTER (Botões de Ação)
                 HStack(spacing: 24) {
-                    Button(action: {
-                        // Ação Download
-                    }) {
-                        HStack {
-                            Text("Download do dashboard")
-                            Image(systemName: "square.and.arrow.down")
-                        }
-                        .font(.custom("BaiJamjuree-SemiBold", size: 16))
-                        .foregroundColor(.black)
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 14)
-                        .background(Color.white)
-                        .cornerRadius(30)
-                    }
-                    .buttonStyle(.plain)
+//                    Button(action: {
+//                        // Ação Download
+//                    }) {
+//                        HStack {
+//                            Text("Download do dashboard")
+//                            Image(systemName: "square.and.arrow.down")
+//                        }
+//                        .font(.custom("BaiJamjuree-SemiBold", size: 16))
+//                        .foregroundColor(.black)
+//                        .padding(.horizontal, 24)
+//                        .padding(.vertical, 14)
+//                        .background(Color.white)
+//                        .cornerRadius(30)
+//                    }
+//                    .buttonStyle(.plain)
                     
                     Button(action: { dismiss() }) {
                         HStack {
@@ -260,6 +260,7 @@ struct TelaInformacoesMacView: View {
 }
 
 #Preview {
+    
     TelaInformacoesMacView(investimentos: [.cdbCdi, .tesouroPrefixado, .lciIpca])
         .frame(width: 1200, height: 800)
 }
