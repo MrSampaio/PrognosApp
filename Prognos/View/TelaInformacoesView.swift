@@ -133,7 +133,7 @@ struct TelaInformacoesView: View {
                     }
                     .frame(maxWidth: .infinity)
                     // 🎨 TROQUE A COR AQUI EMBAIXO:
-                    .background(Color.corCaixas)
+                    .background(Color.corCaixaCard)
                     .clipShape(RoundedRectangle(cornerRadius: 32))
                 }
             }

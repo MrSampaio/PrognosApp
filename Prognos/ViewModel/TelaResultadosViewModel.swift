@@ -127,17 +127,25 @@ class TelaResultadosViewModel: ObservableObject {
     }
     
     private func calcularMatematica(para cenario: CenarioInflacao) -> [PontoEvolucao] {
-            var novosDados: [PontoEvolucao] = []
-            let valorInicialDouble = Double(valorInvestido)
-            let cdiBase = 0.104
+        var novosDados: [PontoEvolucao] = []
+        let valorInicialDouble = Double(valorInvestido)
+        let cdiBase = 0.104
+        
+        for (index, card) in dadosDosCards.enumerated() {
+            let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal)"
+            
+            // 🔥 FILTRO BLINDADO DE TEXTO:
+            let textoNumericoCru = card.caixaTexto.texto
+                .replacingOccurrences(of: ",", with: ".") // Troca vírgula por ponto
+                .components(separatedBy: CharacterSet(charactersIn: "0123456789.").inverted) // Tira %, letras e espaços
+                .joined()
             
             for (index, card) in dadosDosCards.enumerated() {
                 let nomeLegenda = "\(index + 1). \(card.tipo.tituloPrincipal)"
                 
-                let textoNumericoCru = card.caixaTexto.texto
-                    .replacingOccurrences(of: ",", with: ".")
-                    .components(separatedBy: CharacterSet(charactersIn: "0123456789.").inverted)
-                    .joined()
+                // 🔥 SEGURANÇA TOTAL:
+                let trajetoriaDoCenario = inflacaoFixadaPorAno[cenario] ?? [0.045]
+                let inflacaoSorteada = ano < trajetoriaDoCenario.count ? trajetoriaDoCenario[ano] : (trajetoriaDoCenario.last ?? 0.045)
                 
                 let valorInput = (Double(textoNumericoCru) ?? 0.0) / 100.0
                 
@@ -198,31 +206,45 @@ class TelaResultadosViewModel: ObservableObject {
 // MARK: - Extensão de Lógica Reativa
 extension TelaResultadosViewModel {
     
-    // Retorna o valor real, sem travas, para que você veja lucros ou prejuízos reais
-    func obterMontanteFinal(noIndice index: Int) -> Double {
-        guard index >= 0 && index < dadosDosCards.count else { return 0.0 }
+    // Agora recebe o 'card' inteiro, casando perfeitamente com a TelaResultadosView
+    func obterMontanteFinal(para card: CardViewModel) -> Double {
+        // 1. Busca dinamicamente a posição do card para gerar a legenda correta
+        guard let index = dadosDosCards.firstIndex(where: { $0.id == card.id }) else {
+            return Double(valorInvestido)
+        }
         
-        let card = dadosDosCards[index]
+        // 2. Segurança: Verifique se o gráfico já processou algo para o cenário atual
+        let pontosBrutos = dadosPorCenario[cenarioAtual] ?? []
+        guard !pontosBrutos.isEmpty else { return Double(valorInvestido) }
+        
         let legendaExata = "\(index + 1). \(card.tipo.tituloPrincipal)"
         
-        let pontosBrutos = dadosPorCenario[cenarioAtual] ?? []
+        // 3. Pega o último ponto disponível para este investimento (ano final)
         let pontoFinal = pontosBrutos.last(where: { $0.nomeInvestimento == legendaExata })
         
-        if mostrarValorReal {
-            return pontoFinal?.montanteReal ?? 0.0
-        } else {
-            return pontoFinal?.montanteNominal ?? 0.0
-        }
+        let valorCalculado = mostrarValorReal ? (pontoFinal?.montanteReal ?? 0.0) : (pontoFinal?.montanteNominal ?? 0.0)
+        
+        // 4. Se o valor for 0 (erro de processamento), retorna o valor investido inicial
+        return valorCalculado > 0 ? max(Double(valorInvestido), valorCalculado) : Double(valorInvestido)
     }
     
-    func eOMelhorInvestimento(noIndice index: Int) -> Bool {
-        var montantes: [Double] = []
-        for i in 0..<dadosDosCards.count {
-            montantes.append(obterMontanteFinal(noIndice: i))
+    // Agora recebe o 'card' inteiro, casando perfeitamente com a TelaResultadosView
+    func eOMelhorInvestimento(_ card: CardViewModel) -> Bool {
+        var maiorMontante = -1.0
+        var melhorCardID = card.id
+        
+        for c in dadosDosCards {
+            let m = obterMontanteFinal(para: c)
+            if m > maiorMontante {
+                maiorMontante = m
+                melhorCardID = c.id
+            }
         }
         
-        let maximo = montantes.max() ?? 0.0
-        if maximo == 0.0 { return false }
-        return obterMontanteFinal(noIndice: index) == maximo
+        if maiorMontante == 0.0 || maiorMontante <= Double(valorInvestido) {
+            return false
+        }
+        
+        return card.id == melhorCardID
     }
 }

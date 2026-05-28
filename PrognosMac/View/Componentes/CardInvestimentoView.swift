@@ -44,36 +44,30 @@ struct CardInvestimentoView: View {
             HStack {
            
                 
-                VStack(alignment: .leading,
-                       spacing: 2) {
-                    
-                    Text(titulo)
-                        .font(
-                            .custom(
-                                "Avenir Next Demi Bold",
-                                size: fonteTitulo
-                            )
-                        )
-                        .foregroundStyle(
-                            Color("CorFonte")
-                        )
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
-                    
-                    
-                    Text(subtitulo)
-                        .font(
-                            .custom(
-                                "Avenir Next Medium",
-                                size: fonteSubtitulo
-                            )
-                        )
-                        .foregroundStyle(
-                            Color("CorSubtitulo")
-                        )
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.8)
-                }
+                VStack(alignment: .leading, spacing: 2) {
+                                    
+                                    Text(titulo)
+                                        .font(.custom("Avenir Next Demi Bold", size: fonteTitulo))
+                                        // ⚠️ A MÁGICA DO CONTRASTE: Fica escuro se selecionado!
+                                        .foregroundStyle(
+                                            selecionado
+                                            ? Color.black.opacity(0.85)
+                                            : Color("CorFonte")
+                                        )
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.8)
+                                    
+                                    Text(subtitulo)
+                                        .font(.custom("Avenir Next Medium", size: fonteSubtitulo))
+                                        // ⚠️ A mesma regra para o subtítulo, só um pouquinho mais claro
+                                        .foregroundStyle(
+                                            selecionado
+                                            ? Color.black.opacity(0.6)
+                                            : Color("CorSubtitulo")
+                                        )
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.8)
+                                }
                 
                 
                 Spacer()
