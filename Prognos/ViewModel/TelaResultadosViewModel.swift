@@ -10,8 +10,8 @@ struct PontoEvolucao: Identifiable, Equatable {
     let ano: Int
     let montanteNominal: Double
     let montanteReal: Double
-    
 }
+
 class TelaResultadosViewModel: ObservableObject {
     var valorInvestido: Float
     var tempoInvestimento: Int
@@ -87,41 +87,31 @@ class TelaResultadosViewModel: ObservableObject {
             cores.append(corDoInvestimento)
         }
         
-        // nomes.append("Inflação")
-        // cores.append(.red)
-        
         self.nomesLegendas = nomes
         self.coresLegendas = cores
     }
 
-   
     private func obterCorRespectiva(para tipo: TipoDeInvestimento) -> Color {
         switch tipo {
-        
         case .tesouroPrefixado:   return .tesouroPrefixado
         case .tesouroSelic:       return .tesouroSelic
         case .tesouroIpca:        return .tesouroHibrido
-        
         
         case .cdbPrefixado:       return .cdbLcPrefixado
         case .cdbCdi:             return .cdbLcPosFixado
         case .cdbIpca:            return .cdbLcHibrido
         
-        
         case .lciPrefixado:       return .lciLcaPrefixada
         case .lciCdi:             return .lciLcaPosfixada
         case .lciIpca:            return .lciLcaHibrido
-        
         
         case .debComumPrefixada:  return .debenturePrefixado
         case .debComumCdi:        return .debenturePosfixado
         case .debComumIpca:       return .debentureHibrido
         
-        
         case .isentoPrefixado:    return .criCraPrefixado
         case .isentoCdi:          return .criCraPosfixado
         case .isentoIpca:         return .criCraHibrido
-        
         
         case .fundoRendaFixa:     return .fundoRendaFixa
         }
@@ -181,8 +171,6 @@ class TelaResultadosViewModel: ObservableObject {
                 let meses = ano * 12
                 
                 // 🔥 4. AQUI ESTÁ A MUDANÇA MATEMÁTICA:
-                // Em vez de chamar cenario.sortearTaxa() direto e gerar um valor randômico novo a cada milissegundo,
-                // nós lemos do nosso cofrinho estável baseado no ano da linha.
                 let inflacaoSorteada = inflacaoFixadaPorAno[cenario]?[ano] ?? 0.045
                 
                 let montanteNominal = investimento.calcular(
@@ -205,5 +193,41 @@ class TelaResultadosViewModel: ObservableObject {
         }
         
         return novosDados
+    }
+}
+
+// MARK: - Extensão de Lógica Reativa
+extension TelaResultadosViewModel {
+    
+    // Função inteligente: acha o lucro exato cruzando o ID do card com a posição dele no gráfico
+        func obterMontanteFinal(para card: CardViewModel) -> Double {
+            // 1. Descobre a posição (index) exata deste card na nossa lista
+            guard let index = dadosDosCards.firstIndex(where: { $0.id == card.id }) else { return 0.0 }
+            
+            // 2. Recria o nome exato que o gráfico usou (ex: "1. CDB")
+            let nomeLegendaEsperado = "\(index + 1). \(card.tipo.tituloPrincipal)"
+            let anoFinal = tempoInvestimento
+            
+            // 3. Puxa do cenário que está passando na tela agora
+            let pontos = dadosPorCenario[cenarioAtual] ?? []
+            let pontoExato = pontos.first(where: { $0.nomeInvestimento == nomeLegendaEsperado && $0.ano == anoFinal })
+            
+            // 👇 4. A MÁGICA: Retorna o valor Real ou Nominal dependendo do Toggle da tela!
+            if mostrarValorReal {
+                return pontoExato?.montanteReal ?? 0.0
+            } else {
+                return pontoExato?.montanteNominal ?? 0.0
+            }
+        }
+    
+    // Compara todos os cards para ver quem leva a medalha de ouro (o ícone verde)
+    func eOMelhorInvestimento(_ card: CardViewModel) -> Bool {
+        let montantes = dadosDosCards.map { obterMontanteFinal(para: $0) }
+        let maximo = montantes.max() ?? 0.0
+        
+        // Evita dar troféu se tudo estiver zerado
+        if maximo == 0.0 { return false }
+        
+        return obterMontanteFinal(para: card) == maximo
     }
 }
