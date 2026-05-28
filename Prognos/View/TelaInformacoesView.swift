@@ -1,4 +1,12 @@
 import SwiftUI
+// MARK: - Extensão para o Teclado do iPhone
+#if canImport(UIKit)
+extension View {
+    func esconderTeclado() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+#endif
 
 struct TelaInformacoesView: View {
     
@@ -19,7 +27,9 @@ struct TelaInformacoesView: View {
     
     // O init recebe as escolhas da tela anterior e cria o Gerente
     init(investimentos: [TipoDeInvestimento]) {
+      
         _gerente = StateObject(wrappedValue: SimuladorInvestimentosViewModel(tiposEscolhidos: investimentos))
+       
     }
     
     var body: some View {
@@ -91,20 +101,28 @@ struct TelaInformacoesView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 24)
                 .navigationDestination(isPresented: $irParaResultados) {
+                                    
+                    // 1. Limpeza Pesada (Tira o R$, tira o ponto de milhar e arruma a vírgula)
+                    let valorLimpo = valorGlobal.texto
+                        .replacingOccurrences(of: "R$", with: "")
+                        .replacingOccurrences(of: ".", with: "")
+                        .replacingOccurrences(of: ",", with: ".")
+                        .trimmingCharacters(in: .whitespaces)
                     
-                    // 1. Convertendo os valores de String para Float/Int
-                    let valorConvertidoParaPassar = Float(valorGlobal.texto.replacingOccurrences(of: ",", with: ".")) ?? 0.0
-                    let tempoConvertidoParaPassar = Int(tempoGlobal.texto) ?? 0
+                    let valorConvertidoParaPassar = Float(valorLimpo) ?? 0.0
                     
-                    // 2. Instanciando a ViewModel da próxima tela
+                    // 2. Limpa o tempo e garante que seja pelo menos 1 ano (para o gráfico existir)
+                    let tempoLimpo = tempoGlobal.texto.trimmingCharacters(in: .whitespaces)
+                    let tempoConvertidoParaPassar = Int(tempoLimpo) ?? 1
+                    
+                    // 3. Instanciando a ViewModel da próxima tela com os dados REAIS
                     let viewModelResultados = TelaResultadosViewModel(
                         valorInvestido: valorConvertidoParaPassar,
                         tempoInvestimento: tempoConvertidoParaPassar,
-                        // ⚠️ Passamos os dados do Gerente para a tela de resultados finais
                         dadosDosCards: gerente.cardsDeInvestimento
                     )
                     
-                    // 3. Chamando a View e passando a ViewModel
+                    // 4. Chamando a View e passando a ViewModel
                     TelaResultadosView(viewModel: viewModelResultados)
                 }
             }
@@ -112,6 +130,14 @@ struct TelaInformacoesView: View {
             .frame(maxWidth: .infinity)
             
         }
+        
+        .onTapGesture {
+                    #if canImport(UIKit)
+                    esconderTeclado()
+                    #endif
+                }
+                // 👇 Opcional, mas muito recomendado (iOS 16+): esconde o teclado se o usuário rolar a tela para baixo
+                .scrollDismissesKeyboard(.interactively)
     }
 }
 
