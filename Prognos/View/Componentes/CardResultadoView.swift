@@ -4,167 +4,72 @@
 //
 //  Created by Mariana Fracaroli Lopes on 27/05/26.
 //
-
 import SwiftUI
 
 struct CardResultadoView: View {
-    
-    @Environment(\.dynamicTypeSize)
-    var tipoDeTamanho
-
-    @ScaledMetric(relativeTo: .body)
-    var alturaCard: CGFloat = 180
-
-    @ScaledMetric(relativeTo: .body)
-    var tamanhoTitulo: CGFloat = 44
-
-    @ScaledMetric(relativeTo: .body)
-    var tamanhoDescricao: CGFloat = 18
-
-    @ScaledMetric(relativeTo: .body)
-    var tamanhoIconeExterno: CGFloat = 58
-
-    @ScaledMetric(relativeTo: .body)
-    var tamanhoIconeInterno: CGFloat = 44
-
-    @ScaledMetric(relativeTo: .body)
-    var tamanhoImagem: CGFloat = 20
-
-    @ScaledMetric(relativeTo: .body)
-    var paddingHorizontal: CGFloat = 24
-
-    @ScaledMetric(relativeTo: .body)
-    var offsetIcone: CGFloat = 28
-    
+    // Mantendo suas propriedades escaláveis para responsividade
+    @Environment(\.dynamicTypeSize) var tipoDeTamanho
     
     let titulo: String
-    let descricao: String
-    
-    let icone: String
-    let corIcone: Color
+    let lucroLiquido: Double
+    let eOMelhor: Bool
     
     var body: some View {
-        
         ZStack(alignment: .topLeading) {
             
-       
-            
-            VStack(alignment: .leading,
-                   spacing: tipoDeTamanho.isAccessibilitySize ? 14 : 10) {
-                
-                Spacer()
-                
-                
-                // TÍTULO
-                
+            // CONTEÚDO DO CARD
+            VStack(alignment: .leading, spacing: 10) {
                 Text(titulo)
-                    .font(
-                        .custom(
-                            "BaiJamjuree-SemiBold",
-                            size: tamanhoTitulo,
-                            relativeTo: .title2
-                        )
-                    )
+                    .font(.custom("BaiJamjuree-SemiBold", size: 24))
                     .foregroundStyle(Color("CorFonte"))
-                    .minimumScaleFactor(0.7)
                     .lineLimit(1)
                 
-                
-                // DESCRIÇÃO
-                
-                Text(descricao)
-                    .font(
-                        .custom(
-                            "BaiJamjuree-Medium",
-                            size: tamanhoDescricao,
-                            relativeTo: .body
-                        )
-                    )
-                    .foregroundStyle(Color("CorFonte"))
-                    .multilineTextAlignment(.leading)
-                    .minimumScaleFactor(0.8)
-                    .lineLimit(nil)
-                
-                
-                Spacer()
+                Text("Lucro Líquido: R$ \(lucroLiquido, format: .number.precision(.fractionLength(2)))")
+                    .font(.custom("BaiJamjuree-Medium", size: 18))
+                    .foregroundStyle(Color("CorFonte").opacity(0.8))
             }
-            .padding(.horizontal, paddingHorizontal)
-            .padding(.vertical, 8)
-            .frame(
-                height: tipoDeTamanho.isAccessibilitySize
-                ? 210
-                : alturaCard
-            )
-            .frame(maxWidth: .infinity)
+            .padding(24)
+            .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color("CorCaixas"))
-            .clipShape(
-                RoundedRectangle(cornerRadius: 22)
-            )
+            .clipShape(RoundedRectangle(cornerRadius: 22))
             
-            
-            // ÍCONE
-            
+            // ÍCONE (Sempre posicionado no canto superior esquerdo)
             ZStack {
+                Circle()
+                    .fill(Color.white) // Fundo branco atrás do ícone
+                    .frame(width: 58, height: 58)
                 
                 Circle()
-                    .fill(.white)
-                    .frame(
-                        width: tamanhoIconeExterno,
-                        height: tamanhoIconeExterno
-                    )
+                    .fill(eOMelhor ? Color.green : Color.red)
+                    .frame(width: 44, height: 44)
                 
-                Circle()
-                    .stroke(
-                        corIcone,
-                        lineWidth: 3
-                    )
-                    .frame(
-                        width: tamanhoIconeExterno,
-                        height: tamanhoIconeExterno
-                    )
-                
-                Circle()
-                    .fill(corIcone)
-                    .frame(
-                        width: tamanhoIconeInterno,
-                        height: tamanhoIconeInterno
-                    )
-                
-                Image(systemName: icone)
-                    .font(
-                        .system(
-                            size: tamanhoImagem,
-                            weight: .bold
-                        )
-                    )
-                    .foregroundStyle(.white)
+                Image(systemName: eOMelhor ? "checkmark" : "exclamationmark")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.white)
             }
-            .offset(
-                x: offsetIcone,
-                y: -offsetIcone
-            )
+            .offset(x: -10, y: -10)
         }
-        .padding(.top, 14)
+        .padding(.top, 10) // Espaço para o ícone não cortar no topo
     }
 }
 
+// MARK: - PREVIEW CORRIGIDO
 #Preview {
-    
-    VStack(spacing: 36) {
-        
+    VStack(spacing: 40) {
+        // Caso 1: O Vencedor (Verde)
         CardResultadoView(
             titulo: "CDB",
-            descricao: "O investimento em CDB apresenta um melhor rendimento ao final da simulação",
-            icone: "checkmark",
-            corIcone: .corPrimaria
+            lucroLiquido: 1250.50,
+            eOMelhor: true
         )
         
+        // Caso 2: O Perdedor (Vermelho)
         CardResultadoView(
             titulo: "CDI",
-            descricao: "O investimento em CDI apresenta um pior resultado ao final da simulação",
-            icone: "exclamationmark",
-            corIcone: .iconeCard
+            lucroLiquido: 890.20,
+            eOMelhor: false
         )
     }
     .padding()
+    .background(Color.black) // Simulando o fundo do app
 }

@@ -58,8 +58,6 @@ struct TelaResultadosView: View {
                 .padding(.horizontal)
                 
                 // MARK: - Toggle Animado
-                // Colocamos o .animation() direto no Binding.
-                // Assim, quando o botão for clicado, o gráfico reage animando!
                 Toggle(isOn: $viewModel.mostrarValorReal.animation(.easeInOut(duration: 0.6))) {
                     Text("Descontar Inflação (Poder de Compra)")
                         .font(.custom("BaiJamjujuree-Medium", size: 16))
@@ -92,7 +90,7 @@ struct TelaResultadosView: View {
                     
                     HStack(spacing: 16) {
                         Button(action: {
-                            // Envolvendo a troca de cenário em uma animação
+                            
                             withAnimation(.easeInOut(duration: 0.6)) {
                                 viewModel.cenarioAnterior()
                             }
@@ -106,7 +104,7 @@ struct TelaResultadosView: View {
                             .frame(height: 16)
                         
                         Button(action: {
-                            // Envolvendo a troca de cenário em uma animação
+                            
                             withAnimation(.easeInOut(duration: 0.6)) {
                                 viewModel.proximoCenario()
                             }
@@ -140,24 +138,19 @@ struct TelaResultadosView: View {
                 
                 VStack(spacing: 36) {
                     
-                    CardResultadoView(
-                        titulo: "CDB",
-                        descricao: "O investimento em CDB apresenta um melhor rendimento ao final da simulação",
-                        icone: "checkmark",
-                        corIcone: .corPrimaria
-                    )
+//                    CardResultadoView(
+//                        titulo: "CDB",
+//                        descricao: "O investimento em CDB apresenta um melhor rendimento ao final da simulação",
+//                        icone: "checkmark",
+//                        corIcone: .corPrimaria
+//                    )
                     
-                    CardResultadoView(
-                        titulo: "CDI",
-                        descricao: "O investimento em CDI apresenta um pior resultado ao final da simulação",
-                        icone: "exclamationmark",
-                        corIcone: .iconeCard
-                    )
+                
                     Spacer()
                     
                     NavigationLink {
                         
-                        TelaSelecaoView()
+                       //TelaSelecaoMacView(viewModel: viewModel)
                         
                     } label: {
                         
@@ -208,6 +201,24 @@ struct TelaResultadosView: View {
     .frame(maxWidth: .infinity)
     
     #endif
+    }
+    
+    
+}
+
+extension TelaResultadosViewModel {
+    // Retorna o montante final (nominal ou real) de um card específico no cenário atual
+    func obterMontanteFinal(para card: CardViewModel) -> Double {
+        let pontos = dadosPorCenario[cenarioAtual] ?? []
+        // Filtra os pontos do último ano para aquele investimento
+        let anoFinal = tempoInvestimento
+        return pontos.first(where: { $0.nomeInvestimento.contains(card.tipo.tituloPrincipal) && $0.ano == anoFinal })?.montanteNominal ?? 0.0
+    }
+    
+    func eOMelhorInvestimento(_ card: CardViewModel) -> Bool {
+        let montantes = dadosDosCards.map { obterMontanteFinal(para: $0) }
+        let maximo = montantes.max() ?? 0.0
+        return obterMontanteFinal(para: card) == maximo
     }
 }
 // MARK: - Preview

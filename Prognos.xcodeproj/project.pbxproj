@@ -51,6 +51,8 @@
 				View/Componentes/GraficoEvolucaoView.swift,
 				View/Componentes/InformacaoInvestimentoView.swift,
 				View/Componentes/LinhaInvestimentoView.swift,
+				View/TelaInvestimentosView.swift,
+				View/TelaResultadosView.swift,
 				ViewModel/BarraPesquisaViewModel.swift,
 				ViewModel/CaixaTextoViewModel.swift,
 				ViewModel/CardViewModel.swift,
@@ -248,7 +250,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ASZ8558R77;
+				DEVELOPMENT_TEAM = YDGZTDXJVC;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -283,7 +285,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ASZ8558R77;
+				DEVELOPMENT_TEAM = YDGZTDXJVC;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
