@@ -53,7 +53,7 @@ struct TelaResultadosView: View {
                 
                 // MARK: - Toggle Animado
                 Toggle(isOn: $viewModel.mostrarValorReal.animation(.easeInOut(duration: 0.6))) {
-                    Text("Descontar Inflação (Poder de Compra)")
+                    Text("Considerar inflação")
                         .font(.custom("BaiJamjuree-Medium", size: 16))
                         .foregroundColor(.gray)
                 }
@@ -61,6 +61,10 @@ struct TelaResultadosView: View {
                 .tint(.green)
                 
                 // MARK: - Gráfico Animado
+
+                
+                
+                
                 Chart(viewModel.pontosDoGrafico) { ponto in
                     LineMark(
                         x: .value("Ano", ponto.ano),
@@ -69,9 +73,24 @@ struct TelaResultadosView: View {
                     .foregroundStyle(by: .value("Investimento", ponto.nomeInvestimento))
                     .interpolationMethod(.monotone)
                 }
+                .chartYScale(domain: .automatic(includesZero: false))
                 .chartXAxis {
                     AxisMarks(values: .automatic(desiredCount: viewModel.tempoInvestimento))
                 }
+                .chartXAxisLabel("Anos", alignment: .center)
+                // 👇 Configuração para colocar o eixo Y à direita
+                .chartYAxis {
+                    AxisMarks(position: .trailing) { value in
+                        AxisGridLine()
+                        AxisTick()
+                        AxisValueLabel(format: .currency(code: "BRL"))
+                    }
+                }
+                // ------------------------------------
+                .chartForegroundStyleScale(
+                    domain: viewModel.nomesLegendas,
+                    range: viewModel.coresLegendas
+                )
                 .frame(height: 350)
                 .padding(.horizontal)
                 .animation(.easeInOut(duration: 0.6), value: viewModel.pontosDoGrafico)
