@@ -17,12 +17,14 @@ struct CaixaTextoView: View {
             // ✅ Usa a cor customizada do placeholder se ela for passada, senão usa a padrão
             .foregroundColor(corPlaceholderCustomizada ?? Color("CorFonte"))
         )
-        .textFieldStyle(.plain)
+        .keyboardType(.decimalPad)
+        .textFieldStyle(.plain) // Remove o fundo branco padrão do Mac/iOS
         .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .title2))
         // ✅ Usa a cor customizada do texto se ela for passada, senão usa a padrão
         .foregroundColor(corTextoCustomizada ?? Color("CorFonte"))
         .padding(.horizontal, 20)
         .padding(.vertical, paddingAdaptativo)
+        
         .frame(maxWidth: .infinity, alignment: .leading)
         // ✅ Usa o fundo customizado se ele existir, senão cai no comportamento padrão do modelo
         .background(corFundoCustomizada ?? caixa.cor.opacity(0.8))

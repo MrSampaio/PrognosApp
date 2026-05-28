@@ -1,4 +1,12 @@
 import SwiftUI
+// MARK: - Extensão para o Teclado do iPhone
+#if canImport(UIKit)
+extension View {
+    func esconderTeclado() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+#endif
 
 struct TelaInformacoesView: View {
     
@@ -16,7 +24,9 @@ struct TelaInformacoesView: View {
     @State private var irParaResultados = false
     
     init(investimentos: [TipoDeInvestimento]) {
+      
         _gerente = StateObject(wrappedValue: SimuladorInvestimentosViewModel(tiposEscolhidos: investimentos))
+       
     }
     
     var body: some View {
@@ -115,6 +125,14 @@ struct TelaInformacoesView: View {
                 }
             }
         }
+        
+        .onTapGesture {
+                    #if canImport(UIKit)
+                    esconderTeclado()
+                    #endif
+                }
+                // 👇 Opcional, mas muito recomendado (iOS 16+): esconde o teclado se o usuário rolar a tela para baixo
+                .scrollDismissesKeyboard(.interactively)
     }
 }
 

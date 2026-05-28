@@ -39,5 +39,5 @@ struct InformacaoInvestimentoMacView: View {
     }
 }
 #Preview {
-    InformacaoInvestimentoMacView(tituloInicio: "sla",tituloFinal: "1", descricao: "sla2.0")
+    InformacaoInvestimentoMacView(tituloInicio: "teste",tituloFinal: "1", descricao: "teste.0")
 }

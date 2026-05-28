@@ -13,14 +13,24 @@ struct TelaInformacoesMacView: View {
     
     @Environment(\.dismiss) var dismiss
     
+    
     @StateObject var gerente: SimuladorInvestimentosViewModel
+    
+    init(investimentos: [TipoDeInvestimento]) {
+        let novoGerente = SimuladorInvestimentosViewModel(tiposEscolhidos: investimentos)
+        _gerente = StateObject(wrappedValue: novoGerente)
+        
+        _chartViewModel = StateObject(wrappedValue: TelaResultadosViewModel(
+            valorInvestido: 0,
+            tempoInvestimento: 0,
+            dadosDosCards: novoGerente.cardsDeInvestimento
+        ))
+    }
     @StateObject var chartViewModel: TelaResultadosViewModel
     
     @State var valorGlobal = CaixaTextoViewModel.caixaTexto[0]
     @State var tempoGlobal = CaixaTextoViewModel.caixaTexto[1]
     
-    // 1. CÁLCULOS MOVIDOS PARA FORA DO VIEWBUILDER
-    // Isto evita que o SwiftUI se perca e dispare os erros de Generic/Binding
     private var valorConvertido: Float {
         let limpo = valorGlobal.texto
             .replacingOccurrences(of: "R$", with: "")
@@ -32,17 +42,6 @@ struct TelaInformacoesMacView: View {
     
     private var tempoConvertido: Int {
         return Int(tempoGlobal.texto.trimmingCharacters(in: .whitespaces)) ?? 0
-    }
-    
-    init(investimentos: [TipoDeInvestimento]) {
-        let novoGerente = SimuladorInvestimentosViewModel(tiposEscolhidos: investimentos)
-        _gerente = StateObject(wrappedValue: novoGerente)
-        
-        _chartViewModel = StateObject(wrappedValue: TelaResultadosViewModel(
-            valorInvestido: 0,
-            tempoInvestimento: 0,
-            dadosDosCards: novoGerente.cardsDeInvestimento
-        ))
     }
     
     private func dispararAtualizacaoDoGrafico() {
@@ -98,9 +97,6 @@ struct TelaInformacoesMacView: View {
                 // MARK: - DIVISÃO PRINCIPAL EM DUAS COLUNAS
                 HStack(alignment: .top, spacing: 40) {
                     
-                    // =========================================
-                    // COLUNA ESQUERDA: GRÁFICO E RESULTADOS
-                    // =========================================
                     VStack(spacing: 30) {
                         
                         // 1. CAIXA DO GRÁFICO
@@ -192,7 +188,7 @@ struct TelaInformacoesMacView: View {
                         ScrollView(showsIndicators: false) {
                             VStack(spacing: 20) {
                                 
-                                // 3. FOR EACH CORRIGIDO (Lê diretamente a coleção do gerente)
+                                
                                 ForEach(gerente.cardsDeInvestimento, id: \.id) { cardVM in
                                     InvestimentosMacView(
                                         viewModel: cardVM,

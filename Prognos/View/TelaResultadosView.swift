@@ -2,6 +2,7 @@ import SwiftUI
 import Charts
 
 struct TelaResultadosView: View {
+    // 👇 Voltamos para o formato correto: apenas recebe a ViewModel pronta da tela anterior!
     @ObservedObject var viewModel: TelaResultadosViewModel
     
     @ScaledMetric(relativeTo: .body)
@@ -10,20 +11,16 @@ struct TelaResultadosView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: paddingAdaptativo) {
-               
-                    
-                    Text("Simulação")
+                
+                Text("Simulação")
                     .font(.custom("BaiJamjuree-SemiBold", size: 24, relativeTo: .title))
                     .lineLimit(2)
                     .minimumScaleFactor(0.7)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(Color("CorFonteTitulo"))
-                    
                 
-                    
-                
-                HStack{
-                    VStack{
+                HStack {
+                    VStack {
                         Text("Valor do investimento")
                             .font(.custom("BaiJamjuree-Medium", size: 16))
                             .foregroundStyle(Color("FonteUniversal"))
@@ -36,21 +33,20 @@ struct TelaResultadosView: View {
                 }
                 .frame(maxWidth: 400)
                 .frame(height: 100)
-                .background(Color("CorPrimaria")) // Ajuste para a sua corPrimaria
+                .background(Color("CorPrimaria"))
                 .cornerRadius(14)
                 .padding(.horizontal)
-                    
+                
                 // MARK: - Header (Cenário da Inflação)
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Cenário da")
-                            .font(.custom("BaiJamjujuree-Medium", size: 20))
+                            .font(.custom("BaiJamjuree-Medium", size: 20))
                             .foregroundColor(.gray)
                         
                         Text("Inflação \(viewModel.cenarioAtual.rawValue)")
                             .font(.custom("BaiJamjuree-SemiBold", size: 28))
                             .foregroundColor(Color.primary)
-                            // Adicionando uma transição suave no título também
                             .animation(.default, value: viewModel.cenarioAtual)
                     }
                     Spacer()
@@ -60,7 +56,7 @@ struct TelaResultadosView: View {
                 // MARK: - Toggle Animado
                 Toggle(isOn: $viewModel.mostrarValorReal.animation(.easeInOut(duration: 0.6))) {
                     Text("Descontar Inflação (Poder de Compra)")
-                        .font(.custom("BaiJamjujuree-Medium", size: 16))
+                        .font(.custom("BaiJamjuree-Medium", size: 16))
                         .foregroundColor(.gray)
                 }
                 .padding(.horizontal)
@@ -80,17 +76,14 @@ struct TelaResultadosView: View {
                 }
                 .frame(height: 350)
                 .padding(.horizontal)
-                // quando há alteração em alguma dessas variáveis, a animacao roda
                 .animation(.easeInOut(duration: 0.6), value: viewModel.pontosDoGrafico)
                 .animation(.easeInOut(duration: 0.6), value: viewModel.mostrarValorReal)
                 
                 // MARK: - Controles (< | >)
                 HStack {
                     Spacer()
-                    
                     HStack(spacing: 16) {
                         Button(action: {
-                            
                             withAnimation(.easeInOut(duration: 0.6)) {
                                 viewModel.cenarioAnterior()
                             }
@@ -100,11 +93,9 @@ struct TelaResultadosView: View {
                                 .foregroundColor(.primary)
                         }
                         
-                        Divider()
-                            .frame(height: 16)
+                        Divider().frame(height: 16)
                         
                         Button(action: {
-                            
                             withAnimation(.easeInOut(duration: 0.6)) {
                                 viewModel.proximoCenario()
                             }
@@ -118,99 +109,64 @@ struct TelaResultadosView: View {
                     .padding(.vertical, 12)
                     .background(Color.gray.opacity(0.15))
                     .cornerRadius(30)
-                    
                     Spacer()
                 }
                 .padding(.top, 10)
-               // Spacer()
                 
-                VStack(spacing: paddingAdaptativo){
-                    
+                // MARK: - TÍTULO DA COMPARAÇÃO
+                VStack(spacing: paddingAdaptativo) {
                     Text("Comparação de resultados")
                         .font(.custom("BaiJamjuree-SemiBold", size: 24, relativeTo: .title))
                         .lineLimit(2)
                         .minimumScaleFactor(0.7)
                         .fixedSize(horizontal: false, vertical: true)
                         .foregroundColor(Color("CorFonteTitulo"))
-                    
                 }
                 .padding(.top, 10)
                 
-                VStack(spacing: 36) {
-                    
-//                    CardResultadoView(
-//                        titulo: "CDB",
-//                        descricao: "O investimento em CDB apresenta um melhor rendimento ao final da simulação",
-//                        icone: "checkmark",
-//                        corIcone: .corPrimaria
-//                    )
-                    
-                
-                    Spacer()
-                    
-                    NavigationLink {
+                // MARK: - LISTA DE CARDS DINÂMICOS
+                VStack(spacing: 16) {
+                    ForEach(viewModel.dadosDosCards, id: \.id) { card in
+                        let montanteFinal = viewModel.obterMontanteFinal(para: card)
+                        let melhor = viewModel.eOMelhorInvestimento(card)
                         
-                       //TelaSelecaoMacView(viewModel: viewModel)
-                        
-                    } label: {
-                        
-                        HStack(spacing: 8) {
-                            
-                            Text("Recomeçar consulta")
-                            
-                        }
-                        .font(
-                            .custom(
-                                "BaiJamjuree-SemiBold",
-                                size: 22,
-                                relativeTo: .title3
-                            )
+                        CardResultadoView(
+                            titulo: card.tipo.tituloPrincipal,
+                            lucroLiquido: max(0, montanteFinal - Double(viewModel.valorInvestido)),
+                            eOMelhor: melhor
                         )
+                    }
+                    
+                    Spacer().frame(height: 20)
+                    
+                    // Botão de Recomeçar
+                    Button(action: {
+                        // Ação para resetar ou voltar telas
+                    }) {
+                        HStack(spacing: 8) {
+                            Text("Recomeçar consulta")
+                        }
+                        .font(.custom("BaiJamjuree-SemiBold", size: 22, relativeTo: .title3))
                         .foregroundColor(Color("FonteUniversal"))
-                        .frame(width: 300,
-                               height: 48)
+                        .frame(width: 300, height: 48)
                         .background(Color("CorPrimaria"))
                         .clipShape(Capsule())
                     }
-                    .padding(.bottom, 42)
+                    .buttonStyle(.plain)
                 }
-                .padding()
-                
+                .padding(.horizontal, 24)
+                .padding(.bottom, 42)
             }
             .padding(.vertical)
-            //.background(Color(UIColor.secondarySystemBackground).opacity(0.5))
             .cornerRadius(24)
         }
-#if os(iOS)
-    .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-
-                Button {
-
-                } label: {
-
-                    Image(systemName: "arrow.down.to.line.compact")
-                        .font(.system(size: 18, weight: .medium))
-                    
-                }
-            }
-        }
-
-        .toolbarTitleDisplayMode(.inline)
-    //.padding()
-    .frame(maxWidth: .infinity)
-    
-    #endif
     }
-    
-    
 }
 
+// MARK: - Extensão de Lógica Reativa
 extension TelaResultadosViewModel {
-    // Retorna o montante final (nominal ou real) de um card específico no cenário atual
     func obterMontanteFinal(para card: CardViewModel) -> Double {
-        let pontos = dadosPorCenario[cenarioAtual] ?? []
-        // Filtra os pontos do último ano para aquele investimento
+        let pontos = pontosDoGrafico
         let anoFinal = tempoInvestimento
         return pontos.first(where: { $0.nomeInvestimento.contains(card.tipo.tituloPrincipal) && $0.ano == anoFinal })?.montanteNominal ?? 0.0
     }
@@ -221,26 +177,23 @@ extension TelaResultadosViewModel {
         return obterMontanteFinal(para: card) == maximo
     }
 }
-// MARK: - Preview
+
+// MARK: - Preview iPhone
 #Preview {
-    let cdbPos = CardViewModel(tipo: .cdbCdi)
-    cdbPos.caixaTexto.texto = "110"
+    let cardCdb = CardViewModel(tipo: .cdbCdi)
+    cardCdb.caixaTexto.texto = "100"
     
-    let tesouroPre = CardViewModel(tipo: .tesouroPrefixado)
-    tesouroPre.caixaTexto.texto = "12,5"
+    let cardTesouro = CardViewModel(tipo: .tesouroPrefixado)
+    cardTesouro.caixaTexto.texto = "11.5"
     
-    let lciPre = CardViewModel(tipo: .lciPrefixado)
-    lciPre.caixaTexto.texto = "10,5"
-    
-    // Iniciamos a ViewModel primeiro
-    let mockViewModel = TelaResultadosViewModel(
-        valorInvestido: 10000.0,
+    // Criamos uma ViewModel falsa só para o Preview rodar bonito
+    let mockVM = TelaResultadosViewModel(
+        valorInvestido: 5000,
         tempoInvestimento: 5,
-        dadosDosCards: [cdbPos, tesouroPre, lciPre]
+        dadosDosCards: [cardCdb, cardTesouro]
     )
     
     return NavigationStack {
-        // Passamos a ViewModel para a View
-        TelaResultadosView(viewModel: mockViewModel)
+        TelaResultadosView(viewModel: mockVM)
     }
 }
