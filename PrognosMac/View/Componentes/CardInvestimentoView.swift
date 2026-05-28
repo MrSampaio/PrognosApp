@@ -55,7 +55,7 @@ struct CardInvestimentoView: View {
                             )
                         )
                         .foregroundStyle(
-                            Color("FonteUniversal")
+                            Color("CorFonte")
                         )
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
@@ -115,7 +115,7 @@ struct CardInvestimentoView: View {
             .background(
                 selecionado
                 ? Color("CardSelecionado")
-                : Color("CardNaoSelecionado")
+                : Color.corCaixas
             )
             .clipShape(
                 RoundedRectangle(cornerRadius: 15)
@@ -135,7 +135,7 @@ struct CardInvestimentoView: View {
     CardInvestimentoView(
         titulo: "Tesouro",
         subtitulo: "Prefixado",
-        selecionado: .constant(true)
+        selecionado: .constant(false)
     )
     .padding()
 }
