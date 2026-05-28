@@ -13,11 +13,13 @@ struct CaixaTextoView: View {
             .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .title2))
             .foregroundColor(Color(.corFonte))
         )
+        .keyboardType(.decimalPad)
         .textFieldStyle(.plain) // Remove o fundo branco padrão do Mac/iOS
         .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .title2))
         .foregroundColor(Color(.corFonte))
         .padding(.horizontal, 20)
         .padding(.vertical, paddingAdaptativo)
+        
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(caixa.cor.opacity(0.8))
         .clipShape(RoundedRectangle(cornerRadius: caixa.arredondamento))
