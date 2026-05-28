@@ -91,9 +91,24 @@ struct TelaResultadosView: View {
                     .foregroundStyle(by: .value("Investimento", ponto.nomeInvestimento))
                     .interpolationMethod(.monotone)
                 }
+                .chartYScale(domain: .automatic(includesZero: false))
                 .chartXAxis {
                     AxisMarks(values: .automatic(desiredCount: viewModel.tempoInvestimento))
                 }
+                .chartXAxisLabel("Anos", alignment: .center)
+                // 👇 Configuração para colocar o eixo Y à direita
+                .chartYAxis {
+                    AxisMarks(position: .trailing) { value in
+                        AxisGridLine()
+                        AxisTick()
+                        AxisValueLabel(format: .currency(code: "BRL"))
+                    }
+                }
+                // ------------------------------------
+                .chartForegroundStyleScale(
+                    domain: viewModel.nomesLegendas,
+                    range: viewModel.coresLegendas
+                )
                 .frame(height: 350)
                 .padding(.horizontal)
                 .animation(.easeInOut(duration: 0.6), value: viewModel.pontosDoGrafico)

@@ -118,7 +118,7 @@ struct TelaInformacoesMacView: View {
                                 Spacer()
                                 
                                 Toggle(isOn: $chartViewModel.mostrarValorReal.animation(.easeInOut(duration: 0.6))) {
-                                    Text("Descontar Inflação")
+                                    Text("Considerar inflação")
                                         .font(.custom("BaiJamjuree-Medium", size: 14))
                                         .foregroundColor(.gray)
                                 }

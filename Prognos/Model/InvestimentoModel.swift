@@ -14,11 +14,22 @@ struct Investimento {
     
     func calcular(valor: Double, meses: Int, inflacao: Double, indicador: Double) -> Double {
         let valorBruto = regraDeRentabilidade(valor, meses, inflacao, indicador)
+        
+        // O lucro é a diferença entre o que você tem e o que investiu
         let lucro = valorBruto - valor
-        let imposto = regraDeImposto(lucro, meses)
+        
+        // IMPOSTO: Só é cobrado se houver lucro
+        let imposto = lucro > 0 ? regraDeImposto(lucro, meses) : 0.0
+        
+        // TAXAS:
         let taxas = regraDeTaxasExtras(valorBruto, meses)
         
-        return valorBruto - imposto - taxas
+        let resultadoFinal = valorBruto - imposto - taxas
+        
+        // 👇 O SEGREDO:
+        // Se o resultado for menor que o valor investido (prejuízo real),
+        // retornamos o valor investido para que o gráfico não fique vazio/zerado.
+        return max(valor, resultadoFinal)
     }
 }
 
