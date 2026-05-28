@@ -7,7 +7,10 @@
 
 import SwiftUI
 
+
 struct TelaInvestimentosView: View {
+    
+    
     
     @StateObject var viewModel = TelaInvestimentosViewModel(
         investimentosIniciais: InformacaoInvestimentoViewModel.listaInvestimentos

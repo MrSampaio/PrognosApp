@@ -1,4 +1,4 @@
-    import SwiftUI
+import SwiftUI
 
     struct CardView: View {
         
@@ -68,6 +68,7 @@
                         // ==========================================
                         CaixaTextoView(
                             caixa: $viewModel.caixaTexto,
+                            corFundoCustomizada: Color.corCaixaTextoCard,
                             corPlaceholderCustomizada: Color.corFontCard,
                             // 3. Cor do texto quando o usuário digita
                             corTextoCustomizada: Color.corFontCard

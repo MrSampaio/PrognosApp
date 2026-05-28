@@ -35,14 +35,14 @@ struct CardInvestimento: View {
       
 
            
-           Text(subtitle)
-               .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .caption))
-               .lineLimit(2)
-               .minimumScaleFactor(0.6)
-               .multilineTextAlignment(.trailing)
-               .foregroundColor(Color("Subtitulos"))
-               .frame(maxWidth: .infinity, alignment: .trailing)
-               .padding(.trailing, paddingInterno)
+//           Text(subtitle)
+//               .font(.custom("BaiJamjuree-Medium", size: 12, relativeTo: .caption))
+//               .lineLimit(2)
+//               .minimumScaleFactor(0.6)
+//               .multilineTextAlignment(.trailing)
+//               .foregroundColor(Color("Subtitulos"))
+//               .frame(maxWidth: .infinity, alignment: .trailing)
+//               .padding(.trailing, paddingInterno)
 
               // Text(subtitle)
                 //   .font(.custom("BaiJamjuree-Medium", size: 12))
