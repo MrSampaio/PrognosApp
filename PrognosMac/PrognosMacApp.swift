@@ -11,7 +11,9 @@ import SwiftUI
 struct PrognosMacApp: App {
     var body: some Scene {
         WindowGroup {
-            TelaSelecaoMacView()
+            NavigationStack {
+                TelaSelecaoMacView()
+            }
         }
     }
 }

@@ -2,6 +2,8 @@ import SwiftUI
 
 struct TelaSelecaoMacView: View {
     
+    //@Environment(\.dismiss) var dismiss
+    
     @State private var selecionados: [TipoDeInvestimento] = []
     
     let maximoDeSelecao: Int = 4
@@ -14,10 +16,51 @@ struct TelaSelecaoMacView: View {
         GridItem(.adaptive(minimum: 260, maximum: .infinity), spacing: 40)
     ]
     
+    @ScaledMetric(relativeTo: .body)
+    var paddingAdaptativo: CGFloat = 40
+    
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             ScrollView(.vertical) {
                 
+                // MARK: - Header (Responsivo)
+                VStack(spacing: 20) {
+                    
+                    HStack {
+                        
+                        Spacer()
+                        
+                        
+                        Text("Investimentos")
+                            .font(.custom("BaiJamjuree-SemiBold", size: 36, relativeTo: .largeTitle))
+                            .foregroundColor(Color("CorPrimaria")) // Verde
+                        
+                        Spacer()
+            
+                        NavigationLink{
+                            TelaInvestimentosMacView()
+                        } label:{
+                            Image(systemName: "info")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(Color.corFonte)
+                                .frame(width: 44, height: 44)
+                                .background(Color.white.opacity(0.1))
+                                .clipShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    
+                    
+                    Text("Escolha até quatro tipos de investimento que você gostaria de comparar:")
+                        .font(.custom("Avenir Next Medium", size: 20, relativeTo: .title3))
+                        .foregroundColor(Color.corFonte)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 10)
+                }
+                .padding(.horizontal, paddingAdaptativo)
+                .padding(.top, 50)
+                
+                // MARK: - Grid de Cards
                 LazyVGrid(columns: colunasResponsivas, spacing: 40) {
                     
                     ForEach(TipoDeInvestimento.allCases) { item in
@@ -26,41 +69,56 @@ struct TelaSelecaoMacView: View {
                         let atingiuLimite = selecionados.count == maximoDeSelecao
                         let deveDesabilitar = atingiuLimite && !selecionado
                         
-                        // 1. Criamos o Binding com a regra de limite AQUI, antes do Card
-                        let isSelected = Binding(
+                        let estaSelecionado = Binding(
                             get: { selecionado },
                             set: { selecionadoAgora in
                                 if selecionadoAgora {
-                                    // Só permite adicionar se não atingiu o limite de 4
                                     if selecionados.count < maximoDeSelecao {
                                         selecionados.append(item)
                                     }
                                 } else {
-                                    // Sempre permite desmarcar um item
                                     selecionados.removeAll { $0 == item }
                                 }
                             }
                         )
                         
-                        // 2. Passamos o Binding 'isSelected' para dentro do Card
                         CardInvestimentoView(
                             titulo: item.tituloPrincipal,
                             subtitulo: item.subtitulo,
-                            selecionado: isSelected
+                            selecionado: estaSelecionado
                         )
                         .frame(maxHeight: .infinity, alignment: .top)
-                        // 3. (BÔNUS DE UX) Desabilita o clique e deixa os não-selecionados transparentes se o limite foi atingido
                         .disabled(deveDesabilitar)
-                        .opacity(deveDesabilitar ? 0.7 : 1.0)
-                        
+                        .opacity(deveDesabilitar ? 0.6 : 1.0)
                     }
                 }
-                .padding(40)
+                .padding(.horizontal, paddingAdaptativo)
+                .padding(.vertical, 40)
+                
+                // MARK: - Botão Continuar
+                NavigationLink {
+                    TelaInformacoesMacView(investimentos: selecionados)
+                } label: {
+                    BotaoView(
+                        texto: "Continuar",
+                        habilitado: selecionados.count >= maximoDeSelecao / 2
+                    )
+                }
+                .disabled(selecionados.count < maximoDeSelecao / 2)
+                .buttonStyle(.plain)
+                .padding(.bottom, 60) // Dá um respiro no final da rolagem
+                
             }
         }
+        .navigationTitle("")
+        //.toolbar(.hidden, for: .windowToolbar)
     }
 }
 
 #Preview {
-    TelaSelecaoMacView()
+    NavigationStack {
+        TelaSelecaoMacView()
+    }
+    .frame(width: 1000, height: 750)
+    .preferredColorScheme(.dark)
 }

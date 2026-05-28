@@ -35,7 +35,7 @@ struct CaixaValorTempo: View {
                     }
                 }
             } else {
-                // Se o tamanho da fonte for normal, usa um Grid para colocar lado a lado
+                
                 Grid(alignment: .leading, horizontalSpacing: 16, verticalSpacing: 16) {
                     GridRow {
                         Text("Valor")
@@ -47,7 +47,7 @@ struct CaixaValorTempo: View {
                     RoundedRectangle(cornerRadius: 1)
                         .fill(Color.corCaixas)
                         .frame(height: 2)
-                        .gridCellColumns(2) // Faz a linha cruzar as duas colunas do Grid
+                        .gridCellColumns(2)
                     
                     GridRow {
                         Text("Tempo")
