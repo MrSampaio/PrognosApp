@@ -2,27 +2,24 @@ import SwiftUI
 
 struct TelaInformacoesView: View {
     
-    @ScaledMetric(relativeTo: .body)
-    var paddingAdaptativo: CGFloat = 20
+    @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 20
+    @ScaledMetric(relativeTo: .title) var espacamentoTitulo: CGFloat = 24
+    @ScaledMetric(relativeTo: .body) var espacamentoGrid: CGFloat = 10
 
-    @ScaledMetric(relativeTo: .title)
-    var espacamentoTitulo: CGFloat = 24
-
-    @ScaledMetric(relativeTo: .body)
-    var espacamentoGrid: CGFloat = 10
-
-    @Environment(\.dynamicTypeSize)
-    var tipoDeTamanho
+    @Environment(\.dynamicTypeSize) var tipoDeTamanho
     
     @State var valorGlobal = CaixaTextoViewModel.caixaTexto[0]
     @State var tempoGlobal = CaixaTextoViewModel.caixaTexto[1]
     
-    @State var viewModels: [CardViewModel]
+    // ⚠️ MUDANÇA ARQUITETURAL AQUI:
+    // Trocamos o @State solto pelo nosso Gerente do cofre forte!
+    @StateObject var gerente: SimuladorInvestimentosViewModel
+    
     @State private var irParaResultados = false
     
+    // O init recebe as escolhas da tela anterior e cria o Gerente
     init(investimentos: [TipoDeInvestimento]) {
-        let vmsMapeados = investimentos.map { CardViewModel(tipo: $0) }
-        _viewModels = State(initialValue: vmsMapeados)
+        _gerente = StateObject(wrappedValue: SimuladorInvestimentosViewModel(tiposEscolhidos: investimentos))
     }
     
     var body: some View {
@@ -66,13 +63,16 @@ struct TelaInformacoesView: View {
                 let valorConvertido = Float(valorGlobal.texto.replacingOccurrences(of: ",", with: ".")) ?? 0.0
                 let tempoConvertido = Int(tempoGlobal.texto) ?? 0
                 
-                ForEach(viewModels) { viewModelDoCard in
+                // ⚠️ AQUI ENCAIXAMOS OS CARDS:
+                // Varremos a lista segura que está dentro do Gerente
+                ForEach(gerente.cardsDeInvestimento) { viewModelDoCard in
                     
                     CardView(
                         viewModel: viewModelDoCard,
                         valorInvestido: valorConvertido,
                         tempoDeInvestimento: tempoConvertido,
-                        corGrafico: .black
+                        // ⚠️ CORRIGIDO: Puxando a cor certa do Enum em vez de .black
+                        corGrafico: Color(viewModelDoCard.tipo.cores)
                     )
                     .frame(maxWidth: 350)
                     .padding(.bottom, 12)
@@ -96,11 +96,12 @@ struct TelaInformacoesView: View {
                     let valorConvertidoParaPassar = Float(valorGlobal.texto.replacingOccurrences(of: ",", with: ".")) ?? 0.0
                     let tempoConvertidoParaPassar = Int(tempoGlobal.texto) ?? 0
                     
-                    // 2. Instanciando a ViewModel
+                    // 2. Instanciando a ViewModel da próxima tela
                     let viewModelResultados = TelaResultadosViewModel(
                         valorInvestido: valorConvertidoParaPassar,
                         tempoInvestimento: tempoConvertidoParaPassar,
-                        dadosDosCards: viewModels
+                        // ⚠️ Passamos os dados do Gerente para a tela de resultados finais
+                        dadosDosCards: gerente.cardsDeInvestimento
                     )
                     
                     // 3. Chamando a View e passando a ViewModel

@@ -39,17 +39,16 @@ enum TipoDeInvestimento: String, CaseIterable, Identifiable {
     
 
     // MARK: - REGRAS DE TEXTO PARA O CARD
-    
-    var tituloPrincipal: String {
-        switch self {
-        case .tesouroPrefixado, .tesouroSelic, .tesouroIpca: return "Tesouro"
-        case .cdbPrefixado, .cdbCdi, .cdbIpca: return "CDB/LC"
-        case .lciPrefixado, .lciCdi, .lciIpca: return "LCI/LCA"
-        case .debComumPrefixada, .debComumCdi, .debComumIpca: return "Debênt."
-        case .isentoPrefixado, .isentoCdi, .isentoIpca: return "CRI/CRA"
-        case .fundoRendaFixa: return "Fundo"
+        var tituloPrincipal: String {
+            switch self {
+            case .tesouroPrefixado, .tesouroSelic, .tesouroIpca: return "Tesouro"
+            case .cdbPrefixado, .cdbCdi, .cdbIpca: return "CDB/LC"
+            case .lciPrefixado, .lciCdi, .lciIpca: return "LCI/LCA"
+            case .debComumPrefixada, .debComumCdi, .debComumIpca: return "Debênt."
+            case .isentoPrefixado, .isentoCdi, .isentoIpca: return "CRI/CRA"
+            case .fundoRendaFixa: return "Fundo"
+            }
         }
-    }
     
     var subtitulo: String {
         switch self {
