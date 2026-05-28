@@ -162,16 +162,19 @@ struct TelaInformacoesMacView: View {
                         HStack(spacing: 16) {
                             
                             // 2. FOR EACH CORRIGIDO (Usando a coleção direta com id)
-                            ForEach(chartViewModel.dadosDosCards, id: \.id) { card in
-                                let montante = chartViewModel.obterMontanteFinal(para: card)
-                                let melhor = chartViewModel.eOMelhorInvestimento(card)
-                                
-                                CardResultadoView(
-                                    titulo: card.tipo.tituloPrincipal,
-                                    lucroLiquido: montante - Double(chartViewModel.valorInvestido),
-                                    eOMelhor: melhor
-                                )
-                            }
+                            ForEach(0..<chartViewModel.dadosDosCards.count, id: \.self) { indice in
+                                    let card = chartViewModel.dadosDosCards[indice]
+                                    
+                                    // 👇 Agora usamos as funções com o parâmetro 'noIndice'
+                                    let montante = chartViewModel.obterMontanteFinal(noIndice: indice)
+                                    let melhor = chartViewModel.eOMelhorInvestimento(noIndice: indice)
+                                    
+                                    CardResultadoView(
+                                        titulo: card.tipo.tituloPrincipal,
+                                        lucroLiquido: max(0, montante - Double(chartViewModel.valorInvestido)),
+                                        eOMelhor: melhor
+                                    )
+                                }
                         }
                     }
                     .frame(maxWidth: .infinity)
