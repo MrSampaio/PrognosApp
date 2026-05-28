@@ -4,9 +4,7 @@ import Charts
 struct TelaResultadosView: View {
     
     @ObservedObject var viewModel: TelaResultadosViewModel
-    
-    @ScaledMetric(relativeTo: .body)
-    var paddingAdaptativo: CGFloat = 20
+    @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 20
     
     var body: some View {
         ScrollView {
@@ -84,9 +82,7 @@ struct TelaResultadosView: View {
                     Spacer()
                     HStack(spacing: 16) {
                         Button(action: {
-                            withAnimation(.easeInOut(duration: 0.6)) {
-                                viewModel.cenarioAnterior()
-                            }
+                            withAnimation(.easeInOut(duration: 0.6)) { viewModel.cenarioAnterior() }
                         }) {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 18, weight: .semibold))
@@ -96,9 +92,7 @@ struct TelaResultadosView: View {
                         Divider().frame(height: 16)
                         
                         Button(action: {
-                            withAnimation(.easeInOut(duration: 0.6)) {
-                                viewModel.proximoCenario()
-                            }
+                            withAnimation(.easeInOut(duration: 0.6)) { viewModel.proximoCenario() }
                         }) {
                             Image(systemName: "chevron.right")
                                 .font(.system(size: 18, weight: .semibold))
@@ -125,15 +119,21 @@ struct TelaResultadosView: View {
                 .padding(.top, 10)
                 
                 // MARK: - LISTA DE CARDS DINÂMICOS
-                // MARK: - LISTA DE CARDS DINÂMICOS
+                
                 VStack(spacing: 16) {
-                    ForEach(viewModel.dadosDosCards, id: \.id) { card in
-                        let montanteFinal = viewModel.obterMontanteFinal(para: card)
-                        let melhor = viewModel.eOMelhorInvestimento(card)
+                    ForEach(0..<viewModel.dadosDosCards.count, id: \.self) { indice in
+                        let card = viewModel.dadosDosCards[indice]
+                        
+                        // 1. Puxa os dados com a nova função robusta
+                        let montanteFinal = viewModel.obterMontanteFinal(noIndice: indice)
+                        let melhor = viewModel.eOMelhorInvestimento(noIndice: indice)
+                        
+                        // 2. Calcula o lucro exato (sem esconder números negativos!)
+                        let lucroCalculado = montanteFinal - Double(viewModel.valorInvestido)
                         
                         CardResultadoView(
                             titulo: card.tipo.tituloPrincipal,
-                            lucroLiquido: max(0, montanteFinal - Double(viewModel.valorInvestido)),
+                            lucroLiquido: lucroCalculado,
                             eOMelhor: melhor
                         )
                     }
@@ -155,8 +155,6 @@ struct TelaResultadosView: View {
                     }
                     .buttonStyle(.plain)
                 }
-                // 👇 A CORREÇÃO ESTÁ AQUI!
-                // Isso força o SwiftUI a redesenhar os cards se você apertar o Toggle ou as setinhas de cenário < | >
                 .id("\(viewModel.cenarioAtual.rawValue)-\(viewModel.mostrarValorReal)")
                 .padding(.horizontal, 24)
                 .padding(.bottom, 42)
@@ -169,14 +167,16 @@ struct TelaResultadosView: View {
 
 // MARK: - Preview iPhone
 #Preview {
-    NavigationStack {
-        TelaResultadosView(viewModel: TelaResultadosViewModel(
-            valorInvestido: 5000,
-            tempoInvestimento: 5,
-            dadosDosCards: [
-                CardViewModel(tipo: .cdbCdi),
-                CardViewModel(tipo: .tesouroPrefixado)
-            ]
-        ))
+    let mockVM = TelaResultadosViewModel(
+        valorInvestido: 5000,
+        tempoInvestimento: 5,
+        dadosDosCards: [
+            CardViewModel(tipo: .cdbCdi),
+            CardViewModel(tipo: .tesouroPrefixado)
+        ]
+    )
+    
+    return NavigationStack {
+        TelaResultadosView(viewModel: mockVM)
     }
 }
