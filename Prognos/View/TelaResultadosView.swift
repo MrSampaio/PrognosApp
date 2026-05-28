@@ -125,6 +125,7 @@ struct TelaResultadosView: View {
                 .padding(.top, 10)
                 
                 // MARK: - LISTA DE CARDS DINÂMICOS
+                // MARK: - LISTA DE CARDS DINÂMICOS
                 VStack(spacing: 16) {
                     ForEach(viewModel.dadosDosCards, id: \.id) { card in
                         let montanteFinal = viewModel.obterMontanteFinal(para: card)
@@ -154,6 +155,9 @@ struct TelaResultadosView: View {
                     }
                     .buttonStyle(.plain)
                 }
+                // 👇 A CORREÇÃO ESTÁ AQUI!
+                // Isso força o SwiftUI a redesenhar os cards se você apertar o Toggle ou as setinhas de cenário < | >
+                .id("\(viewModel.cenarioAtual.rawValue)-\(viewModel.mostrarValorReal)")
                 .padding(.horizontal, 24)
                 .padding(.bottom, 42)
             }

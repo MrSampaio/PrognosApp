@@ -200,20 +200,25 @@ class TelaResultadosViewModel: ObservableObject {
 extension TelaResultadosViewModel {
     
     // Função inteligente: acha o lucro exato cruzando o ID do card com a posição dele no gráfico
-    func obterMontanteFinal(para card: CardViewModel) -> Double {
-        // 1. Descobre a posição (index) exata deste card na nossa lista
-        guard let index = dadosDosCards.firstIndex(where: { $0.id == card.id }) else { return 0.0 }
-        
-        // 2. Recria o nome exato que o gráfico usou (ex: "1. CDB")
-        let nomeLegendaEsperado = "\(index + 1). \(card.tipo.tituloPrincipal)"
-        let anoFinal = tempoInvestimento
-        
-        // 3. Puxa do cenário que está passando na tela agora
-        let pontos = dadosPorCenario[cenarioAtual] ?? []
-        
-        // 4. Retorna cirurgicamente o valor
-        return pontos.first(where: { $0.nomeInvestimento == nomeLegendaEsperado && $0.ano == anoFinal })?.montanteNominal ?? 0.0
-    }
+        func obterMontanteFinal(para card: CardViewModel) -> Double {
+            // 1. Descobre a posição (index) exata deste card na nossa lista
+            guard let index = dadosDosCards.firstIndex(where: { $0.id == card.id }) else { return 0.0 }
+            
+            // 2. Recria o nome exato que o gráfico usou (ex: "1. CDB")
+            let nomeLegendaEsperado = "\(index + 1). \(card.tipo.tituloPrincipal)"
+            let anoFinal = tempoInvestimento
+            
+            // 3. Puxa do cenário que está passando na tela agora
+            let pontos = dadosPorCenario[cenarioAtual] ?? []
+            let pontoExato = pontos.first(where: { $0.nomeInvestimento == nomeLegendaEsperado && $0.ano == anoFinal })
+            
+            // 👇 4. A MÁGICA: Retorna o valor Real ou Nominal dependendo do Toggle da tela!
+            if mostrarValorReal {
+                return pontoExato?.montanteReal ?? 0.0
+            } else {
+                return pontoExato?.montanteNominal ?? 0.0
+            }
+        }
     
     // Compara todos os cards para ver quem leva a medalha de ouro (o ícone verde)
     func eOMelhorInvestimento(_ card: CardViewModel) -> Bool {
