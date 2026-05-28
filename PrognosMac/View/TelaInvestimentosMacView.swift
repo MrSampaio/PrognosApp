@@ -21,8 +21,6 @@ struct TelaInvestimentosMacView: View {
     var body: some View {
         VStack {
             
-           
-            
             ScrollView(.vertical) {
                 
                 BarraPesquisaView(pesquisar: $viewModel.modeloBusca)

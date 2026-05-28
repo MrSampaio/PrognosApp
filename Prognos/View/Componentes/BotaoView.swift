@@ -23,7 +23,7 @@ struct BotaoView: View {
                 .background(habilitado ? Color("CorPrimaria") : Color("CorCaixas"))
                 .cornerRadius(30)
                 .opacity(habilitado ? 1 : 0.5)
-                .disabled(!habilitado)
+                //.disabled(!habilitado)
                 .animation(.easeInOut(duration: 0.3), value: habilitado)
             
         }
