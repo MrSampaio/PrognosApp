@@ -68,12 +68,17 @@ class TelaResultadosViewModel: ObservableObject {
         atualizarGraficoParaCenarioAtual()
     }
     
-    func configurarLegendasECores() {
-        self.nomesLegendas = dadosDosCards.enumerated().map { index, card in
-            "\(index + 1). \(card.tipo.tituloPrincipal)"
+    // Substitua sua função configurarLegendasECores
+        func configurarLegendasECores() {
+            self.nomesLegendas = dadosDosCards.enumerated().map { index, card in
+                "\(index + 1). \(card.tipo.tituloPrincipal)"
+            }
+            self.coresLegendas = dadosDosCards.map { Color($0.tipo.cores) }
+            
+            // DEBUG: Imprime para ver se a lista está sendo gerada corretamente
+            print("DEBUG: Total de cards: \(dadosDosCards.count)")
+            print("DEBUG: Nomes legendas: \(nomesLegendas)")
         }
-        self.coresLegendas = dadosDosCards.map { Color($0.tipo.cores) }
-    }
 
     private func obterCorRespectiva(para tipo: TipoDeInvestimento) -> Color {
         // Mantenha sua lógica atual aqui
@@ -179,6 +184,12 @@ class TelaResultadosViewModel: ObservableObject {
                         montanteReal: montanteReal
                     ))
                 }
+            }
+        
+        print("DEBUG: Total de pontos gerados: \(novosDados.count)")
+            let agrupados = Dictionary(grouping: novosDados, by: { $0.nomeInvestimento })
+            for (nome, pts) in agrupados {
+                print("DEBUG: Investimento '\(nome)' tem \(pts.count) pontos.")
             }
             return novosDados
         }
