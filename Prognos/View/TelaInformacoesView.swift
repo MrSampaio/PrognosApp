@@ -106,15 +106,28 @@ struct TelaInformacoesView: View {
                         .padding(.bottom, 40) // Respiro no fundo do card
                         
                         .navigationDestination(isPresented: $irParaResultados) {
-                            let valorConvertidoParaPassar = Float(valorGlobal.texto.replacingOccurrences(of: ",", with: ".")) ?? 0.0
-                            let tempoConvertidoParaPassar = Int(tempoGlobal.texto) ?? 0
+                                            
+                            // 1. Limpeza Pesada do Dinheiro (Tira o R$, tira o ponto e arruma a vírgula)
+                            let valorLimpo = valorGlobal.texto
+                                .replacingOccurrences(of: "R$", with: "")
+                                .replacingOccurrences(of: ".", with: "")
+                                .replacingOccurrences(of: ",", with: ".")
+                                .trimmingCharacters(in: .whitespaces)
                             
+                            let valorConvertidoParaPassar = Float(valorLimpo) ?? 0.0
+                            
+                            // 2. Limpeza do Tempo (Pega só os números digitados para não dar bug)
+                            let tempoApenasNumeros = tempoGlobal.texto.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+                            let tempoConvertidoParaPassar = Int(tempoApenasNumeros) ?? 1
+                            
+                            // 3. Chamando a Tela 2 do jeito correto, passando os dados puros!
                             let viewModelResultados = TelaResultadosViewModel(
                                 valorInvestido: valorConvertidoParaPassar,
                                 tempoInvestimento: tempoConvertidoParaPassar,
                                 dadosDosCards: gerente.cardsDeInvestimento
                             )
                             
+                            // 4. Chamamos a tela passando o pacote fechado
                             TelaResultadosView(viewModel: viewModelResultados)
                         }
                     }

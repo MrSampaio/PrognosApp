@@ -2,7 +2,7 @@ import SwiftUI
 import Charts
 
 struct TelaResultadosView: View {
-    // 👇 Voltamos para o formato correto: apenas recebe a ViewModel pronta da tela anterior!
+    
     @ObservedObject var viewModel: TelaResultadosViewModel
     
     @ScaledMetric(relativeTo: .body)
@@ -163,37 +163,16 @@ struct TelaResultadosView: View {
     }
 }
 
-// MARK: - Extensão de Lógica Reativa
-extension TelaResultadosViewModel {
-    func obterMontanteFinal(para card: CardViewModel) -> Double {
-        let pontos = pontosDoGrafico
-        let anoFinal = tempoInvestimento
-        return pontos.first(where: { $0.nomeInvestimento.contains(card.tipo.tituloPrincipal) && $0.ano == anoFinal })?.montanteNominal ?? 0.0
-    }
-    
-    func eOMelhorInvestimento(_ card: CardViewModel) -> Bool {
-        let montantes = dadosDosCards.map { obterMontanteFinal(para: $0) }
-        let maximo = montantes.max() ?? 0.0
-        return obterMontanteFinal(para: card) == maximo
-    }
-}
-
 // MARK: - Preview iPhone
 #Preview {
-    let cardCdb = CardViewModel(tipo: .cdbCdi)
-    cardCdb.caixaTexto.texto = "100"
-    
-    let cardTesouro = CardViewModel(tipo: .tesouroPrefixado)
-    cardTesouro.caixaTexto.texto = "11.5"
-    
-    // Criamos uma ViewModel falsa só para o Preview rodar bonito
-    let mockVM = TelaResultadosViewModel(
-        valorInvestido: 5000,
-        tempoInvestimento: 5,
-        dadosDosCards: [cardCdb, cardTesouro]
-    )
-    
-    return NavigationStack {
-        TelaResultadosView(viewModel: mockVM)
+    NavigationStack {
+        TelaResultadosView(viewModel: TelaResultadosViewModel(
+            valorInvestido: 5000,
+            tempoInvestimento: 5,
+            dadosDosCards: [
+                CardViewModel(tipo: .cdbCdi),
+                CardViewModel(tipo: .tesouroPrefixado)
+            ]
+        ))
     }
 }
