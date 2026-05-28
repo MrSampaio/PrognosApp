@@ -18,7 +18,7 @@ class CardViewModel: ObservableObject, Identifiable {
             placeholder: tipo.nomeDoInputPrincipal,
             texto: "",
             arredondamento: 10,
-            cor: .white // Ajuste para Color("CorCaixas") se preferir
+            cor: .corCaixaCard // Ajuste para Color("CorCaixas") se preferir
         )
     }
 }

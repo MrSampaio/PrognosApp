@@ -29,7 +29,9 @@ struct InvestimentosMacView: View {
                 
             }
             
-            CaixaTextoView(caixa: $viewModel.caixaTexto)
+            CaixaTextoView(caixa: $viewModel.caixaTexto,
+                           corFundoCustomizada: .corCaixas,
+                           corPlaceholderCustomizada: .corTextoPlaceholder)
             
             Text(viewModel.tipo.mediaHistorica)
                 .font(.custom("BaiJamjuree-Medium", size: 14, relativeTo: .title3))

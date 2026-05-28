@@ -61,15 +61,15 @@ struct TelaInformacoesMacView: View {
                 
                 // MARK: - HEADER
                 HStack {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(.white)
-                            .frame(width: 44, height: 44)
-                            .background(Color.white.opacity(0.1))
-                            .clipShape(Circle())
-                    }
-                    .buttonStyle(.plain)
+//                    Button(action: { dismiss() }) {
+//                        Image(systemName: "chevron.left")
+//                            .font(.system(size: 18, weight: .medium))
+//                            .foregroundColor(.white)
+//                            .frame(width: 44, height: 44)
+//                            .background(Color.white.opacity(0.1))
+//                            .clipShape(Circle())
+//                    }
+//                    .buttonStyle(.plain)
                     
                     Spacer()
                     
