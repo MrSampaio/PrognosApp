@@ -39,13 +39,28 @@ enum TipoDeInvestimento: String, CaseIterable, Identifiable {
     
 
     // MARK: - REGRAS DE TEXTO PARA O CARD
-        var tituloPrincipal: String {
+    var tituloPrincipal: String {
             switch self {
-            case .tesouroPrefixado, .tesouroSelic, .tesouroIpca: return "Tesouro"
-            case .cdbPrefixado, .cdbCdi, .cdbIpca: return "CDB/LC"
-            case .lciPrefixado, .lciCdi, .lciIpca: return "LCI/LCA"
-            case .debComumPrefixada, .debComumCdi, .debComumIpca: return "Debênt."
-            case .isentoPrefixado, .isentoCdi, .isentoIpca: return "CRI/CRA"
+            case .tesouroPrefixado: return "Tesouro Prefixado"
+            case .tesouroSelic: return "Tesouro Selic"
+            case .tesouroIpca: return "Tesouro IPCA"
+                
+            case .cdbPrefixado: return "CDB/LC Prefixado"
+            case .cdbCdi: return "CDB/LC Pós-fixado"
+            case .cdbIpca: return "CDB/LC Híbrido"
+                
+            case .lciPrefixado: return "LCI/LCA Prefixado"
+            case .lciCdi: return "LCI/LCA Pós-fixado"
+            case .lciIpca: return "LCI/LCA Híbrido"
+                
+            case .debComumPrefixada: return "Debênt. Prefixado"
+            case .debComumCdi: return "Debênt. Pós-fixado"
+            case .debComumIpca: return "Debênt. Híbrido"
+                
+            case .isentoPrefixado: return "CRI/CRA Prefixado"
+            case .isentoCdi: return "CRI/CRA Pós-fixado"
+            case .isentoIpca: return "CRI/CRA Híbrido"
+                
             case .fundoRendaFixa: return "Fundo"
             }
         }
