@@ -6,61 +6,83 @@ struct TelaResultadosView: View {
     @ObservedObject var viewModel: TelaResultadosViewModel
     @ScaledMetric(relativeTo: .body) var paddingAdaptativo: CGFloat = 20
     
+    @Environment(\.dynamicTypeSize) var tipoDeTamanho
+    
     var body: some View {
         ScrollView {
             VStack(spacing: paddingAdaptativo) {
                 
+                // MARK: - TÍTULO PRINCIPAL
                 Text("Simulação")
                     .font(.custom("BaiJamjuree-SemiBold", size: 24, relativeTo: .title))
                     .lineLimit(2)
                     .minimumScaleFactor(0.7)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(Color("CorFonteTitulo"))
+                    .accessibilityAddTraits(.isHeader)
                 
-                HStack {
-                    VStack {
+                // MARK: - VALOR DO INVESTIMENTO
+                ViewThatFits {
+                    HStack {
+                        VStack(spacing: 4) {
+                            Text("Valor do investimento")
+                                .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .subheadline))
+                                .foregroundStyle(Color("FonteUniversal"))
+                            Text("R$ \(viewModel.valorInvestido, format: .number.precision(.fractionLength(2)))")
+                                .font(.custom("BaiJamjuree-SemiBold", size: 32, relativeTo: .largeTitle))
+                                .foregroundStyle(Color("FonteUniversal"))
+                                .foregroundColor(Color.primary)
+                        }
+                        .padding()
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
                         Text("Valor do investimento")
-                            .font(.custom("BaiJamjuree-Medium", size: 16))
+                            .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .subheadline))
                             .foregroundStyle(Color("FonteUniversal"))
                         Text("R$ \(viewModel.valorInvestido, format: .number.precision(.fractionLength(2)))")
-                            .font(.custom("BaiJamjuree-SemiBold", size: 32))
+                            .font(.custom("BaiJamjuree-SemiBold", size: 32, relativeTo: .largeTitle))
                             .foregroundStyle(Color("FonteUniversal"))
                             .foregroundColor(Color.primary)
                     }
                     .padding()
                 }
                 .frame(maxWidth: 400)
-                .frame(height: 100)
+                .frame(minHeight: 100)
                 .background(Color("CorPrimaria"))
                 .cornerRadius(14)
                 .padding(.horizontal)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Valor do investimento: R$ \(viewModel.valorInvestido, format: .number.precision(.fractionLength(2)))")
                 
-                // MARK: - Header (Cenário da Inflação)
+                // MARK: - HEADER (Cenário da Inflação)
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Cenário da")
-                            .font(.custom("BaiJamjuree-Medium", size: 20))
+                            .font(.custom("BaiJamjuree-Medium", size: 20, relativeTo: .title3))
                             .foregroundColor(.gray)
                         
                         Text("Inflação \(viewModel.cenarioAtual.rawValue)")
-                            .font(.custom("BaiJamjuree-SemiBold", size: 28))
+                            .font(.custom("BaiJamjuree-SemiBold", size: 28, relativeTo: .title))
                             .foregroundColor(Color.primary)
                             .animation(.default, value: viewModel.cenarioAtual)
                     }
                     Spacer()
                 }
                 .padding(.horizontal)
+                .accessibilityElement(children: .combine)
                 
-                // MARK: - Toggle Animado
+                // MARK: - TOGGLE ANIMADO
                 Toggle(isOn: $viewModel.mostrarValorReal.animation(.easeInOut(duration: 0.6))) {
                     Text("Descontar Inflação (Poder de Compra)")
-                        .font(.custom("BaiJamjuree-Medium", size: 16))
+                        .font(.custom("BaiJamjuree-Medium", size: 16, relativeTo: .body))
                         .foregroundColor(.gray)
                 }
                 .padding(.horizontal)
                 .tint(.green)
+                .accessibilityHint("Liga ou desliga o desconto da inflação no gráfico e nos resultados")
                 
-                // MARK: - Gráfico Animado
+                // MARK: - GRÁFICO ANIMADO
                 Chart(viewModel.pontosDoGrafico) { ponto in
                     LineMark(
                         x: .value("Ano", ponto.ano),
@@ -76,8 +98,9 @@ struct TelaResultadosView: View {
                 .padding(.horizontal)
                 .animation(.easeInOut(duration: 0.6), value: viewModel.pontosDoGrafico)
                 .animation(.easeInOut(duration: 0.6), value: viewModel.mostrarValorReal)
+                .accessibilityLabel("Gráfico de linha mostrando a evolução do montante ao longo de \(viewModel.tempoInvestimento) anos.")
                 
-                // MARK: - Controles (< | >)
+                // MARK: - CONTROLES DE CENÁRIO (< | >)
                 HStack {
                     Spacer()
                     HStack(spacing: 16) {
@@ -88,6 +111,7 @@ struct TelaResultadosView: View {
                                 .font(.system(size: 18, weight: .semibold))
                                 .foregroundColor(.primary)
                         }
+                        .accessibilityLabel("Cenário anterior")
                         
                         Divider().frame(height: 16)
                         
@@ -98,6 +122,7 @@ struct TelaResultadosView: View {
                                 .font(.system(size: 18, weight: .semibold))
                                 .foregroundColor(.primary)
                         }
+                        .accessibilityLabel("Próximo cenário")
                     }
                     .padding(.horizontal, 24)
                     .padding(.vertical, 12)
@@ -115,20 +140,18 @@ struct TelaResultadosView: View {
                         .minimumScaleFactor(0.7)
                         .fixedSize(horizontal: false, vertical: true)
                         .foregroundColor(Color("CorFonteTitulo"))
+                        .accessibilityAddTraits(.isHeader)
                 }
                 .padding(.top, 10)
                 
                 // MARK: - LISTA DE CARDS DINÂMICOS
-                
                 VStack(spacing: 16) {
-                    ForEach(0..<viewModel.dadosDosCards.count, id: \.self) { indice in
-                        let card = viewModel.dadosDosCards[indice]
+                    ForEach(viewModel.dadosDosCards, id: \.id) { card in
                         
-                        // 1. Puxa os dados com a nova função robusta
-                        let montanteFinal = viewModel.obterMontanteFinal(noIndice: indice)
-                        let melhor = viewModel.eOMelhorInvestimento(noIndice: indice)
+                        // ⚠️ CORREÇÃO DA SINTAXE MÁGICA AQUI:
+                        let montanteFinal = viewModel.obterMontanteFinal(para: card)
+                        let melhor = viewModel.eOMelhorInvestimento(card)
                         
-                        // 2. Calcula o lucro exato (sem esconder números negativos!)
                         let lucroCalculado = montanteFinal - Double(viewModel.valorInvestido)
                         
                         CardResultadoView(
@@ -140,7 +163,7 @@ struct TelaResultadosView: View {
                     
                     Spacer().frame(height: 20)
                     
-                    // Botão de Recomeçar
+                    // MARK: - BOTÃO DE RECOMEÇAR
                     Button(action: {
                         // Ação para resetar ou voltar telas
                     }) {
@@ -149,11 +172,17 @@ struct TelaResultadosView: View {
                         }
                         .font(.custom("BaiJamjuree-SemiBold", size: 22, relativeTo: .title3))
                         .foregroundColor(Color("FonteUniversal"))
-                        .frame(width: 300, height: 48)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.7)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: 300)
+                        .frame(minHeight: 48)
+                        .padding(.horizontal)
                         .background(Color("CorPrimaria"))
                         .clipShape(Capsule())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityHint("Volta para a tela inicial para fazer uma nova simulação.")
                 }
                 .id("\(viewModel.cenarioAtual.rawValue)-\(viewModel.mostrarValorReal)")
                 .padding(.horizontal, 24)
@@ -165,7 +194,6 @@ struct TelaResultadosView: View {
     }
 }
 
-// MARK: - Preview iPhone
 #Preview {
     let mockVM = TelaResultadosViewModel(
         valorInvestido: 5000,
