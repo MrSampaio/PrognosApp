@@ -25,6 +25,15 @@ Prognos is a smart investment simulator and comparison tool that aims to help us
 
 <br>
 
+## 📱 System in Action: Core Flow
+
+Experience the seamless journey from asset selection to the final reactive dashboard, engineered and tailored natively for both platforms.
+
+| 📱 iOS Experience | 💻 macOS Experience |
+| :---: | :---: |
+| <img src="./assets/full_ios.gif" width="260" alt="iOS Core Flow"/> | <img src="./assets/full_mac.gif" width="500" alt="macOS Core Flow"/> |
+| *Mobile-first flow: intuitive asset selection, dynamic state validations, and touch-optimized results.* | *Desktop-first flow: split-screen dashboard, expansive charts, and comprehensive data visualization.* |
+
 ### 💻 macOS: Dashboard & Reactive Charts
 The macOS interface leverages wider screens to display parameters and results simultaneously. 
 
@@ -32,6 +41,8 @@ The macOS interface leverages wider screens to display parameters and results si
   <img src="./assets/mac_simulation.gif" alt="macOS Charts Animation" width="700"/>
   <p><i>The Charts framework reacting smoothly to inflation scenarios and data state changes.</i></p>
 </div>
+
+<br>
 
 ## 📦 Installation
 To install and run Prognos, follow these steps:
