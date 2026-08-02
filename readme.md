@@ -48,21 +48,52 @@ The macOS interface leverages wider screens to display parameters and results si
 | :---: | :---: |
 | <img src="./assets/selecao_ios.gif" width="260"/> | <img src="./assets/search_ios.gif" width="260"/> |
 | *State-driven limits restrict selection to 2 assets, dynamically enabling the Call-to-Action.* | *Real-time search filtering and custom accordion views for educational content.* |
+---
 
-## 📦 Installation
-To install and run Prognos, follow these steps:
-1. Clone the repository using Git.
-2. Open the project in Xcode.
-3. Build and run the project using Xcode.
+## 📦 Installation & Build
 
-## 💻 Usage
-To use Prognos, follow these steps:
-1. Launch the application.
-2. Select up to two types of investments to compare.
-3. Input specific details about your selected investments, such as the amount and duration.
-4. Simulate the investment outcomes.
-5. View and compare the results of different investment scenarios.
+PrognosApp is a native Apple ecosystem project. To run it locally, follow these steps:
 
+**1. Clone the repository**
+
+Open your Terminal and run:
+
+```bash
+git clone https://github.com/MrSampaio/PrognosApp.git
+```
+
+**2. Open the project in Xcode**
+
+Navigate to the cloned folder and double-click the `.xcodeproj` file to open it in Xcode.
+
+**3. Select the Build Target**
+
+Because PrognosApp is cross-platform, you must select the appropriate scheme before building. In the Xcode top toolbar, click on the active scheme name (next to the Stop button) and choose:
+
+- **For Mobile**: Select the `PrognosApp` scheme → Choose an iPhone Simulator (e.g., iPhone 15 Pro) or your connected physical device.
+- **For Desktop**: Select the `Prognos Mac` (or `PrognosMacApp`) scheme → Choose `My Mac`.
+
+**4. Compile and Run**
+
+Press `Cmd + R` or click the Play (▶) button. Xcode will resolve any internal dependencies, compile the Swift code, and launch the application.
+
+---
+
+## 💻 Usage Guide
+
+Once the application is compiled and running, explore the simulation engine by following the core flow:
+
+1. **Asset Selection**: From the Home screen, click "Consultar". Browse the catalog and select the fixed-income assets you want to compare. The system enforces a strict selection limit to ensure UI consistency (up to 2 assets on iOS and 4 assets on macOS).
+
+2. **Define Parameters**: After confirming your selection, enter the global variables: Investment Amount (*Valor*) and Time Horizon in years (*Tempo*). The app will dynamically display specific input fields (e.g., *Taxa Prefixada*, *Percentual do CDI*) tailored to the exact asset types you chose.
+
+3. **Simulate & Analyze**: Click "Simular" to calculate the projections and render the dashboard.
+   - **Interactive Charts**: The line chart displays the projected growth over time.
+   - **Real vs. Nominal**: Toggle the "Considerar inflação" switch to instantly convert nominal values into real purchasing power (discounting inflation).
+   - **Stress Testing**: Use the directional arrows (`<` | `>`) to cycle through different macroeconomic scenarios (Controlled, High, or Historical Inflation) and watch the chart react in real-time.
+   - **The Verdict**: Scroll to the bottom to see the final net profit calculations, where the most profitable asset is automatically highlighted in green.
+
+---
 ## 📂 Project Structure
 ```
 Prognos
@@ -86,8 +117,6 @@ Prognos
 │   │   ├── TelaResultadosView.swift
 ```
 
-<!--(* ## 📸 Screenshots  *) -->
-
-
 ## 🍎 Thank you, Apple Developer Academy teammates!
-This project was developed in collaboration with @Leo-gsilva, @marifracarolis2-arch, and @naaclaraa. Without you, guys, this wouldn't have been possible! ❤️
+
+This project was developed in collaboration with [@Leo-gsilva](https://github.com/Leo-gsilva), [@marifracarolis2-arch](https://github.com/marifracarolis2-arch), and [@naaclaraa](https://github.com/naaclaraa). Without you, guys, this wouldn't have been possible! ❤️
