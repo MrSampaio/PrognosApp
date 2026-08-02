@@ -20,10 +20,18 @@ Prognos is a smart investment simulator and comparison tool that aims to help us
 ## 📱 System Showcase
 
 <div align="center">
-  <img src="./assets/mockup.png" alt="PrognosApp Cross-Platform" width="800"/>
+  <img src="./assets/mockup.png" alt="PrognosApp Cross-Platform" width="1000"/>
 </div>
 
 <br>
+
+### 💻 macOS: Dashboard & Reactive Charts
+The macOS interface leverages wider screens to display parameters and results simultaneously. 
+
+<div align="center">
+  <img src="" alt="macOS Charts Animation" width="700"/>
+  <p><i>The Charts framework reacting smoothly to inflation scenarios and data state changes.</i></p>
+</div>
 
 ## 📦 Installation
 To install and run Prognos, follow these steps:
