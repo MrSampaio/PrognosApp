@@ -29,7 +29,7 @@ Prognos is a smart investment simulator and comparison tool that aims to help us
 The macOS interface leverages wider screens to display parameters and results simultaneously. 
 
 <div align="center">
-  <img src="./assets/simulacao_mac.gif" alt="macOS Charts Animation" width="700"/>
+  <img src="./assets/mac_simulation.gif" alt="macOS Charts Animation" width="700"/>
   <p><i>The Charts framework reacting smoothly to inflation scenarios and data state changes.</i></p>
 </div>
 
