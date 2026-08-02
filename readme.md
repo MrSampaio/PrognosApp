@@ -44,6 +44,11 @@ The macOS interface leverages wider screens to display parameters and results si
 
 <br>
 
+| Asset Selection & UI States | Search & Accordion Components |
+| :---: | :---: |
+| <img src="./assets/selecao_ios.gif" width="260"/> | <img src="./assets/search_ios.gif" width="260"/> |
+| *State-driven limits restrict selection to 2 assets, dynamically enabling the Call-to-Action.* | *Real-time search filtering and custom accordion views for educational content.* |
+
 ## 📦 Installation
 To install and run Prognos, follow these steps:
 1. Clone the repository using Git.
