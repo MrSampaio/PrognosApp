@@ -54,7 +54,8 @@ Prognos
 │   │   ├── TelaResultadosView.swift
 ```
 
-(* ## 📸 Screenshots  *)
+<!--(* ## 📸 Screenshots  *) -->
+
 
 ## 🍎 Thank you, Apple Developer Academy teammates!
 This project was developed in collaboration with @Leo-gsilva, @marifracarolis2-arch, and @naaclaraa. Without you, guys, this wouldn't have been possible! ❤️
