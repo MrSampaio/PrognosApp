@@ -20,7 +20,7 @@ Prognos is a smart investment simulator and comparison tool that aims to help us
 ## 📱 System Showcase
 
 <div align="center">
-  <img src="" alt="PrognosApp Cross-Platform" width="800"/>
+  <img src="./assets/mockup.png" alt="PrognosApp Cross-Platform" width="800"/>
 </div>
 
 <br>
