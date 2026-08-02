@@ -17,6 +17,14 @@ Prognos is a smart investment simulator and comparison tool that aims to help us
 - **Frameworks**: Combine, UIKit (for UIPageControl customization)
 - **Libraries**: Charts (for creating charts in the results view)
 
+## 📱 System Showcase
+
+<div align="center">
+  <img src="" alt="PrognosApp Cross-Platform" width="800"/>
+</div>
+
+<br>
+
 ## 📦 Installation
 To install and run Prognos, follow these steps:
 1. Clone the repository using Git.
