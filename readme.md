@@ -120,4 +120,4 @@ Once the application is compiled and running, explore the simulation engine by f
 
 ## 🍎 Thank you, Apple Developer Academy teammates!
 
-This project was developed in collaboration with [@Leo-gsilva](https://github.com/Leo-gsilva), [@marifracarolis2-arch](https://github.com/marifracarolis2-arch), and [@naaclaraa](https://github.com/naaclaraa). Without you, guys, this wouldn't have been possible! ❤️
+This project was developed in collaboration with [@Leo-gsilva](https://github.com/Leo-gsilva), [@marifracarolis2-arch](https://github.com/marifracarolis2-arch), and [@naaclaraa](https://github.com/naaclaraa). Without you guys, this wouldn't have been possible! ❤️
