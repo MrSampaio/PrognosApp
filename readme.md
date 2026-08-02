@@ -17,6 +17,29 @@ Prognos is a smart investment simulator and comparison tool that aims to help us
 - **Frameworks**: Combine, UIKit (for UIPageControl customization)
 - **Libraries**: Charts (for creating charts in the results view)
 
+## 📂 Project Structure
+```
+Prognos
+├── Prognos
+│   ├── PrognosApp.swift
+│   ├── ContentView.swift
+│   ├── ViewModel
+│   │   ├── InformacaoInvestimentoViewModel.swift
+│   │   ├── TelaInvestimentosViewModel.swift
+│   │   ├── TelaResultadosViewModel.swift
+│   ├── Model
+│   │   ├── CardModel.swift
+│   │   ├── CenarioInvestimentoModel.swift
+│   │   ├── SimulacaoModel.swift
+│   ├── View
+│   │   ├── TelaSelecaoView.swift
+│   │   ├── TelaInformacoesView.swift
+│   │   ├── TelaInvestimentosView.swift
+│   │   ├── HomeView.swift
+│   │   ├── TelaSimuladorView.swift
+│   │   ├── TelaResultadosView.swift
+```
+
 ## 📱 System Showcase
 
 <div align="center">
@@ -94,28 +117,6 @@ Once the application is compiled and running, explore the simulation engine by f
    - **The Verdict**: Scroll to the bottom to see the final net profit calculations, where the most profitable asset is automatically highlighted in green.
 
 ---
-## 📂 Project Structure
-```
-Prognos
-├── Prognos
-│   ├── PrognosApp.swift
-│   ├── ContentView.swift
-│   ├── ViewModel
-│   │   ├── InformacaoInvestimentoViewModel.swift
-│   │   ├── TelaInvestimentosViewModel.swift
-│   │   ├── TelaResultadosViewModel.swift
-│   ├── Model
-│   │   ├── CardModel.swift
-│   │   ├── CenarioInvestimentoModel.swift
-│   │   ├── SimulacaoModel.swift
-│   ├── View
-│   │   ├── TelaSelecaoView.swift
-│   │   ├── TelaInformacoesView.swift
-│   │   ├── TelaInvestimentosView.swift
-│   │   ├── HomeView.swift
-│   │   ├── TelaSimuladorView.swift
-│   │   ├── TelaResultadosView.swift
-```
 
 ## 🍎 Thank you, Apple Developer Academy teammates!
 
