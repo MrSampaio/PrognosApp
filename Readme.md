@@ -48,14 +48,6 @@ Prognos
 │   │   ├── TelaResultadosView.swift
 ```
 
-## 📱 System Showcase
-
-<div align="center">
-  <img src="./assets/mockup.png" alt="PrognosApp Cross-Platform" width="1000"/>
-</div>
-
-<br>
-
 ## 📱 System in Action: Core Flow
 
 Experience the seamless journey from asset selection to the final reactive dashboard, engineered and tailored natively for both platforms.
