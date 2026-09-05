@@ -1,6 +1,14 @@
 # 📈 Prognos: Investment Simulator and Comparison Tool
 Prognos is a smart investment simulator and comparison tool that aims to help users make better investment choices. The program has an easy to use interface for selecting investment categories, entering investment information, and modeling investment results. Prognos allows consumers to see full results, test different investment scenarios and make investment decisions based on data.
 
+## 📱 System Showcase
+
+<div align="center">
+  <img src="./assets/mockup.png" alt="PrognosApp Cross-Platform" width="1000"/>
+</div>
+
+<br>
+
 ## 🚀 Features
 - **Investment Selection**: Users are able to compare up to two types of investments.
 - **Investment Details**: The user is able to enter details of the investment they choose, such as the amount and the duration.
